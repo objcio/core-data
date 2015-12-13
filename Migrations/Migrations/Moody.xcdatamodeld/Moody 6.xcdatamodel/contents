@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model userDefinedModelVersionIdentifier="6" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="8195" systemVersion="15A282b" minimumToolsVersion="Xcode 7.0">
+    <entity name="Continent" syncable="YES">
+        <attribute name="numericISO3166Code" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <relationship name="countries" toMany="YES" deletionRule="Nullify" destinationEntity="Country" inverseName="continent" inverseEntity="Country" syncable="YES"/>
+    </entity>
+    <entity name="Country" syncable="YES">
+        <attribute name="markedForDeletionDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="numberOfMoods" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="numericISO3166Code" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="uniquenessDummy" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="updatedAt" attributeType="Date" syncable="YES"/>
+        <relationship name="continent" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Continent" inverseName="countries" inverseEntity="Continent" syncable="YES"/>
+        <relationship name="moods" toMany="YES" deletionRule="Nullify" destinationEntity="Mood" inverseName="country" inverseEntity="Mood" syncable="YES"/>
+        <compoundIndexes>
+            <compoundIndex>
+                <index value="markedForDeletionDate"/>
+                <index value="updatedAt"/>
+            </compoundIndex>
+        </compoundIndexes>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="numericISO3166Code"/>
+                <constraint value="uniquenessDummy"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="Mood" syncable="YES">
+        <attribute name="colors" optional="YES" attributeType="Transformable" valueTransformerName="ColorsTransformer" syncable="YES"/>
+        <attribute name="creatorID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="date" attributeType="Date" syncable="YES"/>
+        <attribute name="latitude" optional="YES" attributeType="Double" syncable="YES"/>
+        <attribute name="longitude" optional="YES" attributeType="Double" syncable="YES"/>
+        <attribute name="markedForDeletionDate" optional="YES" attributeType="Date" indexed="YES" syncable="YES"/>
+        <attribute name="markedForRemoteDeletion" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="rating" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="remoteID" optional="YES" attributeType="String" indexed="YES" elementID="remoteIdentifier" syncable="YES"/>
+        <relationship name="country" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Country" inverseName="moods" inverseEntity="Country" syncable="YES"/>
+        <compoundIndexes>
+            <compoundIndex>
+                <index value="markedForRemoteDeletion"/>
+                <index value="markedForDeletionDate"/>
+                <index value="date"/>
+            </compoundIndex>
+        </compoundIndexes>
+    </entity>
+    <elements>
+        <element name="Continent" positionX="-45" positionY="63" width="128" height="75"/>
+        <element name="Country" positionX="-36" positionY="18" width="128" height="150"/>
+        <element name="Mood" positionX="-63" positionY="-18" width="128" height="195"/>
+    </elements>
+</model>

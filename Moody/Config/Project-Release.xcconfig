@@ -1,0 +1,22 @@
+//
+//  Project-Release.xcconfig
+//  Moody
+//
+//  Created by Daniel Eggert on 06/09/2015.
+//  Copyright © 2015 objc.io. All rights reserved.
+//
+
+#include "Project.xcconfig"
+
+
+
+// Build Options
+//
+DEBUG_INFORMATION_FORMAT = dwarf-with-dsym
+VALIDATE_PRODUCT = YES
+
+
+
+// Metal
+//
+MTL_ENABLE_DEBUG_INFO = NO

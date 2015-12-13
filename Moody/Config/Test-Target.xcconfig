@@ -1,0 +1,26 @@
+//
+//  Test-Target.xcconfig
+//  Moody
+//
+//  Created by Daniel Eggert on 06/09/2015.
+//  Copyright © 2015 objc.io. All rights reserved.
+//
+
+
+
+
+// Linking
+//
+LD_RUNPATH_SEARCH_PATHS = $(inherited) @executable_path/Frameworks @loader_path/Frameworks
+
+
+
+// Packaging
+//
+INFOPLIST_FILE = Config/Test-Info.plist
+
+
+
+// Testing
+//
+TEST_HOST = $(BUILT_PRODUCTS_DIR)/Moody.app/Moody

@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "BBA5EDA3CA72EFF0894661E3303EE217ACDFD395",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "3642B9C2595E4DBE94B8CE549AE37A84C04234BD" : 0,
+    "BBA5EDA3CA72EFF0894661E3303EE217ACDFD395" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "26DAE5A5-0AFB-416E-BD78-14266C11B28A",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "3642B9C2595E4DBE94B8CE549AE37A84C04234BD" : "core-data-bookMoody\/lib\/DominantColor",
+    "BBA5EDA3CA72EFF0894661E3303EE217ACDFD395" : "core-data-book"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "Moody",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 203,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "Moody\/Moody.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:objcio\/DominantColor.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "3642B9C2595E4DBE94B8CE549AE37A84C04234BD"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:objcio\/core-data-book.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "BBA5EDA3CA72EFF0894661E3303EE217ACDFD395"
+    }
+  ]
+}

@@ -1,0 +1,73 @@
+//
+//  Project.xcconfig
+//  Moody
+//
+//  Created by Daniel Eggert on 06/09/2015.
+//  Copyright © 2015 objc.io. All rights reserved.
+//
+
+#include "Warnings.xcconfig"
+
+
+
+// Architectures
+//
+SDKROOT = iphoneos
+
+
+
+// Code Signing
+//
+CODE_SIGN_IDENTITY[sdk=iphoneos*] = iPhone Developer
+
+
+
+// Deployment
+//
+COPY_PHASE_STRIP = NO
+IPHONEOS_DEPLOYMENT_TARGET = 9.0
+
+
+
+// Packaging
+//
+PRODUCT_BUNDLE_IDENTIFIER = io.objc.CoreData$(PRODUCT_NAME:rfc1034identifier)
+PRODUCT_NAME = $(TARGET_NAME)
+
+
+
+// Search Paths
+//
+ALWAYS_SEARCH_USER_PATHS = NO
+
+
+
+// Versioning
+//
+VERSION_INFO_PREFIX = $(PRODUCT_NAME:rfc1034identifier)
+VERSIONING_SYSTEM = apple-generic
+
+
+
+// LLVM - Code Generation
+//
+GCC_DYNAMIC_NO_PIC = NO
+GCC_NO_COMMON_BLOCKS = YES
+GCC_SYMBOLS_PRIVATE_EXTERN = NO
+
+
+
+// LLVM - Language
+//
+GCC_C_LANGUAGE_STANDARD = gnu99
+CLANG_CXX_LANGUAGE_STANDARD = gnu++0x
+CLANG_CXX_LIBRARY = libc++
+CLANG_ENABLE_MODULES = YES
+CLANG_ENABLE_OBJC_ARC = YES
+
+
+
+// LLVM - Preprocessing
+//
+ENABLE_STRICT_OBJC_MSGSEND = YES
+GCC_PREPROCESSOR_DEFINITIONS = DEBUG=1 $(inherited)

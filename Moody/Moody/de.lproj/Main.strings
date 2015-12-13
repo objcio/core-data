@@ -1,0 +1,21 @@
+
+/* Class = "UINavigationItem"; title = "Moods"; ObjectID = "FK9-2R-637"; */
+"FK9-2R-637.title" = "Stimmungen";
+
+/* Class = "UILabel"; text = "Snap"; ObjectID = "HsN-Fr-50m"; */
+"HsN-Fr-50m.text" = "Aufnehmen";
+
+/* Class = "UIBarButtonItem"; title = "Grid"; ObjectID = "Udv-Vd-fNA"; */
+"Udv-Vd-fNA.title" = "Raster";
+
+/* Class = "UIViewController"; title = "Mood Detail"; ObjectID = "fKz-xX-5Pg"; */
+"fKz-xX-5Pg.title" = "Stimmungsdetails";
+
+/* Class = "UISegmentedControl"; mIs-pU-waG.segmentTitles[0] = "Both"; ObjectID = "mIs-pU-waG"; */
+"mIs-pU-waG.segmentTitles[0]" = "Beide";
+
+/* Class = "UISegmentedControl"; mIs-pU-waG.segmentTitles[1] = "Countries"; ObjectID = "mIs-pU-waG"; */
+"mIs-pU-waG.segmentTitles[1]" = "Länder";
+
+/* Class = "UISegmentedControl"; mIs-pU-waG.segmentTitles[2] = "Continents"; ObjectID = "mIs-pU-waG"; */
+"mIs-pU-waG.segmentTitles[2]" = "Kontinente";

@@ -1,0 +1,42 @@
+
+/* Class = "UINavigationItem"; title = "Moods"; ObjectID = "FK9-2R-637"; */
+"FK9-2R-637.title" = "Moods";
+
+/* Class = "UILabel"; text = "Snap"; ObjectID = "HsN-Fr-50m"; */
+"HsN-Fr-50m.text" = "Snap";
+
+/* Class = "UITabBarItem"; title = "Item"; ObjectID = "OSK-J7-zjg"; */
+"OSK-J7-zjg.title" = "Item";
+
+/* Class = "UIBarButtonItem"; title = "Grid"; ObjectID = "Udv-Vd-fNA"; */
+"Udv-Vd-fNA.title" = "Grid";
+
+/* Class = "UILabel"; text = "<<LABEL>>"; ObjectID = "WbQ-LF-mk1"; */
+"WbQ-LF-mk1.text" = "<<LABEL>>";
+
+/* Class = "UIViewController"; title = "Mood Detail"; ObjectID = "fKz-xX-5Pg"; */
+"fKz-xX-5Pg.title" = "Mood Detail";
+
+/* Class = "UISegmentedControl"; mIs-pU-waG.segmentTitles[0] = "Both"; ObjectID = "mIs-pU-waG"; */
+"mIs-pU-waG.segmentTitles[0]" = "Both";
+
+/* Class = "UISegmentedControl"; mIs-pU-waG.segmentTitles[1] = "Countries"; ObjectID = "mIs-pU-waG"; */
+"mIs-pU-waG.segmentTitles[1]" = "Countries";
+
+/* Class = "UISegmentedControl"; mIs-pU-waG.segmentTitles[2] = "Continents"; ObjectID = "mIs-pU-waG"; */
+"mIs-pU-waG.segmentTitles[2]" = "Continents";
+
+/* Class = "UILabel"; text = "<<LABEL>>"; ObjectID = "qYv-bT-GCC"; */
+"qYv-bT-GCC.text" = "<<LABEL>>";
+
+/* Class = "UILabel"; text = "<<LABEL>>"; ObjectID = "qke-Tf-gpL"; */
+"qke-Tf-gpL.text" = "<<LABEL>>";
+
+/* Class = "UINavigationItem"; title = "Title"; ObjectID = "vq8-yI-0bT"; */
+"vq8-yI-0bT.title" = "Title";
+
+/* Class = "UILabel"; text = "<<LABEL>>"; ObjectID = "wQE-Eq-Hpz"; */
+"wQE-Eq-Hpz.text" = "<<LABEL>>";
+
+/* Class = "UITabBarItem"; title = "Item"; ObjectID = "wVa-85-0aQ"; */
+"wVa-85-0aQ.title" = "Item";

@@ -1,0 +1,18 @@
+/* 
+  Localizable.strings
+  Moody
+
+  Created by Daniel Eggert on 08/09/2015.
+  Copyright © 2015 objc.io. All rights reserved.
+*/
+
+
+"continent.NorthAmerica" = "Nordamerika";
+"continent.Antarctica" = "Antarktika";
+"continent.Europe" = "Europa";
+"continent.Africa" = "Afrika";
+"continent.Asia" = "Asien";
+"continent.SouthAmerica" = "Südamerika";
+"continent.Oceania" = "Ozeanien";
+
+"country.Unknown" = "Unbekannt";

@@ -1,0 +1,566 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		170942F01BC2CA1700D47142 /* Moody 5-Moody 6.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 170942EF1BC2CA1700D47142 /* Moody 5-Moody 6.xcmappingmodel */; };
+		170942F21BC2CA9E00D47142 /* Country5ToCountry6Policy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 170942F11BC2CA9E00D47142 /* Country5ToCountry6Policy.swift */; };
+		170942F41BC2E0BA00D47142 /* V6.swift in Sources */ = {isa = PBXBuildFile; fileRef = 170942F31BC2E0BA00D47142 /* V6.swift */; };
+		170942F81BC2E44300D47142 /* Moody 5.moody in Resources */ = {isa = PBXBuildFile; fileRef = 170942F51BC2E44300D47142 /* Moody 5.moody */; };
+		170942F91BC2E44300D47142 /* Moody 5.moody-shm in Resources */ = {isa = PBXBuildFile; fileRef = 170942F61BC2E44300D47142 /* Moody 5.moody-shm */; };
+		170942FA1BC2E44300D47142 /* Moody 5.moody-wal in Resources */ = {isa = PBXBuildFile; fileRef = 170942F71BC2E44300D47142 /* Moody 5.moody-wal */; };
+		170943061BC3B62C00D47142 /* ModelVersions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 170943051BC3B62C00D47142 /* ModelVersions.swift */; };
+		174D896C1BCE65CC00168E22 /* Mood.swift in Sources */ = {isa = PBXBuildFile; fileRef = 174D896B1BCE65CC00168E22 /* Mood.swift */; };
+		174F83321BC3BD8F00B53393 /* ValueTransformers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 174F83311BC3BD8F00B53393 /* ValueTransformers.swift */; };
+		174F83381BC3FABA00B53393 /* ModelVersionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 174F83371BC3FABA00B53393 /* ModelVersionType.swift */; };
+		174F833E1BC3FF1A00B53393 /* Migration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 174F833D1BC3FF1A00B53393 /* Migration.swift */; };
+		174F83481BC41D8100B53393 /* NSPersistentStoreCoordinator+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 174F83471BC41D8100B53393 /* NSPersistentStoreCoordinator+Extensions.swift */; };
+		17F4C1021BBE8E19007A2AF6 /* MigrationsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17F4C1011BBE8E19007A2AF6 /* MigrationsTests.swift */; };
+		17F4C1201BBE8F1B007A2AF6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17F4C11F1BBE8F1B007A2AF6 /* AppDelegate.swift */; };
+		17F4C12C1BBE91F6007A2AF6 /* Moody.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 17F4C1291BBE91F6007A2AF6 /* Moody.xcdatamodeld */; };
+		17F4C12D1BBE9640007A2AF6 /* Moody.moody in Resources */ = {isa = PBXBuildFile; fileRef = 17F4C1211BBE8FF8007A2AF6 /* Moody.moody */; };
+		17F4C12E1BBE9640007A2AF6 /* Moody.moody-shm in Resources */ = {isa = PBXBuildFile; fileRef = 17F4C1221BBE8FF8007A2AF6 /* Moody.moody-shm */; };
+		17F4C12F1BBE9640007A2AF6 /* Moody.moody-wal in Resources */ = {isa = PBXBuildFile; fileRef = 17F4C1231BBE8FF8007A2AF6 /* Moody.moody-wal */; };
+		17F4C1341BBF09EE007A2AF6 /* ManagedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17F4C1301BBF09EE007A2AF6 /* ManagedObject.swift */; };
+		17F4C1351BBF09EE007A2AF6 /* NSManagedObjectContext+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17F4C1311BBF09EE007A2AF6 /* NSManagedObjectContext+Extensions.swift */; };
+		17F4C1361BBF09EE007A2AF6 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17F4C1321BBF09EE007A2AF6 /* Utilities.swift */; };
+		17F4C1371BBF09EE007A2AF6 /* ValueTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17F4C1331BBF09EE007A2AF6 /* ValueTransformer.swift */; };
+		17F4C1391BBF12D0007A2AF6 /* TestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17F4C1381BBF12CF007A2AF6 /* TestHelpers.swift */; };
+		17F4C13E1BBFD768007A2AF6 /* V2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17F4C13D1BBFD768007A2AF6 /* V2.swift */; };
+		17F4C1411BC13CF9007A2AF6 /* Moody 2-Moody 3.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 17F4C1401BC13CF9007A2AF6 /* Moody 2-Moody 3.xcmappingmodel */; };
+		17F4C1451BC14899007A2AF6 /* Moody 2.moody in Resources */ = {isa = PBXBuildFile; fileRef = 17F4C1421BC14899007A2AF6 /* Moody 2.moody */; };
+		17F4C1461BC14899007A2AF6 /* Moody 2.moody-shm in Resources */ = {isa = PBXBuildFile; fileRef = 17F4C1431BC14899007A2AF6 /* Moody 2.moody-shm */; };
+		17F4C1471BC14899007A2AF6 /* Moody 2.moody-wal in Resources */ = {isa = PBXBuildFile; fileRef = 17F4C1441BC14899007A2AF6 /* Moody 2.moody-wal */; };
+		17F4C1521BC28504007A2AF6 /* VersionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17F4C1511BC28504007A2AF6 /* VersionData.swift */; };
+		17F4C1541BC2854F007A2AF6 /* V3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17F4C1531BC2854F007A2AF6 /* V3.swift */; };
+		17F4C1571BC2A7B0007A2AF6 /* Moody 3-Moody 4.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 17F4C1561BC2A7B0007A2AF6 /* Moody 3-Moody 4.xcmappingmodel */; };
+		17F4C15B1BC2A8F7007A2AF6 /* Moody 3.moody in Resources */ = {isa = PBXBuildFile; fileRef = 17F4C1581BC2A8F7007A2AF6 /* Moody 3.moody */; };
+		17F4C15C1BC2A8F7007A2AF6 /* Moody 3.moody-shm in Resources */ = {isa = PBXBuildFile; fileRef = 17F4C1591BC2A8F7007A2AF6 /* Moody 3.moody-shm */; };
+		17F4C15D1BC2A8F7007A2AF6 /* Moody 3.moody-wal in Resources */ = {isa = PBXBuildFile; fileRef = 17F4C15A1BC2A8F7007A2AF6 /* Moody 3.moody-wal */; };
+		17F4C1611BC2AAF1007A2AF6 /* Moody 4.moody in Resources */ = {isa = PBXBuildFile; fileRef = 17F4C15E1BC2AAF1007A2AF6 /* Moody 4.moody */; };
+		17F4C1621BC2AAF1007A2AF6 /* Moody 4.moody-shm in Resources */ = {isa = PBXBuildFile; fileRef = 17F4C15F1BC2AAF1007A2AF6 /* Moody 4.moody-shm */; };
+		17F4C1631BC2AAF1007A2AF6 /* Moody 4.moody-wal in Resources */ = {isa = PBXBuildFile; fileRef = 17F4C1601BC2AAF1007A2AF6 /* Moody 4.moody-wal */; };
+		17F4C1661BC2ABC9007A2AF6 /* Moody 4-Moody 5.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 17F4C1651BC2ABC9007A2AF6 /* Moody 4-Moody 5.xcmappingmodel */; };
+		17F4C1681BC2AC8A007A2AF6 /* V5.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17F4C1671BC2AC8A007A2AF6 /* V5.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		17F4C0FE1BBE8E19007A2AF6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 17F4C0E11BBE8E19007A2AF6 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 17F4C0E81BBE8E19007A2AF6;
+			remoteInfo = Migrations;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		170942EE1BC2C9B900D47142 /* Moody 6.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Moody 6.xcdatamodel"; sourceTree = "<group>"; };
+		170942EF1BC2CA1700D47142 /* Moody 5-Moody 6.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = "Moody 5-Moody 6.xcmappingmodel"; sourceTree = "<group>"; };
+		170942F11BC2CA9E00D47142 /* Country5ToCountry6Policy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Country5ToCountry6Policy.swift; sourceTree = "<group>"; };
+		170942F31BC2E0BA00D47142 /* V6.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = V6.swift; sourceTree = "<group>"; };
+		170942F51BC2E44300D47142 /* Moody 5.moody */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Moody 5.moody"; sourceTree = "<group>"; };
+		170942F61BC2E44300D47142 /* Moody 5.moody-shm */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Moody 5.moody-shm"; sourceTree = "<group>"; };
+		170942F71BC2E44300D47142 /* Moody 5.moody-wal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Moody 5.moody-wal"; sourceTree = "<group>"; };
+		170943051BC3B62C00D47142 /* ModelVersions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModelVersions.swift; sourceTree = "<group>"; };
+		174D896B1BCE65CC00168E22 /* Mood.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mood.swift; sourceTree = "<group>"; };
+		174F83311BC3BD8F00B53393 /* ValueTransformers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ValueTransformers.swift; sourceTree = "<group>"; };
+		174F83371BC3FABA00B53393 /* ModelVersionType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ModelVersionType.swift; path = ../../SharedCode/ModelVersionType.swift; sourceTree = "<group>"; };
+		174F833D1BC3FF1A00B53393 /* Migration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Migration.swift; path = ../../SharedCode/Migration.swift; sourceTree = "<group>"; };
+		174F83471BC41D8100B53393 /* NSPersistentStoreCoordinator+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NSPersistentStoreCoordinator+Extensions.swift"; path = "../../SharedCode/NSPersistentStoreCoordinator+Extensions.swift"; sourceTree = "<group>"; };
+		17F4C0E91BBE8E19007A2AF6 /* Migrations.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Migrations.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		17F4C0F81BBE8E19007A2AF6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		17F4C0FD1BBE8E19007A2AF6 /* MigrationsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MigrationsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		17F4C1011BBE8E19007A2AF6 /* MigrationsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrationsTests.swift; sourceTree = "<group>"; };
+		17F4C1031BBE8E19007A2AF6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		17F4C11F1BBE8F1B007A2AF6 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		17F4C1211BBE8FF8007A2AF6 /* Moody.moody */ = {isa = PBXFileReference; lastKnownFileType = file; path = Moody.moody; sourceTree = "<group>"; };
+		17F4C1221BBE8FF8007A2AF6 /* Moody.moody-shm */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Moody.moody-shm"; sourceTree = "<group>"; };
+		17F4C1231BBE8FF8007A2AF6 /* Moody.moody-wal */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Moody.moody-wal"; sourceTree = "<group>"; };
+		17F4C12A1BBE91F6007A2AF6 /* Moody 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Moody 2.xcdatamodel"; sourceTree = "<group>"; };
+		17F4C12B1BBE91F6007A2AF6 /* Moody.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Moody.xcdatamodel; sourceTree = "<group>"; };
+		17F4C1301BBF09EE007A2AF6 /* ManagedObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ManagedObject.swift; path = ../../SharedCode/ManagedObject.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		17F4C1311BBF09EE007A2AF6 /* NSManagedObjectContext+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NSManagedObjectContext+Extensions.swift"; path = "../../SharedCode/NSManagedObjectContext+Extensions.swift"; sourceTree = "<group>"; };
+		17F4C1321BBF09EE007A2AF6 /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Utilities.swift; path = ../../SharedCode/Utilities.swift; sourceTree = "<group>"; };
+		17F4C1331BBF09EE007A2AF6 /* ValueTransformer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ValueTransformer.swift; path = ../../SharedCode/ValueTransformer.swift; sourceTree = "<group>"; };
+		17F4C1381BBF12CF007A2AF6 /* TestHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestHelpers.swift; sourceTree = "<group>"; };
+		17F4C13D1BBFD768007A2AF6 /* V2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = V2.swift; sourceTree = "<group>"; };
+		17F4C13F1BC13CB3007A2AF6 /* Moody 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Moody 3.xcdatamodel"; sourceTree = "<group>"; };
+		17F4C1401BC13CF9007A2AF6 /* Moody 2-Moody 3.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = "Moody 2-Moody 3.xcmappingmodel"; sourceTree = "<group>"; };
+		17F4C1421BC14899007A2AF6 /* Moody 2.moody */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Moody 2.moody"; sourceTree = "<group>"; };
+		17F4C1431BC14899007A2AF6 /* Moody 2.moody-shm */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Moody 2.moody-shm"; sourceTree = "<group>"; };
+		17F4C1441BC14899007A2AF6 /* Moody 2.moody-wal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Moody 2.moody-wal"; sourceTree = "<group>"; };
+		17F4C1511BC28504007A2AF6 /* VersionData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VersionData.swift; sourceTree = "<group>"; };
+		17F4C1531BC2854F007A2AF6 /* V3.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = V3.swift; sourceTree = "<group>"; };
+		17F4C1551BC2A62A007A2AF6 /* Moody 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Moody 4.xcdatamodel"; sourceTree = "<group>"; };
+		17F4C1561BC2A7B0007A2AF6 /* Moody 3-Moody 4.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = "Moody 3-Moody 4.xcmappingmodel"; sourceTree = "<group>"; };
+		17F4C1581BC2A8F7007A2AF6 /* Moody 3.moody */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Moody 3.moody"; sourceTree = "<group>"; };
+		17F4C1591BC2A8F7007A2AF6 /* Moody 3.moody-shm */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Moody 3.moody-shm"; sourceTree = "<group>"; };
+		17F4C15A1BC2A8F7007A2AF6 /* Moody 3.moody-wal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Moody 3.moody-wal"; sourceTree = "<group>"; };
+		17F4C15E1BC2AAF1007A2AF6 /* Moody 4.moody */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Moody 4.moody"; sourceTree = "<group>"; };
+		17F4C15F1BC2AAF1007A2AF6 /* Moody 4.moody-shm */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Moody 4.moody-shm"; sourceTree = "<group>"; };
+		17F4C1601BC2AAF1007A2AF6 /* Moody 4.moody-wal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Moody 4.moody-wal"; sourceTree = "<group>"; };
+		17F4C1641BC2AB12007A2AF6 /* Moody 5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Moody 5.xcdatamodel"; sourceTree = "<group>"; };
+		17F4C1651BC2ABC9007A2AF6 /* Moody 4-Moody 5.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = "Moody 4-Moody 5.xcmappingmodel"; sourceTree = "<group>"; };
+		17F4C1671BC2AC8A007A2AF6 /* V5.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = V5.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		17F4C0E61BBE8E19007A2AF6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		17F4C0FA1BBE8E19007A2AF6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		170943041BC3B1DC00D47142 /* Mapping Models */ = {
+			isa = PBXGroup;
+			children = (
+				17F4C1401BC13CF9007A2AF6 /* Moody 2-Moody 3.xcmappingmodel */,
+				17F4C1561BC2A7B0007A2AF6 /* Moody 3-Moody 4.xcmappingmodel */,
+				17F4C1651BC2ABC9007A2AF6 /* Moody 4-Moody 5.xcmappingmodel */,
+				170942EF1BC2CA1700D47142 /* Moody 5-Moody 6.xcmappingmodel */,
+				170942F11BC2CA9E00D47142 /* Country5ToCountry6Policy.swift */,
+			);
+			name = "Mapping Models";
+			sourceTree = "<group>";
+		};
+		17F4C0E01BBE8E19007A2AF6 = {
+			isa = PBXGroup;
+			children = (
+				17F4C0EB1BBE8E19007A2AF6 /* Migrations */,
+				17F4C1001BBE8E19007A2AF6 /* MigrationsTests */,
+				17F4C0EA1BBE8E19007A2AF6 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		17F4C0EA1BBE8E19007A2AF6 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				17F4C0E91BBE8E19007A2AF6 /* Migrations.app */,
+				17F4C0FD1BBE8E19007A2AF6 /* MigrationsTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		17F4C0EB1BBE8E19007A2AF6 /* Migrations */ = {
+			isa = PBXGroup;
+			children = (
+				17F4C11C1BBE8E7E007A2AF6 /* Shared Code */,
+				17F4C11F1BBE8F1B007A2AF6 /* AppDelegate.swift */,
+				17F4C0F81BBE8E19007A2AF6 /* Info.plist */,
+				17F4C1291BBE91F6007A2AF6 /* Moody.xcdatamodeld */,
+				170943041BC3B1DC00D47142 /* Mapping Models */,
+				170943051BC3B62C00D47142 /* ModelVersions.swift */,
+				174F83311BC3BD8F00B53393 /* ValueTransformers.swift */,
+				174D896B1BCE65CC00168E22 /* Mood.swift */,
+			);
+			path = Migrations;
+			sourceTree = "<group>";
+		};
+		17F4C1001BBE8E19007A2AF6 /* MigrationsTests */ = {
+			isa = PBXGroup;
+			children = (
+				17F4C1241BBE905B007A2AF6 /* Stores */,
+				17F4C1011BBE8E19007A2AF6 /* MigrationsTests.swift */,
+				17F4C1381BBF12CF007A2AF6 /* TestHelpers.swift */,
+				17F4C1031BBE8E19007A2AF6 /* Info.plist */,
+			);
+			path = MigrationsTests;
+			sourceTree = "<group>";
+		};
+		17F4C11C1BBE8E7E007A2AF6 /* Shared Code */ = {
+			isa = PBXGroup;
+			children = (
+				17F4C1301BBF09EE007A2AF6 /* ManagedObject.swift */,
+				17F4C1311BBF09EE007A2AF6 /* NSManagedObjectContext+Extensions.swift */,
+				174F83471BC41D8100B53393 /* NSPersistentStoreCoordinator+Extensions.swift */,
+				174F83371BC3FABA00B53393 /* ModelVersionType.swift */,
+				174F833D1BC3FF1A00B53393 /* Migration.swift */,
+				17F4C1331BBF09EE007A2AF6 /* ValueTransformer.swift */,
+				17F4C1321BBF09EE007A2AF6 /* Utilities.swift */,
+			);
+			name = "Shared Code";
+			sourceTree = "<group>";
+		};
+		17F4C1241BBE905B007A2AF6 /* Stores */ = {
+			isa = PBXGroup;
+			children = (
+				17F4C1511BC28504007A2AF6 /* VersionData.swift */,
+				17F4C1211BBE8FF8007A2AF6 /* Moody.moody */,
+				17F4C1221BBE8FF8007A2AF6 /* Moody.moody-shm */,
+				17F4C1231BBE8FF8007A2AF6 /* Moody.moody-wal */,
+				17F4C1421BC14899007A2AF6 /* Moody 2.moody */,
+				17F4C1431BC14899007A2AF6 /* Moody 2.moody-shm */,
+				17F4C1441BC14899007A2AF6 /* Moody 2.moody-wal */,
+				17F4C13D1BBFD768007A2AF6 /* V2.swift */,
+				17F4C1581BC2A8F7007A2AF6 /* Moody 3.moody */,
+				17F4C1591BC2A8F7007A2AF6 /* Moody 3.moody-shm */,
+				17F4C15A1BC2A8F7007A2AF6 /* Moody 3.moody-wal */,
+				17F4C1531BC2854F007A2AF6 /* V3.swift */,
+				17F4C15E1BC2AAF1007A2AF6 /* Moody 4.moody */,
+				17F4C15F1BC2AAF1007A2AF6 /* Moody 4.moody-shm */,
+				17F4C1601BC2AAF1007A2AF6 /* Moody 4.moody-wal */,
+				170942F51BC2E44300D47142 /* Moody 5.moody */,
+				170942F61BC2E44300D47142 /* Moody 5.moody-shm */,
+				170942F71BC2E44300D47142 /* Moody 5.moody-wal */,
+				17F4C1671BC2AC8A007A2AF6 /* V5.swift */,
+				170942F31BC2E0BA00D47142 /* V6.swift */,
+			);
+			name = Stores;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		17F4C0E81BBE8E19007A2AF6 /* Migrations */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 17F4C1061BBE8E19007A2AF6 /* Build configuration list for PBXNativeTarget "Migrations" */;
+			buildPhases = (
+				17F4C0E51BBE8E19007A2AF6 /* Sources */,
+				17F4C0E61BBE8E19007A2AF6 /* Frameworks */,
+				17F4C0E71BBE8E19007A2AF6 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Migrations;
+			productName = Migrations;
+			productReference = 17F4C0E91BBE8E19007A2AF6 /* Migrations.app */;
+			productType = "com.apple.product-type.application";
+		};
+		17F4C0FC1BBE8E19007A2AF6 /* MigrationsTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 17F4C1091BBE8E19007A2AF6 /* Build configuration list for PBXNativeTarget "MigrationsTests" */;
+			buildPhases = (
+				17F4C0F91BBE8E19007A2AF6 /* Sources */,
+				17F4C0FA1BBE8E19007A2AF6 /* Frameworks */,
+				17F4C0FB1BBE8E19007A2AF6 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				17F4C0FF1BBE8E19007A2AF6 /* PBXTargetDependency */,
+			);
+			name = MigrationsTests;
+			productName = MigrationsTests;
+			productReference = 17F4C0FD1BBE8E19007A2AF6 /* MigrationsTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		17F4C0E11BBE8E19007A2AF6 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0700;
+				LastUpgradeCheck = 0700;
+				ORGANIZATIONNAME = objc.io;
+				TargetAttributes = {
+					17F4C0E81BBE8E19007A2AF6 = {
+						CreatedOnToolsVersion = 7.0.1;
+					};
+					17F4C0FC1BBE8E19007A2AF6 = {
+						CreatedOnToolsVersion = 7.0.1;
+						TestTargetID = 17F4C0E81BBE8E19007A2AF6;
+					};
+				};
+			};
+			buildConfigurationList = 17F4C0E41BBE8E19007A2AF6 /* Build configuration list for PBXProject "Migrations" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 17F4C0E01BBE8E19007A2AF6;
+			productRefGroup = 17F4C0EA1BBE8E19007A2AF6 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				17F4C0E81BBE8E19007A2AF6 /* Migrations */,
+				17F4C0FC1BBE8E19007A2AF6 /* MigrationsTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		17F4C0E71BBE8E19007A2AF6 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		17F4C0FB1BBE8E19007A2AF6 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				17F4C1471BC14899007A2AF6 /* Moody 2.moody-wal in Resources */,
+				17F4C15C1BC2A8F7007A2AF6 /* Moody 3.moody-shm in Resources */,
+				17F4C12D1BBE9640007A2AF6 /* Moody.moody in Resources */,
+				17F4C1611BC2AAF1007A2AF6 /* Moody 4.moody in Resources */,
+				17F4C15B1BC2A8F7007A2AF6 /* Moody 3.moody in Resources */,
+				17F4C1461BC14899007A2AF6 /* Moody 2.moody-shm in Resources */,
+				170942FA1BC2E44300D47142 /* Moody 5.moody-wal in Resources */,
+				17F4C1631BC2AAF1007A2AF6 /* Moody 4.moody-wal in Resources */,
+				170942F91BC2E44300D47142 /* Moody 5.moody-shm in Resources */,
+				17F4C1621BC2AAF1007A2AF6 /* Moody 4.moody-shm in Resources */,
+				17F4C15D1BC2A8F7007A2AF6 /* Moody 3.moody-wal in Resources */,
+				17F4C1451BC14899007A2AF6 /* Moody 2.moody in Resources */,
+				17F4C12F1BBE9640007A2AF6 /* Moody.moody-wal in Resources */,
+				170942F81BC2E44300D47142 /* Moody 5.moody in Resources */,
+				17F4C12E1BBE9640007A2AF6 /* Moody.moody-shm in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		17F4C0E51BBE8E19007A2AF6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				174F83481BC41D8100B53393 /* NSPersistentStoreCoordinator+Extensions.swift in Sources */,
+				17F4C1351BBF09EE007A2AF6 /* NSManagedObjectContext+Extensions.swift in Sources */,
+				17F4C12C1BBE91F6007A2AF6 /* Moody.xcdatamodeld in Sources */,
+				17F4C1341BBF09EE007A2AF6 /* ManagedObject.swift in Sources */,
+				17F4C1411BC13CF9007A2AF6 /* Moody 2-Moody 3.xcmappingmodel in Sources */,
+				174D896C1BCE65CC00168E22 /* Mood.swift in Sources */,
+				17F4C1571BC2A7B0007A2AF6 /* Moody 3-Moody 4.xcmappingmodel in Sources */,
+				174F833E1BC3FF1A00B53393 /* Migration.swift in Sources */,
+				17F4C1661BC2ABC9007A2AF6 /* Moody 4-Moody 5.xcmappingmodel in Sources */,
+				170943061BC3B62C00D47142 /* ModelVersions.swift in Sources */,
+				17F4C1201BBE8F1B007A2AF6 /* AppDelegate.swift in Sources */,
+				174F83381BC3FABA00B53393 /* ModelVersionType.swift in Sources */,
+				170942F21BC2CA9E00D47142 /* Country5ToCountry6Policy.swift in Sources */,
+				17F4C1361BBF09EE007A2AF6 /* Utilities.swift in Sources */,
+				174F83321BC3BD8F00B53393 /* ValueTransformers.swift in Sources */,
+				170942F01BC2CA1700D47142 /* Moody 5-Moody 6.xcmappingmodel in Sources */,
+				17F4C1371BBF09EE007A2AF6 /* ValueTransformer.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		17F4C0F91BBE8E19007A2AF6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				17F4C1521BC28504007A2AF6 /* VersionData.swift in Sources */,
+				170942F41BC2E0BA00D47142 /* V6.swift in Sources */,
+				17F4C1021BBE8E19007A2AF6 /* MigrationsTests.swift in Sources */,
+				17F4C1681BC2AC8A007A2AF6 /* V5.swift in Sources */,
+				17F4C1391BBF12D0007A2AF6 /* TestHelpers.swift in Sources */,
+				17F4C1541BC2854F007A2AF6 /* V3.swift in Sources */,
+				17F4C13E1BBFD768007A2AF6 /* V2.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		17F4C0FF1BBE8E19007A2AF6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 17F4C0E81BBE8E19007A2AF6 /* Migrations */;
+			targetProxy = 17F4C0FE1BBE8E19007A2AF6 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		17F4C1041BBE8E19007A2AF6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		17F4C1051BBE8E19007A2AF6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		17F4C1071BBE8E19007A2AF6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				INFOPLIST_FILE = Migrations/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = io.objc.Migrations;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		17F4C1081BBE8E19007A2AF6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				INFOPLIST_FILE = Migrations/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = io.objc.Migrations;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		17F4C10A1BBE8E19007A2AF6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = MigrationsTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = io.objc.MigrationsTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Migrations.app/Migrations";
+			};
+			name = Debug;
+		};
+		17F4C10B1BBE8E19007A2AF6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = MigrationsTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = io.objc.MigrationsTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Migrations.app/Migrations";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		17F4C0E41BBE8E19007A2AF6 /* Build configuration list for PBXProject "Migrations" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				17F4C1041BBE8E19007A2AF6 /* Debug */,
+				17F4C1051BBE8E19007A2AF6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		17F4C1061BBE8E19007A2AF6 /* Build configuration list for PBXNativeTarget "Migrations" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				17F4C1071BBE8E19007A2AF6 /* Debug */,
+				17F4C1081BBE8E19007A2AF6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		17F4C1091BBE8E19007A2AF6 /* Build configuration list for PBXNativeTarget "MigrationsTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				17F4C10A1BBE8E19007A2AF6 /* Debug */,
+				17F4C10B1BBE8E19007A2AF6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		17F4C1291BBE91F6007A2AF6 /* Moody.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				170942EE1BC2C9B900D47142 /* Moody 6.xcdatamodel */,
+				17F4C1641BC2AB12007A2AF6 /* Moody 5.xcdatamodel */,
+				17F4C1551BC2A62A007A2AF6 /* Moody 4.xcdatamodel */,
+				17F4C13F1BC13CB3007A2AF6 /* Moody 3.xcdatamodel */,
+				17F4C12A1BBE91F6007A2AF6 /* Moody 2.xcdatamodel */,
+				17F4C12B1BBE91F6007A2AF6 /* Moody.xcdatamodel */,
+			);
+			currentVersion = 170942EE1BC2C9B900D47142 /* Moody 6.xcdatamodel */;
+			path = Moody.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = 17F4C0E11BBE8E19007A2AF6 /* Project object */;
+}
