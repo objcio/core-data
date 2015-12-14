@@ -39,4 +39,4 @@ If you want to enable CloudKit, you need the following:
 
 You'll also have to create the "Mood" record type in the CloudKit dashboard. Below is a screenshot of how this should look like:
 
-![](../artwork/cloudkit-schema.png)
+![](cloudkit-schema.png)
