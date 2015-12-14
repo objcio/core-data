@@ -5,4 +5,4 @@ This repository contains the sample code of our [Core Data book](https://www.obj
 - [The *Moody* sample project](Moody)
 - [The Migrations sample project](Migrations)
 - [A predicates playground](Predicates.playground)
-- [Shared code](Shared Code)
+- [Shared code](SharedCode)
