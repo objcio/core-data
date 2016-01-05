@@ -70,8 +70,15 @@ class RootViewController: UIViewController, ManagedObjectContextSettable, SegueH
 extension RootViewController: UINavigationControllerDelegate {
 
     func navigationController(navigationController: UINavigationController, willShowViewController viewController: UIViewController, animated: Bool) {
-        let cameraVisible = (viewController as? MoodDetailViewController) == nil
-        setCameraVisibility(cameraVisible)
+        if viewController is MoodDetailViewController {
+            setCameraVisibility(false)
+        }
+    }
+    
+    func navigationController(navigationController: UINavigationController, didShowViewController viewController: UIViewController, animated: Bool) {
+        if !(viewController is MoodDetailViewController) {
+            setCameraVisibility(true)
+        }
     }
 
 }
