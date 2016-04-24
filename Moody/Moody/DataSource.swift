@@ -8,7 +8,7 @@
 
 
 protocol DataSourceDelegate: class {
-    typealias Object
+    associatedtype Object
     func cellIdentifierForObject(object: Object) -> String
 }
 

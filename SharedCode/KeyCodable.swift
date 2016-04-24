@@ -10,7 +10,7 @@ import CoreData
 
 
 public protocol KeyCodable {
-    typealias Keys: RawRepresentable
+    associatedtype Keys: RawRepresentable
 }
 
 extension KeyCodable where Self: ManagedObject, Keys.RawValue == String {

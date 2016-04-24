@@ -8,6 +8,6 @@
 
 
 protocol ConfigurableCell {
-    typealias DataSource
+    associatedtype DataSource
     func configureForObject(object: DataSource)
 }

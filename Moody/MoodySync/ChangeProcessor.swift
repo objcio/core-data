@@ -82,7 +82,7 @@ protocol ChangeProcessorContextType: class {
 /// The contract is that the implementation is such that objects no longer match the `predicateForLocallyTrackedElements` once they're actually complete.
 protocol ElementChangeProcessorType: ChangeProcessorType {
 
-    typealias Element: ManagedObject, ManagedObjectType
+    associatedtype Element: ManagedObject, ManagedObjectType
 
     /// Used to track if elements are already in progress.
     var elementsInProgress: InProgressTracker<Element> {get}

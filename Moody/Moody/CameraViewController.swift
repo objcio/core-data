@@ -26,7 +26,7 @@ class CameraViewController: UIViewController {
         super.viewDidLoad()
         session = CaptureSession(delegate: self)
         cameraView.setupForPreviewLayer(session.createPreviewLayer())
-        let recognizer = UITapGestureRecognizer(target: self, action: "snap:")
+        let recognizer = UITapGestureRecognizer(target: self, action: #selector(CameraViewController.snap(_:)))
         cameraView.addGestureRecognizer(recognizer)
         updateAuthorizationStatus()
     }
