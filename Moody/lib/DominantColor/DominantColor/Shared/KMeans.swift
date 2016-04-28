@@ -57,7 +57,7 @@ func kmeans<T: ClusteredType>(
                 error += 1
                 memberships[i] = clusterIndex
             }
-            newClusterSizes[clusterIndex]++
+            newClusterSizes[clusterIndex] += 1
             newCentroids[clusterIndex] = newCentroids[clusterIndex] + point
         }
         for i in 0..<k {

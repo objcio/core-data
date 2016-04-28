@@ -56,7 +56,7 @@ extension CGImage {
         }
 
         var clusterGenerator = clusters.generate()
-        return anyGenerator { () -> CGColor? in
+        return AnyGenerator { () -> CGColor? in
             return clusterGenerator.next().flatMap {
                 let lab = $0.centroid
                 let adjustedLAB = options.deemphasizeBlacks ? lab.deemphasizeBlacks : lab
