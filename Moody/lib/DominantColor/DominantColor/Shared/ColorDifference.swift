@@ -23,7 +23,6 @@ private func C(a: Float, _ b: Float) -> Float {
     return sqrt(pow(a, 2) + pow(b, 2))
 }
 
-// TODO: How to fix? Curried function declaration syntax will be removed in a future version of Swift; use a single parameter list
 // From http://www.brucelindbloom.com/index.html?Eqn_DeltaE_CIE94.html
 func CIE94SquaredColorDifference(
     kL: Float = 1,
@@ -51,7 +50,6 @@ func CIE94SquaredColorDifference(
     }
 }
 
-// TODO: How to fix? Curried function declaration syntax will be removed in a future version of Swift; use a single parameter list
 // From http://www.brucelindbloom.com/index.html?Eqn_DeltaE_CIE2000.html
 func CIE2000SquaredColorDifference(
     kL: Float = 1,
