@@ -10,14 +10,14 @@ import UIKit
 
 
 protocol DataProvider: class {
-    typealias Object
+    associatedtype Object
     func objectAtIndexPath(indexPath: NSIndexPath) -> Object
     func numberOfItemsInSection(section: Int) -> Int
 }
 
 
 protocol DataProviderDelegate: class {
-    typealias Object
+    associatedtype Object
     func dataProviderDidUpdate(updates: [DataProviderUpdate<Object>]?)
 }
 

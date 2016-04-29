@@ -41,10 +41,10 @@ public struct ContextDidSaveNotification {
 
     private func generatorForKey(key: String) -> AnyGenerator<ManagedObject> {
         guard let set = notification.userInfo?[key] as? NSSet else {
-            return anyGenerator { nil }
+            return AnyGenerator { nil }
         }
         let innerGenerator = set.generate()
-        return anyGenerator { return innerGenerator.next() as? ManagedObject }
+        return AnyGenerator { return innerGenerator.next() as? ManagedObject }
     }
 
 }

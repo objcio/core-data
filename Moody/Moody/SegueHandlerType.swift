@@ -10,7 +10,7 @@ import UIKit
 
 
 public protocol SegueHandlerType {
-     typealias SegueIdentifier: RawRepresentable
+     associatedtype SegueIdentifier: RawRepresentable
 }
 
 

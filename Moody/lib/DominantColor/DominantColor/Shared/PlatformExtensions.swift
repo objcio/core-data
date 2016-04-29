@@ -33,7 +33,7 @@ public extension UIImage {
     public func dominantColors(options: DominantColorOptions = .Default) -> AnyGenerator<UIColor> {
         guard let cgImage = CGImage else { fatalError("Can't convert to CGImage") }
         let colors = cgImage.dominantColors(options)
-        return anyGenerator { () -> UIColor? in
+        return AnyGenerator { () -> UIColor? in
             return colors.next().flatMap { UIColor(CGColor: $0) }
         }
     }
