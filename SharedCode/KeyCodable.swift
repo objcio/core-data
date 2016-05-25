@@ -22,6 +22,12 @@ extension KeyCodable where Self: ManagedObject, Keys.RawValue == String {
         didAccessValueForKey(key.rawValue)
     }
 
+    public func accessingValueForKey(key: Keys, @noescape block: () -> ()) {
+        willAccessValueForKey(key)
+        block()
+        didAccessValueForKey(key)
+    }
+
     public func willChangeValueForKey(key: Keys) {
         (self as ManagedObject).willChangeValueForKey(key.rawValue)
     }
@@ -40,6 +46,12 @@ extension KeyCodable where Self: ManagedObject, Keys.RawValue == String {
 
     public func changedValueForKey(key: Keys) -> AnyObject? {
         return changedValues()[key.rawValue]
+    }
+
+    public func changingValueForKey(key: Keys, @noescape block: () -> ()) {
+        willChangeValueForKey(key)
+        block()
+        didChangeValueForKey(key)
     }
 
     public func committedValueForKey(key: Keys) -> AnyObject? {
