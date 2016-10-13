@@ -13,7 +13,7 @@ import CoreData
 public struct ContextDidSaveNotification {
 
     public init(note: NSNotification) {
-        guard note.name == NSManagedObjectContextDidSaveNotification else { fatalError() }
+        assert(note.name == NSManagedObjectContextDidSaveNotification)
         notification = note
     }
 
