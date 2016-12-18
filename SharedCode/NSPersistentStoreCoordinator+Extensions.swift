@@ -10,18 +10,20 @@ import CoreData
 
 
 extension NSPersistentStoreCoordinator {
-    public static func destroyStoreAtURL(url: NSURL) {
+    // TODO(swift3) Migrate thise to NSPersistentContainer
+    public static func destroyStore(at url: URL) {
         do {
             let psc = self.init(managedObjectModel: NSManagedObjectModel())
-            try psc.destroyPersistentStoreAtURL(url, withType: NSSQLiteStoreType, options: nil)
+            try psc.destroyPersistentStore(at: url, ofType: NSSQLiteStoreType, options: nil)
         } catch let e {
             print("failed to destroy persistent store at \(url)", e)
         }
     }
 
-    public static func replaceStoreAtURL(targetURL: NSURL, withStoreAtURL sourceURL: NSURL) throws {
+    // TODO(swift3) Migrate thise to NSPersistentContainer
+    public static func replaceStore(at targetURL: URL, withStoreAt sourceURL: URL) throws {
         let psc = self.init(managedObjectModel: NSManagedObjectModel())
-        try psc.replacePersistentStoreAtURL(targetURL, destinationOptions: nil, withPersistentStoreFromURL: sourceURL, sourceOptions: nil, storeType: NSSQLiteStoreType)
+        try psc.replacePersistentStore(at: targetURL, destinationOptions: nil, withPersistentStoreFrom: sourceURL, sourceOptions: nil, ofType: NSSQLiteStoreType)
     }
 }
 

@@ -12,26 +12,26 @@ import MoodyModel
 @testable import MoodySync
 
 
-private class TestChangeProcessor: ElementChangeProcessorType {
+private class TestChangeProcessor: ElementChangeProcessor {
 
     typealias Element = TestObject
     let elementsInProgress = InProgressTracker<TestObject>()
 
-    func setupForContext(context: ChangeProcessorContextType) {
+    func setup(for context: ChangeProcessorContext) {
         // no-op
     }
 
-    private var changedElements: [TestObject] = []
+    fileprivate var changedElements: [TestObject] = []
 
-    func processChangedLocalElements(objects: [TestObject], context: ChangeProcessorContextType) {
-        changedElements += objects
+    func processChangedLocalElements(_ elements: [TestObject], in context: ChangeProcessorContext) {
+        changedElements += elements
     }
 
-    func processChangedRemoteObjects<T: RemoteRecordType>(changes: [RemoteRecordChange<T>], context: ChangeProcessorContextType, completion: () -> ()) {
+    func processRemoteChanges<T: RemoteRecord>(_ changes: [RemoteRecordChange<T>], in context: ChangeProcessorContext, completion: () -> ()) {
         completion()
     }
 
-    func fetchLatestRemoteRecordsForContext(context: ChangeProcessorContextType) {
+    func fetchLatestRemoteRecords(in context: ChangeProcessorContext) {
     }
 
     var predicateForLocallyTrackedElements: NSPredicate {
@@ -40,29 +40,29 @@ private class TestChangeProcessor: ElementChangeProcessorType {
 }
 
 
-private class TestContext: ChangeProcessorContextType {
-    let managedObjectContext: NSManagedObjectContext
+private class TestContext: ChangeProcessorContext {
+    let context: NSManagedObjectContext
 
-    init(managedObjectContext: NSManagedObjectContext) {
-        self.managedObjectContext = managedObjectContext
+    init(context: NSManagedObjectContext) {
+        self.context = context
     }
 
-    var remote: MoodyRemoteType {
+    var remote: MoodyRemote {
         // Intentionally not implemented
         fatalError()
     }
 
-    func performGroupedBlock(block: () -> ()) {
+    func perform(_ block: @escaping () -> ()) {
         block()
     }
 
-    func performGroupedBlock<A,B>(block: (A,B) -> ()) -> (A,B) -> () {
+    func perform<A,B>(_ block: @escaping (A,B) -> ()) -> (A,B) -> () {
         return {  (a: A, b: B) -> () in
             block(a, b)
         }
     }
 
-    func performGroupedBlock<A,B,C>(block: (A,B,C) -> ()) -> (A,B,C) -> () {
+    func perform<A,B,C>(_ block: @escaping (A,B,C) -> ()) -> (A,B,C) -> () {
         return {  (a: A, b: B, c: C) -> () in
             block(a, b, c)
         }
@@ -76,17 +76,17 @@ private class TestContext: ChangeProcessorContextType {
 
 class ElementChangeProcessorTests: XCTestCase {
 
-    private var managedObjectContext: NSManagedObjectContext! = nil
-    private var context: TestContext! = nil
+    fileprivate var managedObjectContext: NSManagedObjectContext! = nil
+    fileprivate var context: TestContext! = nil
 
     override func setUp() {
         super.setUp()
 
-        managedObjectContext = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
+        managedObjectContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
         managedObjectContext.name = "ElementChangeProcessorTests"
         managedObjectContext.persistentStoreCoordinator = createPersistentStoreCoordinatorWithInMemotyStore()
 
-        context = TestContext(managedObjectContext: managedObjectContext)
+        context = TestContext(context: managedObjectContext)
     }
 
     override func tearDown() {
@@ -106,7 +106,7 @@ class ElementChangeProcessorTests: XCTestCase {
         let sut = TestChangeProcessor()
 
         // When
-        sut.processChangedLocalObjects([mo1, mo2], context: context)
+        sut.processChangedLocalObjects([mo1, mo2], in: context)
 
         // Then
         XCTAssertEqual(sut.changedElements.count, 2)
@@ -125,7 +125,7 @@ class ElementChangeProcessorTests: XCTestCase {
         let sut = TestChangeProcessor()
 
         // When
-        sut.processChangedLocalObjects([mo1, mo2], context: context)
+        sut.processChangedLocalObjects([mo1, mo2], in: context)
 
         // Then
         XCTAssertEqual(sut.changedElements.count, 1)
@@ -144,7 +144,7 @@ class ElementChangeProcessorTests: XCTestCase {
         let sut = TestChangeProcessor()
 
         // When
-        sut.processChangedLocalObjects([mo1, mo2], context: context)
+        sut.processChangedLocalObjects([mo1, mo2], in: context)
 
         // Then
         XCTAssertEqual(sut.changedElements.count, 1)
@@ -165,9 +165,9 @@ extension ElementChangeProcessorTests {
         let sut = TestChangeProcessor()
 
         // When
-        sut.processChangedLocalObjects([mo], context: context)
+        sut.processChangedLocalObjects([mo], in: context)
         sut.changedElements = []
-        sut.processChangedLocalObjects([mo], context: context)
+        sut.processChangedLocalObjects([mo], in: context)
 
         // Then
         XCTAssertEqual(sut.changedElements.count, 0)
@@ -182,9 +182,9 @@ extension ElementChangeProcessorTests {
         let sut = TestChangeProcessor()
 
         // When
-        sut.processChangedLocalObjects([mo], context: context)
+        sut.processChangedLocalObjects([mo], in: context)
         sut.changedElements = []
-        sut.didCompleteElements([mo], context: context)
+        sut.didComplete([mo], in: context)
 
         // Then
         XCTAssertEqual(sut.changedElements.count, 1)
@@ -200,16 +200,16 @@ extension ElementChangeProcessorTests {
         let sut = TestChangeProcessor()
 
         // When
-        sut.processChangedLocalObjects([mo], context: context)
+        sut.processChangedLocalObjects([mo], in: context)
         // Make sure it no longer matches & mark as complete:
         mo.name = "B"
         try! managedObjectContext.save()
-        sut.didCompleteElements([mo], context: context)
+        sut.didComplete([mo], in: context)
         // Re-add:
         mo.name = "A"
         try! managedObjectContext.save()
         sut.changedElements = []
-        sut.processChangedLocalObjects([mo], context: context)
+        sut.processChangedLocalObjects([mo], in: context)
 
         // Then
         XCTAssertEqual(sut.changedElements.count, 1)
@@ -217,3 +217,4 @@ extension ElementChangeProcessorTests {
     }
 
 }
+

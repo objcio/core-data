@@ -14,5 +14,5 @@ FOUNDATION_EXPORT double DominantColorVersionNumber;
 //! Project version string for DominantColor.
 FOUNDATION_EXPORT const unsigned char DominantColorVersionString[];
 
-#import "ColorSpaceConversion.h"
-#import "RandomNumbers.h"
+#import <MoodyModel/ColorSpaceConversion.h>
+#import <MoodyModel/RandomNumbers.h>

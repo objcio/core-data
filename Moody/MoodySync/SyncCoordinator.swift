@@ -12,7 +12,7 @@ import MoodyModel
 
 
 public protocol CloudKitNotificationDrain {
-    func application(application: UIApplication, didReceiveRemoteNotification userInfo: [String: NSObject])
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any])
 }
 
 
@@ -21,65 +21,60 @@ private let RemoteTypeEnvKey = "MoodyRemote"
 
 /// This is the central class that coordinates synchronization with the remote backend.
 ///
-/// This classs does not have any model specific knowledge. It relies on multiple `ChangeProcessorType` instances to process changes or communicate with the remote. Change processors have model-specific knowledge.
+/// This classs does not have any model specific knowledge. It relies on multiple `ChangeProcessor` instances to process changes or communicate with the remote. Change processors have model-specific knowledge.
 ///
-/// The change processors (`ChangeProcessorType`) each have 1 specific aspect of syncing as their role. In our case there are three: one for uploading moods, one for downloading moods, and one for removing moods.
+/// The change processors (`ChangeProcessor`) each have 1 specific aspect of syncing as their role. In our case there are three: one for uploading moods, one for downloading moods, and one for removing moods.
 ///
-/// The `SyncCoordinator` is mostly single-threaded by design. This allows for the code to be relatively simple. All sync code runs on the queue of the `syncManagedObjectContext`. Entry points that may run on another queue **must** switch onto that context's queue using `performGroupedBlock(_:)`.
+/// The `SyncCoordinator` is mostly single-threaded by design. This allows for the code to be relatively simple. All sync code runs on the queue of the `syncContext`. Entry points that may run on another queue **must** switch onto that context's queue using `perform(_:)`.
 ///
-/// Note that inside this class we use `performGroupedBlock(_:)` in lieu of `dispatch_async()` to make sure all work is done on the sync context's queue. Adding asynchronous work to a dispatch group makes it easier to test. We can easily wait for all code to be completed by waiting on that group.
+/// Note that inside this class we use `perform(_:)` in lieu of `dispatch_async()` to make sure all work is done on the sync context's queue. Adding asynchronous work to a dispatch group makes it easier to test. We can easily wait for all code to be completed by waiting on that group.
 ///
 /// This class uses the `SyncContextType` and `ApplicationActiveStateObserving` protocols.
 public final class SyncCoordinator {
 
     internal typealias ApplicationDidBecomeActive = () -> ()
 
-    let mainManagedObjectContext: NSManagedObjectContext
-    let syncManagedObjectContext: NSManagedObjectContext
-    let syncGroup: dispatch_group_t = dispatch_group_create()
+    let viewContext: NSManagedObjectContext
+    let syncContext: NSManagedObjectContext
+    let syncGroup: DispatchGroup = DispatchGroup()
 
-    let remote: MoodyRemoteType
+    let remote: MoodyRemote
 
-    private var observerTokens: [NSObjectProtocol] = [] //< The tokens registered with NSNotificationCenter
-    internal let changeProcessors: [ChangeProcessorType] //< The change processors for upload, download, etc.
-    private var setupToken = dispatch_once_t()
-    var didSetup: Bool { return setupToken != 0 }
-    var needsTeardown = Int32(1)
+    fileprivate var observerTokens: [NSObjectProtocol] = [] //< The tokens registered with NotificationCenter
+    let changeProcessors: [ChangeProcessor] //< The change processors for upload, download, etc.
+    var teardownFlag = atomic_flag()
 
-    public init(mainManagedObjectContext mainMOC: NSManagedObjectContext) {
-        remote = NSProcessInfo.processInfo().environment[RemoteTypeEnvKey]?.lowercaseString == "console" ? ConsoleRemote() : CloudKitRemote()
-        assert(mainMOC.concurrencyType == .MainQueueConcurrencyType)
-        mainManagedObjectContext = mainMOC
-        syncManagedObjectContext = mainMOC.createBackgroundContext()
-        syncManagedObjectContext.name = "SyncCoordinator"
-        syncManagedObjectContext.mergePolicy = MoodyMergePolicy(mode: .Remote)
+    public init(container: NSPersistentContainer) {
+        remote = ProcessInfo.processInfo.environment[RemoteTypeEnvKey]?.lowercased() == "console" ? ConsoleRemote() : CloudKitRemote()
+        viewContext = container.viewContext
+        syncContext = container.newBackgroundContext()
+        syncContext.name = "SyncCoordinator"
+        syncContext.mergePolicy = MoodyMergePolicy(mode: .remote)
         changeProcessors = [MoodUploader(), MoodDownloader(), MoodRemover()]
         setup()
     }
 
     /// The `tearDown` method must be called in order to stop the sync coordinator.
     public func tearDown() {
-        guard OSAtomicCompareAndSwapInt(1, 0, &needsTeardown) else { return }
-        performGroupedBlock {
+        guard !atomic_flag_test_and_set(&teardownFlag) else { return }
+        perform {
             self.removeAllObserverTokens()
         }
     }
 
     deinit {
-        guard needsTeardown == 0 else { fatalError("deinit called without tearDown() being called.") }
+        guard atomic_flag_test_and_set(&teardownFlag) else { fatalError("deinit called without tearDown() being called.") }
         // We must not call tearDown() at this point, because we can not call async code from within deinit.
         // We want to be able to call async code inside tearDown() to make sure things run on the right thread.
     }
 
-    private func setup() {
-        dispatch_once(&setupToken) {
-            self.performGroupedBlock {
-                // All these need to run on the same queue, since they're modifying `observerTokens`
-                self.remote.fetchUserID { self.mainManagedObjectContext.userID = $0 }
-                self.setupContexts()
-                self.setupChangeProcessors()
-                self.setupApplicationActiveNotifications()
-            }
+    fileprivate func setup() {
+        self.perform {
+            // All these need to run on the same queue, since they're modifying `observerTokens`
+            self.remote.fetchUserID { self.viewContext.userID = $0 }
+            self.setupContexts()
+            self.setupChangeProcessors()
+            self.setupApplicationActiveNotifications()
         }
     }
 
@@ -87,8 +82,8 @@ public final class SyncCoordinator {
 
 
 extension SyncCoordinator: CloudKitNotificationDrain {
-    public func application(application: UIApplication, didReceiveRemoteNotification userInfo: [String: NSObject]) {
-        performGroupedBlock {
+    public func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any]) {
+        perform {
             self.fetchNewRemoteData()
         }
     }
@@ -97,21 +92,18 @@ extension SyncCoordinator: CloudKitNotificationDrain {
 
 // MARK: - Context Owner -
 
-extension SyncCoordinator: ContextOwnerType {
-    /// The sync coordinator holds onto tokens used to register with the NSNotificationCenter.
-    func addObserverToken(token: NSObjectProtocol) {
-        precondition(didSetup, "Did not call setup()")
+extension SyncCoordinator : ContextOwner {
+    /// The sync coordinator holds onto tokens used to register with the NotificationCenter.
+    func addObserverToken(_ token: NSObjectProtocol) {
         observerTokens.append(token)
     }
     func removeAllObserverTokens() {
-        precondition(didSetup, "Did not call setup()")
         observerTokens.removeAll()
     }
 
-    func processChangedLocalObjects(objects: [NSManagedObject]) {
-        precondition(didSetup, "Did not call setup()")
+    func processChangedLocalObjects(_ objects: [NSManagedObject]) {
         for cp in changeProcessors {
-            cp.processChangedLocalObjects(objects, context: self)
+            cp.processChangedLocalObjects(objects, in: self)
         }
     }
 }
@@ -120,51 +112,45 @@ extension SyncCoordinator: ContextOwnerType {
 // MARK: - Context -
 
 
-extension SyncCoordinator: ChangeProcessorContextType {
+extension SyncCoordinator: ChangeProcessorContext {
 
     /// This is the context that the sync coordinator, change processors, and other sync components do work on.
-    var managedObjectContext: NSManagedObjectContext {
-        precondition(didSetup, "Did not call setup()")
-        return syncManagedObjectContext
+    var context: NSManagedObjectContext {
+        return syncContext
     }
 
     /// This switches onto the sync context's queue. If we're already on it, it will simply run the block.
-    func performGroupedBlock(block: () -> ()) {
-        precondition(didSetup, "Did not call setup()")
-        syncManagedObjectContext.performBlockWithGroup(syncGroup, block: block)
+    func perform(_ block: @escaping () -> ()) {
+        syncContext.perform(group: syncGroup, block: block)
     }
 
-    func performGroupedBlock<A,B>(block: (A,B) -> ()) -> (A,B) -> () {
-        precondition(didSetup, "Did not call setup()")
+    func perform<A,B>(_ block: @escaping (A,B) -> ()) -> (A,B) -> () {
         return { (a: A, b: B) -> () in
-            self.performGroupedBlock {
+            self.perform {
                 block(a, b)
             }
         }
     }
 
-    func performGroupedBlock<A,B,C>(block: (A,B,C) -> ()) -> (A,B,C) -> () {
-        precondition(didSetup, "Did not call setup()")
+    func perform<A,B,C>(_ block: @escaping (A,B,C) -> ()) -> (A,B,C) -> () {
         return { (a: A, b: B, c: C) -> () in
-            self.performGroupedBlock {
+            self.perform {
                 block(a, b, c)
             }
         }
     }
 
     func delayedSaveOrRollback() {
-        managedObjectContext.delayedSaveOrRollbackWithGroup(syncGroup)
+        context.delayedSaveOrRollback(group: syncGroup)
     }
 }
 
 
 // MARK: Setup
 extension SyncCoordinator {
-
-    private func setupChangeProcessors() {
-        precondition(didSetup, "Did not call setup()")
+    fileprivate func setupChangeProcessors() {
         for cp in self.changeProcessors {
-            cp.setupForContext(self)
+            cp.setup(for: self)
         }
     }
 }
@@ -173,27 +159,24 @@ extension SyncCoordinator {
 
 extension SyncCoordinator: ApplicationActiveStateObserving {
     func applicationDidBecomeActive() {
-        precondition(didSetup, "Did not call setup()")
         fetchLocallyTrackedObjects()
         fetchRemoteDataForApplicationDidBecomeActive()
     }
 
     func applicationDidEnterBackground() {
-        precondition(didSetup, "Did not call setup()")
-        syncManagedObjectContext.refreshAllObjects()
+        syncContext.refreshAllObjects()
     }
 
-    private func fetchLocallyTrackedObjects() {
-        precondition(didSetup, "Did not call setup()")
-        self.performGroupedBlock {
+    fileprivate func fetchLocallyTrackedObjects() {
+        self.perform {
             // TODO: Could optimize this to only execute a single fetch request per entity.
             var objects: Set<NSManagedObject> = []
             for cp in self.changeProcessors {
-                guard let entityAndPredicate = cp.entityAndPredicateForLocallyTrackedObjectsInContext(self) else { continue }
+                guard let entityAndPredicate = cp.entityAndPredicateForLocallyTrackedObjects(in: self) else { continue }
                 let request = entityAndPredicate.fetchRequest
                 request.returnsObjectsAsFaults = false
-                guard let result = try! self.syncManagedObjectContext.executeFetchRequest(request) as? [NSManagedObject] else { fatalError() }
-                objects.unionInPlace(result)
+                let result = try! self.syncContext.fetch(request)
+                objects.formUnion(result)
             }
             self.processChangedLocalObjects(Array(objects))
         }
@@ -205,40 +188,40 @@ extension SyncCoordinator: ApplicationActiveStateObserving {
 // MARK: - Remote -
 
 extension SyncCoordinator {
-
-    private func fetchRemoteDataForApplicationDidBecomeActive() {
-        switch Mood.countInContext(managedObjectContext) {
+    fileprivate func fetchRemoteDataForApplicationDidBecomeActive() {
+        switch Mood.count(in: context) {
         case 0: self.fetchLatestRemoteData()
         default: self.fetchNewRemoteData()
         }
     }
 
-    private func fetchLatestRemoteData() {
-        performGroupedBlock { _ in
+    fileprivate func fetchLatestRemoteData() {
+        perform { _ in
             for changeProcessor in self.changeProcessors {
-                changeProcessor.fetchLatestRemoteRecordsForContext(self)
+                changeProcessor.fetchLatestRemoteRecords(in: self)
                 self.delayedSaveOrRollback()
             }
         }
     }
 
-    private func fetchNewRemoteData() {
+    fileprivate func fetchNewRemoteData() {
         remote.fetchNewMoods { changes, callback in
-            self.processChangedRemoteObjects(changes) {
-                self.performGroupedBlock {
-                    self.managedObjectContext.delayedSaveOrRollbackWithGroup(self.syncGroup) { success in
-                        callback(success: success)
+            self.processRemoteChanges(changes) {
+                self.perform {
+                    self.context.delayedSaveOrRollback(group: self.syncGroup) { success in
+                        callback(success)
                     }
                 }
             }
         }
     }
 
-    private func processChangedRemoteObjects<T: RemoteRecordType>(changes: [RemoteRecordChange<T>], completion: () -> ()) {
-        self.changeProcessors.asyncForEachWithCompletion(completion) { changeProcessor, innerCompletion in
-            performGroupedBlock {
-                changeProcessor.processChangedRemoteObjects(changes, context: self, completion: innerCompletion)
+    fileprivate func processRemoteChanges<T: RemoteRecord>(_ changes: [RemoteRecordChange<T>], completion: @escaping () -> ()) {
+        self.changeProcessors.asyncForEach(completion: completion) { changeProcessor, innerCompletion in
+            perform {
+                changeProcessor.processRemoteChanges(changes, in: self, completion: innerCompletion)
             }
         }
     }
 }
+

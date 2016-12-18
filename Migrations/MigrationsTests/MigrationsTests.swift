@@ -11,14 +11,14 @@ import CoreData
 @testable import Migrations
 
 
-class MigrationsTests: XCTestCase {
+final class MigrationsTests: XCTestCase {
 
-    var targetURL: NSURL!
+    var targetURL: URL!
 
     override func setUp() {
         super.setUp()
         registerValueTransformers()
-        targetURL = NSURL.temporaryURL()
+        targetURL = URL.temporary
         print("Destination URL: \(targetURL)")
     }
 
@@ -30,14 +30,14 @@ class MigrationsTests: XCTestCase {
     // It uses an inferred mapping model (aka lightweight migration).
     func testLightWeightMigrationFrom1To2() {
         // Given
-        let sourceURL = NSURL.testStoreURLForVersion(.Version1)
-        let targetVersion = ModelVersion.Version2
+        let sourceURL = URL.testStoreURL(for: .version1)
+        let targetVersion = Version.version2
 
         // When
-        migrateStoreFromURL(sourceURL, toURL: targetURL, targetVersion: targetVersion)
+        migrateStore(from: sourceURL, to: targetURL, targetVersion: targetVersion)
 
         // Then
-        XCTAssert(v2Data.matchWithContext(NSManagedObjectContext(model: targetVersion.managedObjectModel(), storeURL: targetURL)))
+        XCTAssert(v2Data.match(with: NSManagedObjectContext(model: targetVersion.managedObjectModel(), storeURL: targetURL)))
     }
 
     // This migration adds a new one-to-many relationship between `Continent` and `Mood`.
@@ -48,14 +48,14 @@ class MigrationsTests: XCTestCase {
     // * Everything else is mapped 1:1.
     func testMigrationFrom2To3() {
         // Given
-        let sourceURL = NSURL.testStoreURLForVersion(.Version2)
-        let targetVersion = ModelVersion.Version3
+        let sourceURL = URL.testStoreURL(for: .version2)
+        let targetVersion = Version.version3
 
         // When
-        migrateStoreFromURL(sourceURL, toURL: targetURL, targetVersion: targetVersion)
+        migrateStore(from: sourceURL, to: targetURL, targetVersion: targetVersion)
 
         // Then
-        XCTAssert(v3Data.matchWithContext(NSManagedObjectContext(model: targetVersion.managedObjectModel(), storeURL: targetURL)))
+        XCTAssert(v3Data.match(with: NSManagedObjectContext(model: targetVersion.managedObjectModel(), storeURL: targetURL)))
     }
 
     // This migration removes the abstract parent entity `GeographicRegion` and makes `Country` and `Continent` standalone entities.
@@ -63,14 +63,14 @@ class MigrationsTests: XCTestCase {
     // Since only the internal structure of the data changes, we compare the result against the `v3Data` test fixture.
     func testMigrationFrom3To4() {
         // Given
-        let sourceURL = NSURL.testStoreURLForVersion(.Version3)
-        let targetVersion = ModelVersion.Version4
+        let sourceURL = URL.testStoreURL(for: .version3)
+        let targetVersion = Version.version4
 
         // When
-        migrateStoreFromURL(sourceURL, toURL: targetURL, targetVersion: targetVersion)
+        migrateStore(from: sourceURL, to: targetURL, targetVersion: targetVersion)
 
         // Then
-        XCTAssert(v3Data.matchWithContext(NSManagedObjectContext(model: targetVersion.managedObjectModel(), storeURL: targetURL)))
+        XCTAssert(v3Data.match(with: NSManagedObjectContext(model: targetVersion.managedObjectModel(), storeURL: targetURL)))
     }
 
     // This migration removes the `Continent` entity and adds a `isoContinent` integer attribute on `Country` instead.
@@ -81,41 +81,42 @@ class MigrationsTests: XCTestCase {
     // * Everything else is mapped 1:1.
     func testMigrationFrom4To5() {
         // Given
-        let sourceURL = NSURL.testStoreURLForVersion(.Version4)
-        let targetVersion = ModelVersion.Version5
+        let sourceURL = URL.testStoreURL(for: .version4)
+        let targetVersion = Version.version5
 
         // When
-        migrateStoreFromURL(sourceURL, toURL: targetURL, targetVersion: targetVersion)
+        migrateStore(from: sourceURL, to: targetURL, targetVersion: targetVersion)
 
         // Then
-        XCTAssert(v5Data.matchWithContext(NSManagedObjectContext(model: targetVersion.managedObjectModel(), storeURL: targetURL)))
+        XCTAssert(v5Data.match(with: NSManagedObjectContext(model: targetVersion.managedObjectModel(), storeURL: targetURL)))
     }
 
     // This migration adds back the `Continent` entity with a one-to-many relationship to `Country`, removing the `isoContinent` attribute on `Country`.
     // In the custom mapping model everything is mapped 1:1, but the `CountryToCountry` mapping uses a custom policy `Country5toCountry6Policy`, which creates the `Continent` entities and associates them with the existing countries.
     func testMigrationFrom5To6() {
         // Given
-        let sourceURL = NSURL.testStoreURLForVersion(.Version5)
-        let targetVersion = ModelVersion.Version6
+        let sourceURL = URL.testStoreURL(for: .version5)
+        let targetVersion = Version.version6
 
         // When
-        migrateStoreFromURL(sourceURL, toURL: targetURL, targetVersion: targetVersion)
+        migrateStore(from: sourceURL, to: targetURL, targetVersion: targetVersion)
 
         // Then
-        XCTAssert(v6Data.matchWithContext(NSManagedObjectContext(model: targetVersion.managedObjectModel(), storeURL: targetURL)))
+        XCTAssert(v6Data.match(with: NSManagedObjectContext(model: targetVersion.managedObjectModel(), storeURL: targetURL)))
     }
 
     // This migration migrates a version 1 store to a version 6 store by progressively applying the intermediate migrations.
     func testProgressiveMigrationFrom1To6() {
         // Given
-        let sourceURL = NSURL.testStoreURLForVersion(.Version1)
-        let targetVersion = ModelVersion.Version6
+        let sourceURL = URL.testStoreURL(for: .version1)
+        let targetVersion = Version.version6
 
         // When
-        migrateStoreFromURL(sourceURL, toURL: targetURL, targetVersion: targetVersion)
+        migrateStore(from: sourceURL, to: targetURL, targetVersion: targetVersion)
 
         // Then
-        XCTAssert(v6Data.matchWithContext(NSManagedObjectContext(model: targetVersion.managedObjectModel(), storeURL: targetURL)))
+        XCTAssert(v6Data.match(with: NSManagedObjectContext(model: targetVersion.managedObjectModel(), storeURL: targetURL)))
     }
 
 }
+

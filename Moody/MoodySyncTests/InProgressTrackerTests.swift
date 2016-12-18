@@ -23,7 +23,7 @@ class InProgressTrackerTests: XCTestCase {
     override func setUp() {
         super.setUp()
 
-        managedObjectContext = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
+        managedObjectContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
         managedObjectContext.name = "InProgressTrackerTests"
         managedObjectContext.persistentStoreCoordinator = createPersistentStoreCoordinatorWithInMemotyStore()
 
@@ -52,7 +52,7 @@ class InProgressTrackerTests: XCTestCase {
         let sut = InProgressTracker<TestObject>()
 
         // When
-        let result = sut.objectsToProcessFromObjects([moA, moB])
+        let result = sut.objectsToProcess(from: [moA, moB])
 
         // Then
         XCTAssertEqual(result.count, 2)
@@ -65,8 +65,8 @@ class InProgressTrackerTests: XCTestCase {
         let sut = InProgressTracker<TestObject>()
 
         // When
-        let _ = sut.objectsToProcessFromObjects([moA, moB])
-        let result = sut.objectsToProcessFromObjects([moA, moB])
+        let _ = sut.objectsToProcess(from: [moA, moB])
+        let result = sut.objectsToProcess(from: [moA, moB])
 
         // Then
         XCTAssertEqual(result.count, 0)
@@ -77,8 +77,8 @@ class InProgressTrackerTests: XCTestCase {
         let sut = InProgressTracker<TestObject>()
 
         // When
-        let _ = sut.objectsToProcessFromObjects([moA, moB])
-        let result = sut.objectsToProcessFromObjects([moC, moA, moB, moD])
+        let _ = sut.objectsToProcess(from: [moA, moB])
+        let result = sut.objectsToProcess(from: [moC, moA, moB, moD])
 
         // Then
         XCTAssertEqual(result.count, 2)
@@ -91,9 +91,9 @@ class InProgressTrackerTests: XCTestCase {
         let sut = InProgressTracker<TestObject>()
 
         // When
-        let _ = sut.objectsToProcessFromObjects([moA, moB, moC])
+        let _ = sut.objectsToProcess(from: [moA, moB, moC])
         sut.markObjectsAsComplete([moA, moC])
-        let result = sut.objectsToProcessFromObjects([moA, moB, moC, moD])
+        let result = sut.objectsToProcess(from: [moA, moB, moC, moD])
 
         // Then
         XCTAssertEqual(result.count, 3)
@@ -102,3 +102,4 @@ class InProgressTrackerTests: XCTestCase {
         XCTAssertTrue(result.contains(moD))
     }
 }
+

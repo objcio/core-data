@@ -1,0 +1,40 @@
+//
+//  Project-Debug.xcconfig
+//  Moody
+//
+//  Created by Daniel Eggert on 06/09/2015.
+//  Copyright © 2015 objc.io. All rights reserved.
+//
+
+#include "Project.xcconfig"
+
+
+
+// Architectures
+//
+ONLY_ACTIVE_ARCH = YES
+
+
+// Build Options
+//
+DEBUG_INFORMATION_FORMAT = dwarf
+ENABLE_TESTABILITY = YES
+
+
+
+// LLVM - Code Generation
+//
+GCC_OPTIMIZATION_LEVEL = 0
+
+
+
+// Swift Compiler - Code Generation
+//
+SWIFT_OPTIMIZATION_LEVEL = -Onone
+OTHER_SWIFT_FLAGS[sdk=iphonesimulator*] = -D IOS_SIMULATOR
+
+
+
+// Metal
+//
+MTL_ENABLE_DEBUG_INFO = YES

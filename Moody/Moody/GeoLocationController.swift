@@ -17,9 +17,9 @@ protocol GeoLocationControllerDelegate: class {
 
 class GeoLocationController: NSObject {
 
-    var authorized: Bool {
+    var isAuthorized: Bool {
         let status = CLLocationManager.authorizationStatus()
-        return status == .AuthorizedAlways || status == .AuthorizedWhenInUse
+        return status == .authorizedAlways || status == .authorizedWhenInUse
     }
 
     required init(delegate: GeoLocationControllerDelegate) {
@@ -27,19 +27,19 @@ class GeoLocationController: NSObject {
         self.delegate = delegate
         locationManager.desiredAccuracy = kCLLocationAccuracyThreeKilometers
         locationManager.delegate = self
-        if CLLocationManager.authorizationStatus() == .NotDetermined {
+        if CLLocationManager.authorizationStatus() == .notDetermined {
             locationManager.requestWhenInUseAuthorization()
         } else {
             start()
         }
     }
 
-    func retrieveCurrentLocation(completion: (CLLocation?, CLPlacemark?) -> ()) {
+    func retrieveCurrentLocation(_ completion: @escaping (CLLocation?, CLPlacemark?) -> ()) {
         guard let location = locationManager.location else {
             completion(nil, nil)
             return
         }
-        guard previousLocation == nil || previousLocation?.distanceFromLocation(location) > 1000 || previousPlacemark == nil else {
+        guard previousLocation == nil || (previousLocation?.distance(from: location) ?? 0) > 1000 || previousPlacemark == nil else {
             return completion(location, previousPlacemark)
         }
         geocoder.reverseGeocodeLocation(location) { placemarks, error in
@@ -51,15 +51,15 @@ class GeoLocationController: NSObject {
 
     // MARK: Private
 
-    private weak var delegate: GeoLocationControllerDelegate!
-    private var locationManager: CLLocationManager = CLLocationManager()
-    private var geocoder = CLGeocoder()
-    private var previousLocation: CLLocation?
-    private var previousPlacemark: CLPlacemark?
+    fileprivate weak var delegate: GeoLocationControllerDelegate!
+    fileprivate var locationManager: CLLocationManager = CLLocationManager()
+    fileprivate var geocoder = CLGeocoder()
+    fileprivate var previousLocation: CLLocation?
+    fileprivate var previousPlacemark: CLPlacemark?
 
-    private func start() {
-        delegate.geoLocationDidChangeAuthorizationStatus(authorized)
-        if authorized {
+    fileprivate func start() {
+        delegate.geoLocationDidChangeAuthorizationStatus(authorized: isAuthorized)
+        if isAuthorized {
             locationManager.startUpdatingLocation()
         }
     }
@@ -68,15 +68,17 @@ class GeoLocationController: NSObject {
 
 extension GeoLocationController: CLLocationManagerDelegate {
 
-    func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         start()
     }
 
-    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
     }
 
-    func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print(error)
     }
 
 }
+
+

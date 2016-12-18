@@ -1,0 +1,42 @@
+//
+//  App-Target.xcconfig
+//  Moody
+//
+//  Created by Daniel Eggert on 06/09/2015.
+//  Copyright © 2015 objc.io. All rights reserved.
+//
+
+
+
+
+// Build Options
+//
+EMBEDDED_CONTENT_CONTAINS_SWIFT = YES
+
+
+
+// Code Signing
+//
+
+
+
+// Linking
+//
+LD_RUNPATH_SEARCH_PATHS = $(inherited) @executable_path/Frameworks
+
+
+
+// Packaging
+//
+INFOPLIST_FILE = Config/App-Info.plist
+
+
+
+// Asset Catalog Compiler
+//
+ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon
+
+
+// SWIFT
+//
+SWIFT_OBJC_BRIDGING_HEADER = Moody/Moody-Bridging-Header.h

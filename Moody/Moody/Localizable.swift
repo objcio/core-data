@@ -9,32 +9,33 @@
 import Foundation
 
 enum LocalizedText: String {
-    case CameraView_tapToCapture = "CameraView.tapToCapture"
-    case CameraView_needAccess = "CameraView.needAccess"
+    case cameraView_tapToCapture = "CameraView.tapToCapture"
+    case cameraView_needAccess = "CameraView.needAccess"
 
-    case Mood_dateComponentFormat = "Mood.dateComponentFormat"
+    case mood_dateComponentFormat = "Mood.dateComponentFormat"
 
-    case MoodPresentation_list = "MoodPresentation.list"
-    case MoodPresentation_grid = "MoodPresentation.grid"
+    case moodPresentation_list = "MoodPresentation.list"
+    case moodPresentation_grid = "MoodPresentation.grid"
 
-    case MoodSource_all = "MoodSource.all"
-    case MoodSource_your = "MoodSource.your"
-    case MoodSource_all_detail = "MoodSource.all.detail"
-    case MoodSource_you_detail = "MoodSource.you.detail"
+    case moodSource_all = "MoodSource.all"
+    case moodSource_your = "MoodSource.your"
+    case moodSource_all_detail = "MoodSource.all.detail"
+    case moodSource_you_detail = "MoodSource.you.detail"
 
-    case Regions_title = "Regions.title"
-    case Regions_numberOfMoods = "Regions.numberOfMoods"
-    case Regions_numberOfMoodsInCountries = "Regions.numberOfMoodsInCountries"
+    case regions_title = "Regions.title"
+    case regions_numberOfMoods = "Regions.numberOfMoods"
+    case regions_numberOfMoodsInCountries = "Regions.numberOfMoodsInCountries"
 }
 
-func localized(key: LocalizedText) -> String {
-    return NSLocalizedString(key.rawValue, tableName: nil, bundle: NSBundle.mainBundle(), value: key.rawValue, comment: "")
+func localized(_ key: LocalizedText) -> String {
+    return NSLocalizedString(key.rawValue, tableName: nil, bundle: Bundle.main, value: key.rawValue, comment: "")
 }
 
 
-func localized(key: LocalizedText, args: [CVarArgType]) -> String {
+func localized(_ key: LocalizedText, args: [CVarArg]) -> String {
     let format = localized(key)
     return withVaList(args) { arguments -> String in
-        return NSString(format: format, locale: NSLocale.currentLocale(), arguments: arguments) as String
+        return NSString(format: format, locale: NSLocale.current, arguments: arguments) as String
     }
 }
+

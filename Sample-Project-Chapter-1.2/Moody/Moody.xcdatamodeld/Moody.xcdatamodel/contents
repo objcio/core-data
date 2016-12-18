@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11542" systemVersion="16B2555" minimumToolsVersion="Xcode 7.0" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
+    <entity name="Continent" representedClassName=".Continent" parentEntity="Region" syncable="YES">
+        <relationship name="countries" toMany="YES" deletionRule="Deny" destinationEntity="Country" inverseName="continent" inverseEntity="Country" syncable="YES"/>
+    </entity>
+    <entity name="Country" representedClassName=".Country" parentEntity="Region" syncable="YES">
+        <relationship name="continent" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Continent" inverseName="countries" inverseEntity="Continent" syncable="YES"/>
+        <relationship name="moods" toMany="YES" deletionRule="Deny" destinationEntity="Mood" inverseName="country" inverseEntity="Mood" syncable="YES"/>
+    </entity>
+    <entity name="Mood" representedClassName=".Mood" syncable="YES">
+        <attribute name="colors" optional="YES" attributeType="Transformable" valueTransformerName="ColorsTransformer" syncable="YES"/>
+        <attribute name="date" attributeType="Date" usesScalarValueType="NO" indexed="YES" syncable="YES"/>
+        <attribute name="latitude" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="longitude" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="NO" syncable="YES"/>
+        <relationship name="country" maxCount="1" deletionRule="Nullify" destinationEntity="Country" inverseName="moods" inverseEntity="Country" syncable="YES"/>
+    </entity>
+    <entity name="Region" representedClassName=".Region" isAbstract="YES" syncable="YES">
+        <attribute name="numericISO3166Code" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="updatedAt" attributeType="Date" usesScalarValueType="NO" indexed="YES" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="Mood" positionX="-63" positionY="-18" width="128" height="120"/>
+        <element name="Region" positionX="-63" positionY="0" width="128" height="75"/>
+        <element name="Continent" positionX="-54" positionY="18" width="128" height="60"/>
+        <element name="Country" positionX="-36" positionY="27" width="128" height="75"/>
+    </elements>
+</model>

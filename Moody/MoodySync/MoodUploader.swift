@@ -10,23 +10,23 @@ import CoreData
 import MoodyModel
 
 
-final class MoodUploader: ElementChangeProcessorType {
+final class MoodUploader: ElementChangeProcessor {
     var elementsInProgress = InProgressTracker<Mood>()
 
-    func setupForContext(context: ChangeProcessorContextType) {
+    func setup(for context: ChangeProcessorContext) {
         // no-op
     }
 
-    func processChangedLocalElements(objects: [Mood], context: ChangeProcessorContextType) {
-        processInsertedMoods(objects, context: context)
+    func processChangedLocalElements(_ objects: [Mood], in context: ChangeProcessorContext) {
+        processInsertedMoods(objects, in: context)
     }
 
-    func processChangedRemoteObjects<T: RemoteRecordType>(changes: [RemoteRecordChange<T>], context: ChangeProcessorContextType, completion: () -> ()) {
+    func processRemoteChanges<T: RemoteRecord>(_ changes: [RemoteRecordChange<T>], in context: ChangeProcessorContext, completion: () -> ()) {
         // no-op
         completion()
     }
 
-    func fetchLatestRemoteRecordsForContext(context: ChangeProcessorContextType) {
+    func fetchLatestRemoteRecords(in context: ChangeProcessorContext) {
         // no-op
     }
 
@@ -36,9 +36,9 @@ final class MoodUploader: ElementChangeProcessorType {
 }
 
 extension MoodUploader {
-    private func processInsertedMoods(insertions: [Mood], context: ChangeProcessorContextType) {
-        context.remote.uploadMoods(insertions,
-            completion: context.performGroupedBlock { remoteMoods, error in
+    fileprivate func processInsertedMoods(_ insertions: [Mood], in context: ChangeProcessorContext) {
+        context.remote.upload(insertions,
+            completion: context.perform { remoteMoods, error in
 
             guard !(error?.isPermanent ?? false) else {
                 // Since the error was permanent, delete these objects:
@@ -48,7 +48,7 @@ extension MoodUploader {
             }
 
             for mood in insertions {
-                guard let remoteMood = remoteMoods.findFirstOccurence({ mood.date == $0.date }) else { continue }
+                guard let remoteMood = remoteMoods.first(where: { mood.date == $0.date }) else { continue }
                 mood.remoteIdentifier = remoteMood.id
                 mood.creatorID = remoteMood.creatorID
             }
@@ -57,3 +57,4 @@ extension MoodUploader {
         })
     }
 }
+

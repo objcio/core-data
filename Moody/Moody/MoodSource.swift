@@ -11,47 +11,47 @@ import CoreData
 import CoreDataHelpers
 
 enum MoodSource {
-    case All
-    case Yours(String?)
-    case Country(MoodyModel.Country)
-    case Continent(MoodyModel.Continent)
+    case all
+    case yours(String?)
+    case country(MoodyModel.Country)
+    case continent(MoodyModel.Continent)
 }
 
 
 extension MoodSource {
     var predicate: NSPredicate {
         switch self  {
-        case .All:
+        case .all:
             return NSPredicate(value: true)
-        case .Yours(let id):
-            return Mood.predicateForOwnedByUserWithIdentifier(id)
-        case .Country(let c):
+        case .yours(let id):
+            return Mood.predicateForOwnedByUser(withIdentifier: id)
+        case .country(let c):
             return NSPredicate(format: "country = %@", argumentArray: [c])
-        case .Continent(let c):
+        case .continent(let c):
             return NSPredicate(format: "country in %@", argumentArray: [c.countries])
         }
     }
 
-    var managedObject: ManagedObjectType? {
+    var managedObject: NSManagedObject? {
         switch self {
-        case .Country(let c): return c
-        case .Continent(let c): return c
+        case .country(let c): return c
+        case .continent(let c): return c
         default: return nil
         }
     }
 
-    func prefetchInContext(context: NSManagedObjectContext) -> [MoodyModel.Country] {
+    func prefetch(in context: NSManagedObjectContext) -> [MoodyModel.Country] {
         switch self {
-        case .All: ()
-            return MoodyModel.Country.fetchInContext(context) { request in
+        case .all:
+            return MoodyModel.Country.fetch(in: context) { request in
                 request.predicate = MoodyModel.Country.defaultPredicate
             }
-        case .Yours(let id):
-            let yoursPredicate = MoodyModel.Country.predicateForContainingMoodsWithCreatorIdentifier(id)
-            let predicate = MoodyModel.Country.predicateWithPredicate(yoursPredicate)
-            return MoodyModel.Country.fetchInContext(context) { $0.predicate = predicate }
-        case .Continent(let c):
-            c.countries.fetchObjectsThatAreFaults()
+        case .yours(let id):
+            let yoursPredicate = MoodyModel.Country.predicateForContainingMoods(withCreatorIdentifier: id)
+            let predicate = MoodyModel.Country.predicate(yoursPredicate)
+            return MoodyModel.Country.fetch(in: context) { $0.predicate = predicate }
+        case .continent(let c):
+            c.countries.fetchFaults()
             return Array(c.countries)
         default: return []
         }
@@ -62,10 +62,10 @@ extension MoodSource {
 extension MoodSource: LocalizedStringConvertible {
     var localizedDescription: String {
         switch self  {
-        case .All: return localized(.MoodSource_all)
-        case .Yours: return localized(.MoodSource_your)
-        case .Country(let c): return c.localizedDescription
-        case .Continent(let c): return c.localizedDescription
+        case .all: return localized(.moodSource_all)
+        case .yours: return localized(.moodSource_your)
+        case .country(let c): return c.localizedDescription
+        case .continent(let c): return c.localizedDescription
         }
     }
 }

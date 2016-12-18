@@ -10,7 +10,7 @@ import UIKit
 
 
 protocol ObserverTokenStore : class {
-    func addObserverToken(token: NSObjectProtocol)
+    func addObserverToken(_ token: NSObjectProtocol)
 }
 
 
@@ -19,7 +19,7 @@ protocol ObserverTokenStore : class {
 /// It receives application active / background state changes and forwards them after switching onto the right queue.
 protocol ApplicationActiveStateObserving : class, ObserverTokenStore {
     /// Runs the given block on the right queue and dispatch group.
-    func performGroupedBlock(block: () -> ())
+    func perform(_ block: @escaping () -> ())
 
     /// Called when the application becomes active (or at launch if it's already active).
     func applicationDidBecomeActive()
@@ -29,20 +29,21 @@ protocol ApplicationActiveStateObserving : class, ObserverTokenStore {
 
 extension ApplicationActiveStateObserving {
     func setupApplicationActiveNotifications() {
-        addObserverToken(NSNotificationCenter.defaultCenter().addObserverForName(UIApplicationDidEnterBackgroundNotification, object: nil, queue: nil) { [weak self] note in
+        addObserverToken(NotificationCenter.default.addObserver(forName: .UIApplicationDidEnterBackground, object: nil, queue: nil) { [weak self] note in
             guard let observer = self else { return }
-            observer.performGroupedBlock {
+            observer.perform {
                 observer.applicationDidEnterBackground()
             }
         })
-        addObserverToken(NSNotificationCenter.defaultCenter().addObserverForName(UIApplicationDidBecomeActiveNotification, object: nil, queue: nil) { [weak self] note in
+        addObserverToken(NotificationCenter.default.addObserver(forName: .UIApplicationDidBecomeActive, object: nil, queue: nil) { [weak self] note in
             guard let observer = self else { return }
-            observer.performGroupedBlock {
+            observer.perform {
                 observer.applicationDidBecomeActive()
             }
         })
-        if UIApplication.sharedApplication().applicationState == .Active {
+        if UIApplication.shared.applicationState == .active {
             applicationDidBecomeActive()
         }
     }
 }
+

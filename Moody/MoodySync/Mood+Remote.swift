@@ -11,11 +11,12 @@ import CoreData
 
 
 extension RemoteMood {
-    func insertIntoContext(context: NSManagedObjectContext) -> Mood? {
-        let mood = Mood.insertIntoContext(context, colors: colors, location: location, isoCountry: isoCountry, remoteIdentifier: id, date: date, creatorID: creatorID)
+    func insert(into context: NSManagedObjectContext) -> Mood? {
+        let mood = Mood.insert(into: context, colors: colors, location: location, isoCountry: isoCountry, remoteIdentifier: id, date: date, creatorID: creatorID)
         return mood
     }
 }
 
 
-extension Mood: RemoteUploadable {}
+extension Mood: RemoteObject {}
+

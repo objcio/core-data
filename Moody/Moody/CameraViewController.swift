@@ -10,43 +10,42 @@ import UIKit
 
 
 protocol CameraViewControllerDelegate: class {
-    func didTakeImage(image: UIImage)
+    func didCapture(_ image: UIImage)
 }
 
 
 class CameraViewController: UIViewController {
 
-    @IBOutlet weak var cameraView: CameraView!
+    @IBOutlet weak var cameraView: CameraView?
     weak var delegate: CameraViewControllerDelegate!
-    var locationAuthorized: Bool = false {
+    var locationIsAuthorized: Bool = false {
         didSet { updateAuthorizationStatus() }
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         session = CaptureSession(delegate: self)
-        cameraView.setupForPreviewLayer(session.createPreviewLayer())
-        let recognizer = UITapGestureRecognizer(target: self, action: "snap:")
-        cameraView.addGestureRecognizer(recognizer)
+        #if !IOS_SIMULATOR
+            cameraView?.setup(for: session.createPreviewLayer())
+        #endif
+        let recognizer = UITapGestureRecognizer(target: self, action: #selector(snap))
+        cameraView?.addGestureRecognizer(recognizer)
         updateAuthorizationStatus()
     }
 
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         session.start()
     }
 
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         session.stop()
         super.viewDidDisappear(animated)
     }
 
-    @IBAction func snap(recognizer: UITapGestureRecognizer) {
-        if session.ready {
-            session.takeImage { image in
-                guard let img = image else { return }
-                self.delegate.didTakeImage(img)
-            }
+    @IBAction func snap(_ recognizer: UITapGestureRecognizer) {
+        if session.isReady {
+            session.captureImage()
         } else if readyToSnap {
             self.showImagePicker()
         }
@@ -55,27 +54,33 @@ class CameraViewController: UIViewController {
 
     // MARK: Private
 
-    private var session: CaptureSession!
-    private var imagePicker: UIImagePickerController?
+    fileprivate var session: CaptureSession!
+    fileprivate var imagePicker: UIImagePickerController?
 
-    private var readyToSnap: Bool {
-        return session.authorized && locationAuthorized
+    fileprivate var readyToSnap: Bool {
+        return session.isAuthorized && locationIsAuthorized
     }
 
-    private func showImagePicker() {
+    fileprivate func showImagePicker() {
         imagePicker = UIImagePickerController()
         imagePicker?.delegate = self
-        presentViewController(imagePicker!, animated: true, completion: nil)
+        present(imagePicker!, animated: true, completion: nil)
     }
 
-    private func updateAuthorizationStatus() {
-        cameraView.authorized = readyToSnap
+    fileprivate func updateAuthorizationStatus() {
+        cameraView?.authorized = readyToSnap
     }
 
 }
 
 
 extension CameraViewController: CaptureSessionDelegate {
+
+    func captureSessionDidCapture(_ image: UIImage?) {
+        guard let image = image else { return }
+        self.delegate.didCapture(image)
+    }
+
 
     func captureSessionDidChangeAuthorizationStatus(authorized: Bool) {
         updateAuthorizationStatus()
@@ -86,13 +91,14 @@ extension CameraViewController: CaptureSessionDelegate {
 
 extension CameraViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String: AnyObject]) {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String: Any]) {
         if let image = info[UIImagePickerControllerOriginalImage] as? UIImage {
-            delegate.didTakeImage(image)
+            delegate.didCapture(image)
         }
-        dismissViewControllerAnimated(true, completion: nil)
+        dismiss(animated: true, completion: nil)
         imagePicker = nil
     }
 
 }
+
 

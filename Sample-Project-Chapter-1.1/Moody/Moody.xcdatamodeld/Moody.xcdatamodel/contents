@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11542" systemVersion="16B2555" minimumToolsVersion="Xcode 7.0" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
+    <entity name="Mood" representedClassName=".Mood" syncable="YES">
+        <attribute name="colors" optional="YES" attributeType="Transformable" valueTransformerName="ColorsTransformer" syncable="YES"/>
+        <attribute name="date" attributeType="Date" usesScalarValueType="NO" indexed="YES" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="Mood" positionX="-63" positionY="-18" width="128" height="75"/>
+    </elements>
+</model>

@@ -10,8 +10,8 @@ import CoreData
 
 
 struct ManagedObjectValidationError {
-    private let error: NSError
-    private var userInfo: [String:AnyObject] { return (error.userInfo as? [String:AnyObject]) ?? [:] }
+    fileprivate let error: NSError
+    fileprivate var userInfo: [AnyHashable:Any] { return error.userInfo }
 
     init(error: NSError) {
         self.error = error
@@ -47,30 +47,31 @@ extension ManagedObjectValidationError: CustomDebugStringConvertible {
 
 
 extension NSManagedObject {
-    func propertyValidationErrorForKey(key: String, localizedDescription: String) -> NSError {
+    func propertyValidationError(forKey key: String, localizedDescription: String) -> NSError {
         let userInfo: [NSObject:AnyObject] = [
-            NSValidationObjectErrorKey: self,
-            NSValidationKeyErrorKey: key,
-            NSLocalizedDescriptionKey: localizedDescription
+            NSValidationObjectErrorKey as NSObject: self,
+            NSValidationKeyErrorKey as NSObject: key as AnyObject,
+            NSLocalizedDescriptionKey as NSObject: localizedDescription as AnyObject
         ]
-        let domain = NSBundle(forClass: self.dynamicType).bundleIdentifier ?? "undefined"
+        let domain = Bundle(for: type(of: self)).bundleIdentifier ?? "undefined"
         return NSError(domain: domain, code: NSManagedObjectValidationError, userInfo: userInfo)
     }
 
-    func validationErrorWithDescription(localizedDescription: String) -> NSError {
+    func validationError(withLocalizedDescription description: String) -> NSError {
         let userInfo: [NSObject:AnyObject] = [
-            NSValidationObjectErrorKey: self,
-            NSLocalizedDescriptionKey: localizedDescription
+            NSValidationObjectErrorKey as NSObject: self,
+            NSLocalizedDescriptionKey as NSObject: description as AnyObject
         ]
-        let domain = NSBundle(forClass: self.dynamicType).bundleIdentifier ?? "undefined"
+        let domain = Bundle(for: type(of: self)).bundleIdentifier ?? "undefined"
         return NSError(domain: domain, code: NSManagedObjectValidationError, userInfo: userInfo)
     }
 
-    func multipleValidationErrorWithDescriptions(localizedDescriptions: [String]) -> NSError {
-        let userInfo: [NSObject:AnyObject] = [
-            NSDetailedErrorsKey: localizedDescriptions.map(validationErrorWithDescription)
+    func multipleValidationError(withLocalizedDescriptions descriptions: [String]) -> NSError {
+        let userInfo: [AnyHashable : Any] = [
+            NSDetailedErrorsKey: descriptions.map(validationError)
         ]
-        let domain = NSBundle(forClass: self.dynamicType).bundleIdentifier ?? "undefined"
+        let domain = Bundle(for: type(of: self)).bundleIdentifier ?? "undefined"
         return NSError(domain: domain, code: NSValidationMultipleErrorsError, userInfo: userInfo)
     }
 }
+

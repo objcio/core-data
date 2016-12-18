@@ -10,24 +10,24 @@ import CoreData
 import MoodyModel
 
 
-final class MoodRemover: ElementChangeProcessorType {
+final class MoodRemover: ElementChangeProcessor {
 
     var elementsInProgress = InProgressTracker<Mood>()
 
-    func setupForContext(context: ChangeProcessorContextType) {
+    func setup(for context: ChangeProcessorContext) {
         // no-op
     }
 
-    func processChangedLocalElements(objects: [Mood], context: ChangeProcessorContextType) {
-        processDeletedMoods(objects, context: context)
+    func processChangedLocalElements(_ objects: [Mood], in context: ChangeProcessorContext) {
+        processDeletedMoods(objects, in: context)
     }
 
-    func processChangedRemoteObjects<T: RemoteRecordType>(changes: [RemoteRecordChange<T>], context: ChangeProcessorContextType, completion: () -> ()) {
+    func processRemoteChanges<T: RemoteRecord>(_ changes: [RemoteRecordChange<T>], in context: ChangeProcessorContext, completion: () -> ()) {
         // no-op
         completion()
     }
 
-    func fetchLatestRemoteRecordsForContext(context: ChangeProcessorContextType) {
+    func fetchLatestRemoteRecords(in context: ChangeProcessorContext) {
         // no-op
     }
 
@@ -41,31 +41,32 @@ final class MoodRemover: ElementChangeProcessorType {
 
 extension MoodRemover {
 
-    private func processDeletedMoods(deletions: [Mood], context: ChangeProcessorContextType) {
+    fileprivate func processDeletedMoods(_ deletions: [Mood], in context: ChangeProcessorContext) {
         let allObjects = Set(deletions)
         let localOnly = allObjects.filter { $0.remoteIdentifier == nil }
-        let objectsToDeleteRemotely = Array(allObjects.subtract(localOnly))
-        deleteMoodsLocally(localOnly, context: context)
-        deleteMoodsRemotely(objectsToDeleteRemotely, context: context)
+        let objectsToDeleteRemotely = Array(allObjects.subtracting(localOnly))
+        deleteLocally(localOnly, context: context)
+        deleteRemotely(objectsToDeleteRemotely, context: context)
     }
 
-    private func deleteMoodsLocally(deletions: [Mood], context: ChangeProcessorContextType) {
+    fileprivate func deleteLocally(_ deletions: [Mood], context: ChangeProcessorContext) {
         deletions.forEach { $0.markForLocalDeletion() }
     }
 
-    private func deleteMoodsRemotely(deletions: [Mood], context: ChangeProcessorContextType) {
-        context.remote.removeMoods(deletions, completion: context.performGroupedBlock { deletedRecordIDs, error in
+    fileprivate func deleteRemotely(_ deletions: [Mood], context: ChangeProcessorContext) {
+        context.remote.remove(deletions, completion: context.perform { deletedRecordIDs, error in
             var deletedIDs = Set(deletedRecordIDs)
-            if case .Permanent(let ids)? = error {
-                deletedIDs.unionInPlace(ids)
+            if case .permanent(let ids)? = error {
+                deletedIDs.formUnion(ids)
             }
 
             let toBeDeleted = deletions.filter { deletedIDs.contains($0.remoteIdentifier ?? "") }
-            self.deleteMoodsLocally(toBeDeleted, context: context)
+            self.deleteLocally(toBeDeleted, context: context)
             // This will retry failures with non-permanent failures:
-            self.didCompleteElements(Array(deletions), context: context)
+            self.didComplete(Array(deletions), in: context)
             context.delayedSaveOrRollback()
         })
     }
 
 }
+

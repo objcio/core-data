@@ -10,1046 +10,1042 @@ import Foundation
 
 public struct ISO3166 {
     public enum Country: Int16 {
-        case GUY = 328
-        case POL = 616
-        case LTU = 440
-        case NIC = 558
-        case ISL = 352
-        case LAO = 418
-        case BTN = 64
-        case PLW = 585
-        case HKG = 344
-        case CZE = 203
-        case DZA = 12
-        case CIV = 384
-        case GRL = 304
-        case MSR = 500
-        case CUB = 192
-        case BWA = 72
-        case NOR = 578
-        case SWZ = 748
-        case FIN = 246
-        case UGA = 800
-        case ALB = 8
-        case CYM = 136
-        case ERI = 232
-        case BLZ = 84
-        case MNP = 580
-        case TUR = 792
-        case HUN = 348
-        case SJM = 744
-        case VEN = 862
-        case EGY = 818
-        case NRU = 520
-        case TWN = 158
-        case MEX = 484
-        case ABW = 533
-        case VGB = 92
-        case GAB = 266
-        case CAN = 124
-        case IMN = 833
-        case GUM = 316
-        case SEN = 686
-        case GIB = 292
-        case COK = 184
-        case TUV = 798
-        case BRB = 52
-        case BDI = 108
-        case BLM = 652
-        case SSD = 728
-        case SYC = 690
-        case GHA = 288
-        case LVA = 428
-        case NAM = 516
-        case BRN = 96
-        case NLD = 528
-        case JOR = 400
-        case GLP = 312
-        case CHE = 756
-        case AIA = 660
-        case SVK = 703
-        case COM = 174
-        case IRL = 372
-        case SHN = 654
-        case BVT = 74
-        case MLT = 470
-        case SGP = 702
-        case TON = 776
-        case TGO = 768
-        case NZL = 554
-        case BEL = 56
-        case SLE = 694
-        case JPN = 392
-        case VUT = 548
-        case BMU = 60
-        case MAC = 446
-        case NPL = 524
-        case MDV = 462
-        case KGZ = 417
-        case TUN = 788
-        case PRT = 620
-        case TTO = 780
-        case IND = 356
-        case PRY = 600
-        case NER = 562
-        case LIE = 438
-        case BHS = 44
-        case KAZ = 398
-        case DNK = 208
-        case CRI = 188
-        case PHL = 608
-        case NFK = 574
-        case BES = 535
-        case LBN = 422
-        case FRO = 234
-        case DOM = 214
-        case BLR = 112
-        case CHN = 156
-        case VAT = 336
-        case GRD = 308
-        case BRA = 76
-        case GMB = 270
-        case MNG = 496
-        case TCD = 148
-        case MWI = 454
-        case LBR = 430
-        case MOZ = 508
-        case AGO = 24
-        case KNA = 659
-        case ATG = 28
-        case URY = 858
-        case GRC = 300
-        case ARM = 51
-        case HMD = 334
-        case ESP = 724
-        case CUW = 531
-        case CPV = 132
-        case COD = 180
-        case MLI = 466
-        case DMA = 212
-        case KHM = 116
-        case AUS = 36
-        case COG = 178
-        case BEN = 204
-        case FSM = 583
-        case PSE = 275
-        case ARE = 784
-        case GIN = 324
-        case BFA = 854
-        case IRQ = 368
-        case BHR = 48
-        case AUT = 40
-        case IOT = 86
-        case SOM = 706
-        case AFG = 4
-        case ZAF = 710
-        case DJI = 262
-        case HND = 340
-        case MHL = 584
-        case RUS = 643
-        case VCT = 670
-        case EST = 233
-        case GBR = 826
-        case QAT = 634
-        case MTQ = 474
-        case PER = 604
-        case ECU = 218
-        case SRB = 688
-        case JAM = 388
-        case MKD = 807
-        case COL = 170
-        case KOR = 410
-        case TLS = 626
-        case LCA = 662
-        case TZA = 834
-        case SMR = 674
-        case HTI = 332
-        case GTM = 320
-        case LSO = 426
-        case DEU = 276
-        case MMR = 104
-        case IDN = 360
-        case NCL = 540
-        case PAK = 586
-        case HRV = 191
-        case ESH = 732
-        case FLK = 238
-        case PAN = 591
-        case IRN = 364
-        case AND = 20
-        case UMI = 581
-        case SVN = 705
-        case BIH = 70
-        case FRA = 250
-        case TCA = 796
-        case KWT = 414
-        case STP = 678
-        case ANT = 530
-        case TKM = 795
-        case TKL = 772
-        case CYP = 196
-        case ETH = 231
-        case PRK = 408
-        case SGS = 239
-        case GGY = 831
-        case YEM = 887
-        case MUS = 480
-        case AZE = 31
-        case GUF = 254
-        case CXR = 162
-        case KEN = 404
-        case LKA = 144
-        case ASM = 16
-        case PYF = 258
-        case RWA = 646
-        case ATF = 260
-        case MDG = 450
-        case MRT = 478
-        case SXM = 534
-        case FJI = 242
-        case PNG = 598
-        case LUX = 442
-        case MDA = 498
-        case ISR = 376
-        case BOL = 68
-        case SAU = 682
-        case SWE = 752
-        case SPM = 666
-        case USA = 840
-        case CAF = 140
-        case SDN = 736
-        case SLB = 90
-        case ZMB = 894
-        case CCK = 166
-        case ALA = 248
-        case KIR = 296
-        case MYS = 458
-        case MYT = 175
-        case MCO = 492
-        case PRI = 630
-        case ROU = 642
-        case VNM = 704
-        case THA = 764
-        case VIR = 850
-        case ATA = 10
-        case ARG = 32
-        case BGR = 100
-        case CHL = 152
-        case TJK = 762
-        case WSM = 882
-        case NIU = 570
-        case ITA = 380
-        case GEO = 268
-        case WLF = 876
-        case JEY = 832
-        case GNQ = 226
-        case CMR = 120
-        case GNB = 624
-        case REU = 638
-        case ZWE = 716
-        case UKR = 804
-        case PCN = 612
-        case MAR = 504
-        case UZB = 860
-        case BGD = 50
-        case MAF = 663
-        case SUR = 740
-        case SYR = 760
-        case SLV = 222
-        case LBY = 434
-        case OMN = 512
-        case MNE = 499
-        case NGA = 566
-        case Unknown = 0
+        case guy = 328
+        case pol = 616
+        case ltu = 440
+        case nic = 558
+        case isl = 352
+        case lao = 418
+        case btn = 64
+        case plw = 585
+        case hkg = 344
+        case cze = 203
+        case dza = 12
+        case civ = 384
+        case grl = 304
+        case msr = 500
+        case cub = 192
+        case bwa = 72
+        case nor = 578
+        case swz = 748
+        case fin = 246
+        case uga = 800
+        case alb = 8
+        case cym = 136
+        case eri = 232
+        case blz = 84
+        case mnp = 580
+        case tur = 792
+        case hun = 348
+        case sjm = 744
+        case ven = 862
+        case egy = 818
+        case nru = 520
+        case twn = 158
+        case mex = 484
+        case abw = 533
+        case vgb = 92
+        case gab = 266
+        case can = 124
+        case imn = 833
+        case gum = 316
+        case sen = 686
+        case gib = 292
+        case cok = 184
+        case tuv = 798
+        case brb = 52
+        case bdi = 108
+        case blm = 652
+        case ssd = 728
+        case syc = 690
+        case gha = 288
+        case lva = 428
+        case nam = 516
+        case brn = 96
+        case nld = 528
+        case jor = 400
+        case glp = 312
+        case che = 756
+        case aia = 660
+        case svk = 703
+        case com = 174
+        case irl = 372
+        case shn = 654
+        case bvt = 74
+        case mlt = 470
+        case sgp = 702
+        case ton = 776
+        case tgo = 768
+        case nzl = 554
+        case bel = 56
+        case sle = 694
+        case jpn = 392
+        case vut = 548
+        case bmu = 60
+        case mac = 446
+        case npl = 524
+        case mdv = 462
+        case kgz = 417
+        case tun = 788
+        case prt = 620
+        case tto = 780
+        case ind = 356
+        case pry = 600
+        case ner = 562
+        case lie = 438
+        case bhs = 44
+        case kaz = 398
+        case dnk = 208
+        case cri = 188
+        case phl = 608
+        case nfk = 574
+        case bes = 535
+        case lbn = 422
+        case fro = 234
+        case dom = 214
+        case blr = 112
+        case chn = 156
+        case vat = 336
+        case grd = 308
+        case bra = 76
+        case gmb = 270
+        case mng = 496
+        case tcd = 148
+        case mwi = 454
+        case lbr = 430
+        case moz = 508
+        case ago = 24
+        case kna = 659
+        case atg = 28
+        case ury = 858
+        case grc = 300
+        case arm = 51
+        case hmd = 334
+        case esp = 724
+        case cuw = 531
+        case cpv = 132
+        case cod = 180
+        case mli = 466
+        case dma = 212
+        case khm = 116
+        case aus = 36
+        case cog = 178
+        case ben = 204
+        case fsm = 583
+        case pse = 275
+        case are = 784
+        case gin = 324
+        case bfa = 854
+        case irq = 368
+        case bhr = 48
+        case aut = 40
+        case iot = 86
+        case som = 706
+        case afg = 4
+        case zaf = 710
+        case dji = 262
+        case hnd = 340
+        case mhl = 584
+        case rus = 643
+        case vct = 670
+        case est = 233
+        case gbr = 826
+        case qat = 634
+        case mtq = 474
+        case per = 604
+        case ecu = 218
+        case srb = 688
+        case jam = 388
+        case mkd = 807
+        case col = 170
+        case kor = 410
+        case tls = 626
+        case lca = 662
+        case tza = 834
+        case smr = 674
+        case hti = 332
+        case gtm = 320
+        case lso = 426
+        case deu = 276
+        case mmr = 104
+        case idn = 360
+        case ncl = 540
+        case pak = 586
+        case hrv = 191
+        case esh = 732
+        case flk = 238
+        case pan = 591
+        case irn = 364
+        case and = 20
+        case umi = 581
+        case svn = 705
+        case bih = 70
+        case fra = 250
+        case tca = 796
+        case kwt = 414
+        case stp = 678
+        case ant = 530
+        case tkm = 795
+        case tkl = 772
+        case cyp = 196
+        case eth = 231
+        case prk = 408
+        case sgs = 239
+        case ggy = 831
+        case yem = 887
+        case mus = 480
+        case aze = 31
+        case guf = 254
+        case cxr = 162
+        case ken = 404
+        case lka = 144
+        case asm = 16
+        case pyf = 258
+        case rwa = 646
+        case atf = 260
+        case mdg = 450
+        case mrt = 478
+        case sxm = 534
+        case fji = 242
+        case png = 598
+        case lux = 442
+        case mda = 498
+        case isr = 376
+        case bol = 68
+        case sau = 682
+        case swe = 752
+        case spm = 666
+        case usa = 840
+        case caf = 140
+        case sdn = 736
+        case slb = 90
+        case zmb = 894
+        case cck = 166
+        case ala = 248
+        case kir = 296
+        case mys = 458
+        case myt = 175
+        case mco = 492
+        case pri = 630
+        case rou = 642
+        case vnm = 704
+        case tha = 764
+        case vir = 850
+        case ata = 10
+        case arg = 32
+        case bgr = 100
+        case chl = 152
+        case tjk = 762
+        case wsm = 882
+        case niu = 570
+        case ita = 380
+        case geo = 268
+        case wlf = 876
+        case jey = 832
+        case gnq = 226
+        case cmr = 120
+        case gnb = 624
+        case reu = 638
+        case zwe = 716
+        case ukr = 804
+        case pcn = 612
+        case mar = 504
+        case uzb = 860
+        case bgd = 50
+        case maf = 663
+        case sur = 740
+        case syr = 760
+        case slv = 222
+        case lby = 434
+        case omn = 512
+        case mne = 499
+        case nga = 566
+        case unknown = 0
     }
     public enum Continent: Int16 {
-        case NA = 10001
-        case AN = 10002
-        case EU = 10003
-        case AF = 10004
-        case AS = 10005
-        case SA = 10006
-        case OC = 10007
+        case na = 10001
+        case an = 10002
+        case eu = 10003
+        case af = 10004
+        case `as` = 10005
+        case sa = 10006
+        case oc = 10007
     }
 }
 
 private let countriesAndContinents: [(ISO3166.Continent, ISO3166.Country)] = [
-    (.AS, .AFG),
-    (.EU, .ALB),
-    (.AN, .ATA),
-    (.AF, .DZA),
-    (.OC, .ASM),
-    (.EU, .AND),
-    (.AF, .AGO),
-    (.NA, .ATG),
-    (.EU, .AZE),
-    (.AS, .AZE),
-    (.SA, .ARG),
-    (.OC, .AUS),
-    (.EU, .AUT),
-    (.NA, .BHS),
-    (.AS, .BHR),
-    (.AS, .BGD),
-    (.EU, .ARM),
-    (.AS, .ARM),
-    (.NA, .BRB),
-    (.EU, .BEL),
-    (.NA, .BMU),
-    (.AS, .BTN),
-    (.SA, .BOL),
-    (.EU, .BIH),
-    (.AF, .BWA),
-    (.AN, .BVT),
-    (.SA, .BRA),
-    (.NA, .BLZ),
-    (.AS, .IOT),
-    (.OC, .SLB),
-    (.NA, .VGB),
-    (.AS, .BRN),
-    (.EU, .BGR),
-    (.AS, .MMR),
-    (.AF, .BDI),
-    (.EU, .BLR),
-    (.AS, .KHM),
-    (.AF, .CMR),
-    (.NA, .CAN),
-    (.AF, .CPV),
-    (.NA, .CYM),
-    (.AF, .CAF),
-    (.AS, .LKA),
-    (.AF, .TCD),
-    (.SA, .CHL),
-    (.AS, .CHN),
-    (.AS, .TWN),
-    (.AS, .CXR),
-    (.AS, .CCK),
-    (.SA, .COL),
-    (.AF, .COM),
-    (.AF, .MYT),
-    (.AF, .COG),
-    (.AF, .COD),
-    (.OC, .COK),
-    (.NA, .CRI),
-    (.EU, .HRV),
-    (.NA, .CUB),
-    (.EU, .CYP),
-    (.AS, .CYP),
-    (.EU, .CZE),
-    (.AF, .BEN),
-    (.EU, .DNK),
-    (.NA, .DMA),
-    (.NA, .DOM),
-    (.SA, .ECU),
-    (.NA, .SLV),
-    (.AF, .GNQ),
-    (.AF, .ETH),
-    (.AF, .ERI),
-    (.EU, .EST),
-    (.EU, .FRO),
-    (.SA, .FLK),
-    (.AN, .SGS),
-    (.OC, .FJI),
-    (.EU, .FIN),
-    (.EU, .ALA),
-    (.EU, .FRA),
-    (.SA, .GUF),
-    (.OC, .PYF),
-    (.AN, .ATF),
-    (.AF, .DJI),
-    (.AF, .GAB),
-    (.EU, .GEO),
-    (.AS, .GEO),
-    (.AF, .GMB),
-    (.AS, .PSE),
-    (.EU, .DEU),
-    (.AF, .GHA),
-    (.EU, .GIB),
-    (.OC, .KIR),
-    (.EU, .GRC),
-    (.NA, .GRL),
-    (.NA, .GRD),
-    (.NA, .GLP),
-    (.OC, .GUM),
-    (.NA, .GTM),
-    (.AF, .GIN),
-    (.SA, .GUY),
-    (.NA, .HTI),
-    (.AN, .HMD),
-    (.EU, .VAT),
-    (.NA, .HND),
-    (.AS, .HKG),
-    (.EU, .HUN),
-    (.EU, .ISL),
-    (.AS, .IND),
-    (.AS, .IDN),
-    (.AS, .IRN),
-    (.AS, .IRQ),
-    (.EU, .IRL),
-    (.AS, .ISR),
-    (.EU, .ITA),
-    (.AF, .CIV),
-    (.NA, .JAM),
-    (.AS, .JPN),
-    (.EU, .KAZ),
-    (.AS, .KAZ),
-    (.AS, .JOR),
-    (.AF, .KEN),
-    (.AS, .PRK),
-    (.AS, .KOR),
-    (.AS, .KWT),
-    (.AS, .KGZ),
-    (.AS, .LAO),
-    (.AS, .LBN),
-    (.AF, .LSO),
-    (.EU, .LVA),
-    (.AF, .LBR),
-    (.AF, .LBY),
-    (.EU, .LIE),
-    (.EU, .LTU),
-    (.EU, .LUX),
-    (.AS, .MAC),
-    (.AF, .MDG),
-    (.AF, .MWI),
-    (.AS, .MYS),
-    (.AS, .MDV),
-    (.AF, .MLI),
-    (.EU, .MLT),
-    (.NA, .MTQ),
-    (.AF, .MRT),
-    (.AF, .MUS),
-    (.NA, .MEX),
-    (.EU, .MCO),
-    (.AS, .MNG),
-    (.EU, .MDA),
-    (.EU, .MNE),
-    (.NA, .MSR),
-    (.AF, .MAR),
-    (.AF, .MOZ),
-    (.AS, .OMN),
-    (.AF, .NAM),
-    (.OC, .NRU),
-    (.AS, .NPL),
-    (.EU, .NLD),
-    (.NA, .ANT),
-    (.NA, .CUW),
-    (.NA, .ABW),
-    (.NA, .SXM),
-    (.NA, .BES),
-    (.OC, .NCL),
-    (.OC, .VUT),
-    (.OC, .NZL),
-    (.NA, .NIC),
-    (.AF, .NER),
-    (.AF, .NGA),
-    (.OC, .NIU),
-    (.OC, .NFK),
-    (.EU, .NOR),
-    (.OC, .MNP),
-    (.OC, .UMI),
-    (.NA, .UMI),
-    (.OC, .FSM),
-    (.OC, .MHL),
-    (.OC, .PLW),
-    (.AS, .PAK),
-    (.NA, .PAN),
-    (.OC, .PNG),
-    (.SA, .PRY),
-    (.SA, .PER),
-    (.AS, .PHL),
-    (.OC, .PCN),
-    (.EU, .POL),
-    (.EU, .PRT),
-    (.AF, .GNB),
-    (.AS, .TLS),
-    (.NA, .PRI),
-    (.AS, .QAT),
-    (.AF, .REU),
-    (.EU, .ROU),
-    (.EU, .RUS),
-    (.AS, .RUS),
-    (.AF, .RWA),
-    (.NA, .BLM),
-    (.AF, .SHN),
-    (.NA, .KNA),
-    (.NA, .AIA),
-    (.NA, .LCA),
-    (.NA, .MAF),
-    (.NA, .SPM),
-    (.NA, .VCT),
-    (.EU, .SMR),
-    (.AF, .STP),
-    (.AS, .SAU),
-    (.AF, .SEN),
-    (.EU, .SRB),
-    (.AF, .SYC),
-    (.AF, .SLE),
-    (.AS, .SGP),
-    (.EU, .SVK),
-    (.AS, .VNM),
-    (.EU, .SVN),
-    (.AF, .SOM),
-    (.AF, .ZAF),
-    (.AF, .ZWE),
-    (.EU, .ESP),
-    (.AF, .SSD),
-    (.AF, .ESH),
-    (.AF, .SDN),
-    (.SA, .SUR),
-    (.EU, .SJM),
-    (.AF, .SWZ),
-    (.EU, .SWE),
-    (.EU, .CHE),
-    (.AS, .SYR),
-    (.AS, .TJK),
-    (.AS, .THA),
-    (.AF, .TGO),
-    (.OC, .TKL),
-    (.OC, .TON),
-    (.NA, .TTO),
-    (.AS, .ARE),
-    (.AF, .TUN),
-    (.EU, .TUR),
-    (.AS, .TUR),
-    (.AS, .TKM),
-    (.NA, .TCA),
-    (.OC, .TUV),
-    (.AF, .UGA),
-    (.EU, .UKR),
-    (.EU, .MKD),
-    (.AF, .EGY),
-    (.EU, .GBR),
-    (.EU, .GGY),
-    (.EU, .JEY),
-    (.EU, .IMN),
-    (.AF, .TZA),
-    (.NA, .USA),
-    (.NA, .VIR),
-    (.AF, .BFA),
-    (.SA, .URY),
-    (.AS, .UZB),
-    (.SA, .VEN),
-    (.OC, .WLF),
-    (.OC, .WSM),
-    (.AS, .YEM),
-    (.AF, .ZMB),
+    (.as, .afg),
+    (.eu, .alb),
+    (.an, .ata),
+    (.af, .dza),
+    (.oc, .asm),
+    (.eu, .and),
+    (.af, .ago),
+    (.na, .atg),
+    (.eu, .aze),
+    (.as, .aze),
+    (.sa, .arg),
+    (.oc, .aus),
+    (.eu, .aut),
+    (.na, .bhs),
+    (.as, .bhr),
+    (.as, .bgd),
+    (.eu, .arm),
+    (.as, .arm),
+    (.na, .brb),
+    (.eu, .bel),
+    (.na, .bmu),
+    (.as, .btn),
+    (.sa, .bol),
+    (.eu, .bih),
+    (.af, .bwa),
+    (.an, .bvt),
+    (.sa, .bra),
+    (.na, .blz),
+    (.as, .iot),
+    (.oc, .slb),
+    (.na, .vgb),
+    (.as, .brn),
+    (.eu, .bgr),
+    (.as, .mmr),
+    (.af, .bdi),
+    (.eu, .blr),
+    (.as, .khm),
+    (.af, .cmr),
+    (.na, .can),
+    (.af, .cpv),
+    (.na, .cym),
+    (.af, .caf),
+    (.as, .lka),
+    (.af, .tcd),
+    (.sa, .chl),
+    (.as, .chn),
+    (.as, .twn),
+    (.as, .cxr),
+    (.as, .cck),
+    (.sa, .col),
+    (.af, .com),
+    (.af, .myt),
+    (.af, .cog),
+    (.af, .cod),
+    (.oc, .cok),
+    (.na, .cri),
+    (.eu, .hrv),
+    (.na, .cub),
+    (.eu, .cyp),
+    (.as, .cyp),
+    (.eu, .cze),
+    (.af, .ben),
+    (.eu, .dnk),
+    (.na, .dma),
+    (.na, .dom),
+    (.sa, .ecu),
+    (.na, .slv),
+    (.af, .gnq),
+    (.af, .eth),
+    (.af, .eri),
+    (.eu, .est),
+    (.eu, .fro),
+    (.sa, .flk),
+    (.an, .sgs),
+    (.oc, .fji),
+    (.eu, .fin),
+    (.eu, .ala),
+    (.eu, .fra),
+    (.sa, .guf),
+    (.oc, .pyf),
+    (.an, .atf),
+    (.af, .dji),
+    (.af, .gab),
+    (.eu, .geo),
+    (.as, .geo),
+    (.af, .gmb),
+    (.as, .pse),
+    (.eu, .deu),
+    (.af, .gha),
+    (.eu, .gib),
+    (.oc, .kir),
+    (.eu, .grc),
+    (.na, .grl),
+    (.na, .grd),
+    (.na, .glp),
+    (.oc, .gum),
+    (.na, .gtm),
+    (.af, .gin),
+    (.sa, .guy),
+    (.na, .hti),
+    (.an, .hmd),
+    (.eu, .vat),
+    (.na, .hnd),
+    (.as, .hkg),
+    (.eu, .hun),
+    (.eu, .isl),
+    (.as, .ind),
+    (.as, .idn),
+    (.as, .irn),
+    (.as, .irq),
+    (.eu, .irl),
+    (.as, .isr),
+    (.eu, .ita),
+    (.af, .civ),
+    (.na, .jam),
+    (.as, .jpn),
+    (.eu, .kaz),
+    (.as, .kaz),
+    (.as, .jor),
+    (.af, .ken),
+    (.as, .prk),
+    (.as, .kor),
+    (.as, .kwt),
+    (.as, .kgz),
+    (.as, .lao),
+    (.as, .lbn),
+    (.af, .lso),
+    (.eu, .lva),
+    (.af, .lbr),
+    (.af, .lby),
+    (.eu, .lie),
+    (.eu, .ltu),
+    (.eu, .lux),
+    (.as, .mac),
+    (.af, .mdg),
+    (.af, .mwi),
+    (.as, .mys),
+    (.as, .mdv),
+    (.af, .mli),
+    (.eu, .mlt),
+    (.na, .mtq),
+    (.af, .mrt),
+    (.af, .mus),
+    (.na, .mex),
+    (.eu, .mco),
+    (.as, .mng),
+    (.eu, .mda),
+    (.eu, .mne),
+    (.na, .msr),
+    (.af, .mar),
+    (.af, .moz),
+    (.as, .omn),
+    (.af, .nam),
+    (.oc, .nru),
+    (.as, .npl),
+    (.eu, .nld),
+    (.na, .ant),
+    (.na, .cuw),
+    (.na, .abw),
+    (.na, .sxm),
+    (.na, .bes),
+    (.oc, .ncl),
+    (.oc, .vut),
+    (.oc, .nzl),
+    (.na, .nic),
+    (.af, .ner),
+    (.af, .nga),
+    (.oc, .niu),
+    (.oc, .nfk),
+    (.eu, .nor),
+    (.oc, .mnp),
+    (.oc, .umi),
+    (.na, .umi),
+    (.oc, .fsm),
+    (.oc, .mhl),
+    (.oc, .plw),
+    (.as, .pak),
+    (.na, .pan),
+    (.oc, .png),
+    (.sa, .pry),
+    (.sa, .per),
+    (.as, .phl),
+    (.oc, .pcn),
+    (.eu, .pol),
+    (.eu, .prt),
+    (.af, .gnb),
+    (.as, .tls),
+    (.na, .pri),
+    (.as, .qat),
+    (.af, .reu),
+    (.eu, .rou),
+    (.eu, .rus),
+    (.as, .rus),
+    (.af, .rwa),
+    (.na, .blm),
+    (.af, .shn),
+    (.na, .kna),
+    (.na, .aia),
+    (.na, .lca),
+    (.na, .maf),
+    (.na, .spm),
+    (.na, .vct),
+    (.eu, .smr),
+    (.af, .stp),
+    (.as, .sau),
+    (.af, .sen),
+    (.eu, .srb),
+    (.af, .syc),
+    (.af, .sle),
+    (.as, .sgp),
+    (.eu, .svk),
+    (.as, .vnm),
+    (.eu, .svn),
+    (.af, .som),
+    (.af, .zaf),
+    (.af, .zwe),
+    (.eu, .esp),
+    (.af, .ssd),
+    (.af, .esh),
+    (.af, .sdn),
+    (.sa, .sur),
+    (.eu, .sjm),
+    (.af, .swz),
+    (.eu, .swe),
+    (.eu, .che),
+    (.as, .syr),
+    (.as, .tjk),
+    (.as, .tha),
+    (.af, .tgo),
+    (.oc, .tkl),
+    (.oc, .ton),
+    (.na, .tto),
+    (.as, .are),
+    (.af, .tun),
+    (.eu, .tur),
+    (.as, .tur),
+    (.as, .tkm),
+    (.na, .tca),
+    (.oc, .tuv),
+    (.af, .uga),
+    (.eu, .ukr),
+    (.eu, .mkd),
+    (.af, .egy),
+    (.eu, .gbr),
+    (.eu, .ggy),
+    (.eu, .jey),
+    (.eu, .imn),
+    (.af, .tza),
+    (.na, .usa),
+    (.na, .vir),
+    (.af, .bfa),
+    (.sa, .ury),
+    (.as, .uzb),
+    (.sa, .ven),
+    (.oc, .wlf),
+    (.oc, .wsm),
+    (.as, .yem),
+    (.af, .zmb),
 ]
 
 extension ISO3166.Continent {
-    static func fromCountry(country: ISO3166.Country) -> ISO3166.Continent? {
-        let cc = countriesAndContinents.findFirstOccurence {
-            return ($0.1 == country)
-        }
-        if let (continent, _) = cc {
-            return continent
-        }
-        return nil
+    init?(country: ISO3166.Country) {
+        let cc = countriesAndContinents.first { $0.1 == country }
+        guard let (continent, _) = cc else { return nil }
+        self = continent
     }
 }
 
 extension ISO3166.Country {
-    public static func fromISO3166(s: String) -> ISO3166.Country {
-        switch (s.lowercaseString) {
-        case "guy": return .GUY
-        case "pol": return .POL
-        case "ltu": return .LTU
-        case "nic": return .NIC
-        case "isl": return .ISL
-        case "lao": return .LAO
-        case "btn": return .BTN
-        case "plw": return .PLW
-        case "hkg": return .HKG
-        case "cze": return .CZE
-        case "dza": return .DZA
-        case "civ": return .CIV
-        case "grl": return .GRL
-        case "msr": return .MSR
-        case "cub": return .CUB
-        case "bwa": return .BWA
-        case "nor": return .NOR
-        case "swz": return .SWZ
-        case "fin": return .FIN
-        case "uga": return .UGA
-        case "alb": return .ALB
-        case "cym": return .CYM
-        case "eri": return .ERI
-        case "blz": return .BLZ
-        case "mnp": return .MNP
-        case "tur": return .TUR
-        case "hun": return .HUN
-        case "sjm": return .SJM
-        case "ven": return .VEN
-        case "egy": return .EGY
-        case "nru": return .NRU
-        case "twn": return .TWN
-        case "mex": return .MEX
-        case "abw": return .ABW
-        case "vgb": return .VGB
-        case "gab": return .GAB
-        case "can": return .CAN
-        case "imn": return .IMN
-        case "gum": return .GUM
-        case "sen": return .SEN
-        case "gib": return .GIB
-        case "cok": return .COK
-        case "tuv": return .TUV
-        case "brb": return .BRB
-        case "bdi": return .BDI
-        case "blm": return .BLM
-        case "ssd": return .SSD
-        case "syc": return .SYC
-        case "gha": return .GHA
-        case "lva": return .LVA
-        case "nam": return .NAM
-        case "brn": return .BRN
-        case "nld": return .NLD
-        case "jor": return .JOR
-        case "glp": return .GLP
-        case "che": return .CHE
-        case "aia": return .AIA
-        case "svk": return .SVK
-        case "com": return .COM
-        case "irl": return .IRL
-        case "shn": return .SHN
-        case "bvt": return .BVT
-        case "mlt": return .MLT
-        case "sgp": return .SGP
-        case "ton": return .TON
-        case "tgo": return .TGO
-        case "nzl": return .NZL
-        case "bel": return .BEL
-        case "sle": return .SLE
-        case "jpn": return .JPN
-        case "vut": return .VUT
-        case "bmu": return .BMU
-        case "mac": return .MAC
-        case "npl": return .NPL
-        case "mdv": return .MDV
-        case "kgz": return .KGZ
-        case "tun": return .TUN
-        case "prt": return .PRT
-        case "tto": return .TTO
-        case "ind": return .IND
-        case "pry": return .PRY
-        case "ner": return .NER
-        case "lie": return .LIE
-        case "bhs": return .BHS
-        case "kaz": return .KAZ
-        case "dnk": return .DNK
-        case "cri": return .CRI
-        case "phl": return .PHL
-        case "nfk": return .NFK
-        case "bes": return .BES
-        case "lbn": return .LBN
-        case "fro": return .FRO
-        case "dom": return .DOM
-        case "blr": return .BLR
-        case "chn": return .CHN
-        case "vat": return .VAT
-        case "grd": return .GRD
-        case "bra": return .BRA
-        case "gmb": return .GMB
-        case "mng": return .MNG
-        case "tcd": return .TCD
-        case "mwi": return .MWI
-        case "lbr": return .LBR
-        case "moz": return .MOZ
-        case "ago": return .AGO
-        case "kna": return .KNA
-        case "atg": return .ATG
-        case "ury": return .URY
-        case "grc": return .GRC
-        case "arm": return .ARM
-        case "hmd": return .HMD
-        case "esp": return .ESP
-        case "cuw": return .CUW
-        case "cpv": return .CPV
-        case "cod": return .COD
-        case "mli": return .MLI
-        case "dma": return .DMA
-        case "khm": return .KHM
-        case "aus": return .AUS
-        case "cog": return .COG
-        case "ben": return .BEN
-        case "fsm": return .FSM
-        case "pse": return .PSE
-        case "are": return .ARE
-        case "gin": return .GIN
-        case "bfa": return .BFA
-        case "irq": return .IRQ
-        case "bhr": return .BHR
-        case "aut": return .AUT
-        case "iot": return .IOT
-        case "som": return .SOM
-        case "afg": return .AFG
-        case "zaf": return .ZAF
-        case "dji": return .DJI
-        case "hnd": return .HND
-        case "mhl": return .MHL
-        case "rus": return .RUS
-        case "vct": return .VCT
-        case "est": return .EST
-        case "gbr": return .GBR
-        case "qat": return .QAT
-        case "mtq": return .MTQ
-        case "per": return .PER
-        case "ecu": return .ECU
-        case "srb": return .SRB
-        case "jam": return .JAM
-        case "mkd": return .MKD
-        case "col": return .COL
-        case "kor": return .KOR
-        case "tls": return .TLS
-        case "lca": return .LCA
-        case "tza": return .TZA
-        case "smr": return .SMR
-        case "hti": return .HTI
-        case "gtm": return .GTM
-        case "lso": return .LSO
-        case "deu": return .DEU
-        case "mmr": return .MMR
-        case "idn": return .IDN
-        case "ncl": return .NCL
-        case "pak": return .PAK
-        case "hrv": return .HRV
-        case "esh": return .ESH
-        case "flk": return .FLK
-        case "pan": return .PAN
-        case "irn": return .IRN
-        case "and": return .AND
-        case "umi": return .UMI
-        case "svn": return .SVN
-        case "bih": return .BIH
-        case "fra": return .FRA
-        case "tca": return .TCA
-        case "kwt": return .KWT
-        case "stp": return .STP
-        case "ant": return .ANT
-        case "tkm": return .TKM
-        case "tkl": return .TKL
-        case "cyp": return .CYP
-        case "eth": return .ETH
-        case "prk": return .PRK
-        case "sgs": return .SGS
-        case "ggy": return .GGY
-        case "yem": return .YEM
-        case "mus": return .MUS
-        case "aze": return .AZE
-        case "guf": return .GUF
-        case "cxr": return .CXR
-        case "ken": return .KEN
-        case "lka": return .LKA
-        case "asm": return .ASM
-        case "pyf": return .PYF
-        case "rwa": return .RWA
-        case "atf": return .ATF
-        case "mdg": return .MDG
-        case "mrt": return .MRT
-        case "sxm": return .SXM
-        case "fji": return .FJI
-        case "png": return .PNG
-        case "lux": return .LUX
-        case "mda": return .MDA
-        case "isr": return .ISR
-        case "bol": return .BOL
-        case "sau": return .SAU
-        case "swe": return .SWE
-        case "spm": return .SPM
-        case "usa": return .USA
-        case "caf": return .CAF
-        case "sdn": return .SDN
-        case "slb": return .SLB
-        case "zmb": return .ZMB
-        case "cck": return .CCK
-        case "ala": return .ALA
-        case "kir": return .KIR
-        case "mys": return .MYS
-        case "myt": return .MYT
-        case "mco": return .MCO
-        case "pri": return .PRI
-        case "rou": return .ROU
-        case "vnm": return .VNM
-        case "tha": return .THA
-        case "vir": return .VIR
-        case "ata": return .ATA
-        case "arg": return .ARG
-        case "bgr": return .BGR
-        case "chl": return .CHL
-        case "tjk": return .TJK
-        case "wsm": return .WSM
-        case "niu": return .NIU
-        case "ita": return .ITA
-        case "geo": return .GEO
-        case "wlf": return .WLF
-        case "jey": return .JEY
-        case "gnq": return .GNQ
-        case "cmr": return .CMR
-        case "gnb": return .GNB
-        case "reu": return .REU
-        case "zwe": return .ZWE
-        case "ukr": return .UKR
-        case "pcn": return .PCN
-        case "mar": return .MAR
-        case "uzb": return .UZB
-        case "bgd": return .BGD
-        case "maf": return .MAF
-        case "sur": return .SUR
-        case "syr": return .SYR
-        case "slv": return .SLV
-        case "lby": return .LBY
-        case "omn": return .OMN
-        case "mne": return .MNE
-        case "nga": return .NGA
-        case "gy": return .GUY
-        case "pl": return .POL
-        case "lt": return .LTU
-        case "ni": return .NIC
-        case "is": return .ISL
-        case "la": return .LAO
-        case "bt": return .BTN
-        case "pw": return .PLW
-        case "hk": return .HKG
-        case "cz": return .CZE
-        case "dz": return .DZA
-        case "ci": return .CIV
-        case "gl": return .GRL
-        case "ms": return .MSR
-        case "cu": return .CUB
-        case "bw": return .BWA
-        case "no": return .NOR
-        case "sz": return .SWZ
-        case "fi": return .FIN
-        case "ug": return .UGA
-        case "al": return .ALB
-        case "ky": return .CYM
-        case "er": return .ERI
-        case "bz": return .BLZ
-        case "mp": return .MNP
-        case "tr": return .TUR
-        case "hu": return .HUN
-        case "sj": return .SJM
-        case "ve": return .VEN
-        case "eg": return .EGY
-        case "nr": return .NRU
-        case "tw": return .TWN
-        case "mx": return .MEX
-        case "aw": return .ABW
-        case "vg": return .VGB
-        case "ga": return .GAB
-        case "ca": return .CAN
-        case "im": return .IMN
-        case "gu": return .GUM
-        case "sn": return .SEN
-        case "gi": return .GIB
-        case "ck": return .COK
-        case "tv": return .TUV
-        case "bb": return .BRB
-        case "bi": return .BDI
-        case "bl": return .BLM
-        case "ss": return .SSD
-        case "sc": return .SYC
-        case "gh": return .GHA
-        case "lv": return .LVA
-        case "na": return .NAM
-        case "bn": return .BRN
-        case "nl": return .NLD
-        case "jo": return .JOR
-        case "gp": return .GLP
-        case "ch": return .CHE
-        case "ai": return .AIA
-        case "sk": return .SVK
-        case "km": return .COM
-        case "ie": return .IRL
-        case "sh": return .SHN
-        case "bv": return .BVT
-        case "mt": return .MLT
-        case "sg": return .SGP
-        case "to": return .TON
-        case "tg": return .TGO
-        case "nz": return .NZL
-        case "be": return .BEL
-        case "sl": return .SLE
-        case "jp": return .JPN
-        case "vu": return .VUT
-        case "bm": return .BMU
-        case "mo": return .MAC
-        case "np": return .NPL
-        case "mv": return .MDV
-        case "kg": return .KGZ
-        case "tn": return .TUN
-        case "pt": return .PRT
-        case "tt": return .TTO
-        case "in": return .IND
-        case "py": return .PRY
-        case "ne": return .NER
-        case "li": return .LIE
-        case "bs": return .BHS
-        case "kz": return .KAZ
-        case "dk": return .DNK
-        case "cr": return .CRI
-        case "ph": return .PHL
-        case "nf": return .NFK
-        case "bq": return .BES
-        case "lb": return .LBN
-        case "fo": return .FRO
-        case "do": return .DOM
-        case "by": return .BLR
-        case "cn": return .CHN
-        case "va": return .VAT
-        case "gd": return .GRD
-        case "br": return .BRA
-        case "gm": return .GMB
-        case "mn": return .MNG
-        case "td": return .TCD
-        case "mw": return .MWI
-        case "lr": return .LBR
-        case "mz": return .MOZ
-        case "ao": return .AGO
-        case "kn": return .KNA
-        case "ag": return .ATG
-        case "uy": return .URY
-        case "gr": return .GRC
-        case "am": return .ARM
-        case "hm": return .HMD
-        case "es": return .ESP
-        case "cw": return .CUW
-        case "cv": return .CPV
-        case "cd": return .COD
-        case "ml": return .MLI
-        case "dm": return .DMA
-        case "kh": return .KHM
-        case "au": return .AUS
-        case "cg": return .COG
-        case "bj": return .BEN
-        case "fm": return .FSM
-        case "ps": return .PSE
-        case "ae": return .ARE
-        case "gn": return .GIN
-        case "bf": return .BFA
-        case "iq": return .IRQ
-        case "bh": return .BHR
-        case "at": return .AUT
-        case "io": return .IOT
-        case "so": return .SOM
-        case "af": return .AFG
-        case "za": return .ZAF
-        case "dj": return .DJI
-        case "hn": return .HND
-        case "mh": return .MHL
-        case "ru": return .RUS
-        case "vc": return .VCT
-        case "ee": return .EST
-        case "gb": return .GBR
-        case "qa": return .QAT
-        case "mq": return .MTQ
-        case "pe": return .PER
-        case "ec": return .ECU
-        case "rs": return .SRB
-        case "jm": return .JAM
-        case "mk": return .MKD
-        case "co": return .COL
-        case "kr": return .KOR
-        case "tl": return .TLS
-        case "lc": return .LCA
-        case "tz": return .TZA
-        case "sm": return .SMR
-        case "ht": return .HTI
-        case "gt": return .GTM
-        case "ls": return .LSO
-        case "de": return .DEU
-        case "mm": return .MMR
-        case "id": return .IDN
-        case "nc": return .NCL
-        case "pk": return .PAK
-        case "hr": return .HRV
-        case "eh": return .ESH
-        case "fk": return .FLK
-        case "pa": return .PAN
-        case "ir": return .IRN
-        case "ad": return .AND
-        case "um": return .UMI
-        case "si": return .SVN
-        case "ba": return .BIH
-        case "fr": return .FRA
-        case "tc": return .TCA
-        case "kw": return .KWT
-        case "st": return .STP
-        case "an": return .ANT
-        case "tm": return .TKM
-        case "tk": return .TKL
-        case "cy": return .CYP
-        case "et": return .ETH
-        case "kp": return .PRK
-        case "gs": return .SGS
-        case "gg": return .GGY
-        case "ye": return .YEM
-        case "mu": return .MUS
-        case "az": return .AZE
-        case "gf": return .GUF
-        case "cx": return .CXR
-        case "ke": return .KEN
-        case "lk": return .LKA
-        case "as": return .ASM
-        case "pf": return .PYF
-        case "rw": return .RWA
-        case "tf": return .ATF
-        case "mg": return .MDG
-        case "mr": return .MRT
-        case "sx": return .SXM
-        case "fj": return .FJI
-        case "pg": return .PNG
-        case "lu": return .LUX
-        case "md": return .MDA
-        case "il": return .ISR
-        case "bo": return .BOL
-        case "sa": return .SAU
-        case "se": return .SWE
-        case "pm": return .SPM
-        case "us": return .USA
-        case "cf": return .CAF
-        case "sd": return .SDN
-        case "sb": return .SLB
-        case "zm": return .ZMB
-        case "cc": return .CCK
-        case "ax": return .ALA
-        case "ki": return .KIR
-        case "my": return .MYS
-        case "yt": return .MYT
-        case "mc": return .MCO
-        case "pr": return .PRI
-        case "ro": return .ROU
-        case "vn": return .VNM
-        case "th": return .THA
-        case "vi": return .VIR
-        case "aq": return .ATA
-        case "ar": return .ARG
-        case "bg": return .BGR
-        case "cl": return .CHL
-        case "tj": return .TJK
-        case "ws": return .WSM
-        case "nu": return .NIU
-        case "it": return .ITA
-        case "ge": return .GEO
-        case "wf": return .WLF
-        case "je": return .JEY
-        case "gq": return .GNQ
-        case "cm": return .CMR
-        case "gw": return .GNB
-        case "re": return .REU
-        case "zw": return .ZWE
-        case "ua": return .UKR
-        case "pn": return .PCN
-        case "ma": return .MAR
-        case "uz": return .UZB
-        case "bd": return .BGD
-        case "mf": return .MAF
-        case "sr": return .SUR
-        case "sy": return .SYR
-        case "sv": return .SLV
-        case "ly": return .LBY
-        case "om": return .OMN
-        case "me": return .MNE
-        case "ng": return .NGA
-        default: return .Unknown
+    public static func fromISO3166(_ s: String) -> ISO3166.Country {
+        switch (s.lowercased()) {
+        case "guy": return .guy
+        case "pol": return .pol
+        case "ltu": return .ltu
+        case "nic": return .nic
+        case "isl": return .isl
+        case "lao": return .lao
+        case "btn": return .btn
+        case "plw": return .plw
+        case "hkg": return .hkg
+        case "cze": return .cze
+        case "dza": return .dza
+        case "civ": return .civ
+        case "grl": return .grl
+        case "msr": return .msr
+        case "cub": return .cub
+        case "bwa": return .bwa
+        case "nor": return .nor
+        case "swz": return .swz
+        case "fin": return .fin
+        case "uga": return .uga
+        case "alb": return .alb
+        case "cym": return .cym
+        case "eri": return .eri
+        case "blz": return .blz
+        case "mnp": return .mnp
+        case "tur": return .tur
+        case "hun": return .hun
+        case "sjm": return .sjm
+        case "ven": return .ven
+        case "egy": return .egy
+        case "nru": return .nru
+        case "twn": return .twn
+        case "mex": return .mex
+        case "abw": return .abw
+        case "vgb": return .vgb
+        case "gab": return .gab
+        case "can": return .can
+        case "imn": return .imn
+        case "gum": return .gum
+        case "sen": return .sen
+        case "gib": return .gib
+        case "cok": return .cok
+        case "tuv": return .tuv
+        case "brb": return .brb
+        case "bdi": return .bdi
+        case "blm": return .blm
+        case "ssd": return .ssd
+        case "syc": return .syc
+        case "gha": return .gha
+        case "lva": return .lva
+        case "nam": return .nam
+        case "brn": return .brn
+        case "nld": return .nld
+        case "jor": return .jor
+        case "glp": return .glp
+        case "che": return .che
+        case "aia": return .aia
+        case "svk": return .svk
+        case "com": return .com
+        case "irl": return .irl
+        case "shn": return .shn
+        case "bvt": return .bvt
+        case "mlt": return .mlt
+        case "sgp": return .sgp
+        case "ton": return .ton
+        case "tgo": return .tgo
+        case "nzl": return .nzl
+        case "bel": return .bel
+        case "sle": return .sle
+        case "jpn": return .jpn
+        case "vut": return .vut
+        case "bmu": return .bmu
+        case "mac": return .mac
+        case "npl": return .npl
+        case "mdv": return .mdv
+        case "kgz": return .kgz
+        case "tun": return .tun
+        case "prt": return .prt
+        case "tto": return .tto
+        case "ind": return .ind
+        case "pry": return .pry
+        case "ner": return .ner
+        case "lie": return .lie
+        case "bhs": return .bhs
+        case "kaz": return .kaz
+        case "dnk": return .dnk
+        case "cri": return .cri
+        case "phl": return .phl
+        case "nfk": return .nfk
+        case "bes": return .bes
+        case "lbn": return .lbn
+        case "fro": return .fro
+        case "dom": return .dom
+        case "blr": return .blr
+        case "chn": return .chn
+        case "vat": return .vat
+        case "grd": return .grd
+        case "bra": return .bra
+        case "gmb": return .gmb
+        case "mng": return .mng
+        case "tcd": return .tcd
+        case "mwi": return .mwi
+        case "lbr": return .lbr
+        case "moz": return .moz
+        case "ago": return .ago
+        case "kna": return .kna
+        case "atg": return .atg
+        case "ury": return .ury
+        case "grc": return .grc
+        case "arm": return .arm
+        case "hmd": return .hmd
+        case "esp": return .esp
+        case "cuw": return .cuw
+        case "cpv": return .cpv
+        case "cod": return .cod
+        case "mli": return .mli
+        case "dma": return .dma
+        case "khm": return .khm
+        case "aus": return .aus
+        case "cog": return .cog
+        case "ben": return .ben
+        case "fsm": return .fsm
+        case "pse": return .pse
+        case "are": return .are
+        case "gin": return .gin
+        case "bfa": return .bfa
+        case "irq": return .irq
+        case "bhr": return .bhr
+        case "aut": return .aut
+        case "iot": return .iot
+        case "som": return .som
+        case "afg": return .afg
+        case "zaf": return .zaf
+        case "dji": return .dji
+        case "hnd": return .hnd
+        case "mhl": return .mhl
+        case "rus": return .rus
+        case "vct": return .vct
+        case "est": return .est
+        case "gbr": return .gbr
+        case "qat": return .qat
+        case "mtq": return .mtq
+        case "per": return .per
+        case "ecu": return .ecu
+        case "srb": return .srb
+        case "jam": return .jam
+        case "mkd": return .mkd
+        case "col": return .col
+        case "kor": return .kor
+        case "tls": return .tls
+        case "lca": return .lca
+        case "tza": return .tza
+        case "smr": return .smr
+        case "hti": return .hti
+        case "gtm": return .gtm
+        case "lso": return .lso
+        case "deu": return .deu
+        case "mmr": return .mmr
+        case "idn": return .idn
+        case "ncl": return .ncl
+        case "pak": return .pak
+        case "hrv": return .hrv
+        case "esh": return .esh
+        case "flk": return .flk
+        case "pan": return .pan
+        case "irn": return .irn
+        case "and": return .and
+        case "umi": return .umi
+        case "svn": return .svn
+        case "bih": return .bih
+        case "fra": return .fra
+        case "tca": return .tca
+        case "kwt": return .kwt
+        case "stp": return .stp
+        case "ant": return .ant
+        case "tkm": return .tkm
+        case "tkl": return .tkl
+        case "cyp": return .cyp
+        case "eth": return .eth
+        case "prk": return .prk
+        case "sgs": return .sgs
+        case "ggy": return .ggy
+        case "yem": return .yem
+        case "mus": return .mus
+        case "aze": return .aze
+        case "guf": return .guf
+        case "cxr": return .cxr
+        case "ken": return .ken
+        case "lka": return .lka
+        case "asm": return .asm
+        case "pyf": return .pyf
+        case "rwa": return .rwa
+        case "atf": return .atf
+        case "mdg": return .mdg
+        case "mrt": return .mrt
+        case "sxm": return .sxm
+        case "fji": return .fji
+        case "png": return .png
+        case "lux": return .lux
+        case "mda": return .mda
+        case "isr": return .isr
+        case "bol": return .bol
+        case "sau": return .sau
+        case "swe": return .swe
+        case "spm": return .spm
+        case "usa": return .usa
+        case "caf": return .caf
+        case "sdn": return .sdn
+        case "slb": return .slb
+        case "zmb": return .zmb
+        case "cck": return .cck
+        case "ala": return .ala
+        case "kir": return .kir
+        case "mys": return .mys
+        case "myt": return .myt
+        case "mco": return .mco
+        case "pri": return .pri
+        case "rou": return .rou
+        case "vnm": return .vnm
+        case "tha": return .tha
+        case "vir": return .vir
+        case "ata": return .ata
+        case "arg": return .arg
+        case "bgr": return .bgr
+        case "chl": return .chl
+        case "tjk": return .tjk
+        case "wsm": return .wsm
+        case "niu": return .niu
+        case "ita": return .ita
+        case "geo": return .geo
+        case "wlf": return .wlf
+        case "jey": return .jey
+        case "gnq": return .gnq
+        case "cmr": return .cmr
+        case "gnb": return .gnb
+        case "reu": return .reu
+        case "zwe": return .zwe
+        case "ukr": return .ukr
+        case "pcn": return .pcn
+        case "mar": return .mar
+        case "uzb": return .uzb
+        case "bgd": return .bgd
+        case "maf": return .maf
+        case "sur": return .sur
+        case "syr": return .syr
+        case "slv": return .slv
+        case "lby": return .lby
+        case "omn": return .omn
+        case "mne": return .mne
+        case "nga": return .nga
+        case "gy": return .guy
+        case "pl": return .pol
+        case "lt": return .ltu
+        case "ni": return .nic
+        case "is": return .isl
+        case "la": return .lao
+        case "bt": return .btn
+        case "pw": return .plw
+        case "hk": return .hkg
+        case "cz": return .cze
+        case "dz": return .dza
+        case "ci": return .civ
+        case "gl": return .grl
+        case "ms": return .msr
+        case "cu": return .cub
+        case "bw": return .bwa
+        case "no": return .nor
+        case "sz": return .swz
+        case "fi": return .fin
+        case "ug": return .uga
+        case "al": return .alb
+        case "ky": return .cym
+        case "er": return .eri
+        case "bz": return .blz
+        case "mp": return .mnp
+        case "tr": return .tur
+        case "hu": return .hun
+        case "sj": return .sjm
+        case "ve": return .ven
+        case "eg": return .egy
+        case "nr": return .nru
+        case "tw": return .twn
+        case "mx": return .mex
+        case "aw": return .abw
+        case "vg": return .vgb
+        case "ga": return .gab
+        case "ca": return .can
+        case "im": return .imn
+        case "gu": return .gum
+        case "sn": return .sen
+        case "gi": return .gib
+        case "ck": return .cok
+        case "tv": return .tuv
+        case "bb": return .brb
+        case "bi": return .bdi
+        case "bl": return .blm
+        case "ss": return .ssd
+        case "sc": return .syc
+        case "gh": return .gha
+        case "lv": return .lva
+        case "na": return .nam
+        case "bn": return .brn
+        case "nl": return .nld
+        case "jo": return .jor
+        case "gp": return .glp
+        case "ch": return .che
+        case "ai": return .aia
+        case "sk": return .svk
+        case "km": return .com
+        case "ie": return .irl
+        case "sh": return .shn
+        case "bv": return .bvt
+        case "mt": return .mlt
+        case "sg": return .sgp
+        case "to": return .ton
+        case "tg": return .tgo
+        case "nz": return .nzl
+        case "be": return .bel
+        case "sl": return .sle
+        case "jp": return .jpn
+        case "vu": return .vut
+        case "bm": return .bmu
+        case "mo": return .mac
+        case "np": return .npl
+        case "mv": return .mdv
+        case "kg": return .kgz
+        case "tn": return .tun
+        case "pt": return .prt
+        case "tt": return .tto
+        case "in": return .ind
+        case "py": return .pry
+        case "ne": return .ner
+        case "li": return .lie
+        case "bs": return .bhs
+        case "kz": return .kaz
+        case "dk": return .dnk
+        case "cr": return .cri
+        case "ph": return .phl
+        case "nf": return .nfk
+        case "bq": return .bes
+        case "lb": return .lbn
+        case "fo": return .fro
+        case "do": return .dom
+        case "by": return .blr
+        case "cn": return .chn
+        case "va": return .vat
+        case "gd": return .grd
+        case "br": return .bra
+        case "gm": return .gmb
+        case "mn": return .mng
+        case "td": return .tcd
+        case "mw": return .mwi
+        case "lr": return .lbr
+        case "mz": return .moz
+        case "ao": return .ago
+        case "kn": return .kna
+        case "ag": return .atg
+        case "uy": return .ury
+        case "gr": return .grc
+        case "am": return .arm
+        case "hm": return .hmd
+        case "es": return .esp
+        case "cw": return .cuw
+        case "cv": return .cpv
+        case "cd": return .cod
+        case "ml": return .mli
+        case "dm": return .dma
+        case "kh": return .khm
+        case "au": return .aus
+        case "cg": return .cog
+        case "bj": return .ben
+        case "fm": return .fsm
+        case "ps": return .pse
+        case "ae": return .are
+        case "gn": return .gin
+        case "bf": return .bfa
+        case "iq": return .irq
+        case "bh": return .bhr
+        case "at": return .aut
+        case "io": return .iot
+        case "so": return .som
+        case "af": return .afg
+        case "za": return .zaf
+        case "dj": return .dji
+        case "hn": return .hnd
+        case "mh": return .mhl
+        case "ru": return .rus
+        case "vc": return .vct
+        case "ee": return .est
+        case "gb": return .gbr
+        case "qa": return .qat
+        case "mq": return .mtq
+        case "pe": return .per
+        case "ec": return .ecu
+        case "rs": return .srb
+        case "jm": return .jam
+        case "mk": return .mkd
+        case "co": return .col
+        case "kr": return .kor
+        case "tl": return .tls
+        case "lc": return .lca
+        case "tz": return .tza
+        case "sm": return .smr
+        case "ht": return .hti
+        case "gt": return .gtm
+        case "ls": return .lso
+        case "de": return .deu
+        case "mm": return .mmr
+        case "id": return .idn
+        case "nc": return .ncl
+        case "pk": return .pak
+        case "hr": return .hrv
+        case "eh": return .esh
+        case "fk": return .flk
+        case "pa": return .pan
+        case "ir": return .irn
+        case "ad": return .and
+        case "um": return .umi
+        case "si": return .svn
+        case "ba": return .bih
+        case "fr": return .fra
+        case "tc": return .tca
+        case "kw": return .kwt
+        case "st": return .stp
+        case "an": return .ant
+        case "tm": return .tkm
+        case "tk": return .tkl
+        case "cy": return .cyp
+        case "et": return .eth
+        case "kp": return .prk
+        case "gs": return .sgs
+        case "gg": return .ggy
+        case "ye": return .yem
+        case "mu": return .mus
+        case "az": return .aze
+        case "gf": return .guf
+        case "cx": return .cxr
+        case "ke": return .ken
+        case "lk": return .lka
+        case "as": return .asm
+        case "pf": return .pyf
+        case "rw": return .rwa
+        case "tf": return .atf
+        case "mg": return .mdg
+        case "mr": return .mrt
+        case "sx": return .sxm
+        case "fj": return .fji
+        case "pg": return .png
+        case "lu": return .lux
+        case "md": return .mda
+        case "il": return .isr
+        case "bo": return .bol
+        case "sa": return .sau
+        case "se": return .swe
+        case "pm": return .spm
+        case "us": return .usa
+        case "cf": return .caf
+        case "sd": return .sdn
+        case "sb": return .slb
+        case "zm": return .zmb
+        case "cc": return .cck
+        case "ax": return .ala
+        case "ki": return .kir
+        case "my": return .mys
+        case "yt": return .myt
+        case "mc": return .mco
+        case "pr": return .pri
+        case "ro": return .rou
+        case "vn": return .vnm
+        case "th": return .tha
+        case "vi": return .vir
+        case "aq": return .ata
+        case "ar": return .arg
+        case "bg": return .bgr
+        case "cl": return .chl
+        case "tj": return .tjk
+        case "ws": return .wsm
+        case "nu": return .niu
+        case "it": return .ita
+        case "ge": return .geo
+        case "wf": return .wlf
+        case "je": return .jey
+        case "gq": return .gnq
+        case "cm": return .cmr
+        case "gw": return .gnb
+        case "re": return .reu
+        case "zw": return .zwe
+        case "ua": return .ukr
+        case "pn": return .pcn
+        case "ma": return .mar
+        case "uz": return .uzb
+        case "bd": return .bgd
+        case "mf": return .maf
+        case "sr": return .sur
+        case "sy": return .syr
+        case "sv": return .slv
+        case "ly": return .lby
+        case "om": return .omn
+        case "me": return .mne
+        case "ng": return .nga
+        default: return .unknown
         }
     }
 }
@@ -1057,256 +1053,256 @@ extension ISO3166.Country {
 extension ISO3166.Country {
     public var threeLetterName: String {
         switch self {
-        case .GUY: return "guy"
-        case .POL: return "pol"
-        case .LTU: return "ltu"
-        case .NIC: return "nic"
-        case .ISL: return "isl"
-        case .LAO: return "lao"
-        case .BTN: return "btn"
-        case .PLW: return "plw"
-        case .HKG: return "hkg"
-        case .CZE: return "cze"
-        case .DZA: return "dza"
-        case .CIV: return "civ"
-        case .GRL: return "grl"
-        case .MSR: return "msr"
-        case .CUB: return "cub"
-        case .BWA: return "bwa"
-        case .NOR: return "nor"
-        case .SWZ: return "swz"
-        case .FIN: return "fin"
-        case .UGA: return "uga"
-        case .ALB: return "alb"
-        case .CYM: return "cym"
-        case .ERI: return "eri"
-        case .BLZ: return "blz"
-        case .MNP: return "mnp"
-        case .TUR: return "tur"
-        case .HUN: return "hun"
-        case .SJM: return "sjm"
-        case .VEN: return "ven"
-        case .EGY: return "egy"
-        case .NRU: return "nru"
-        case .TWN: return "twn"
-        case .MEX: return "mex"
-        case .ABW: return "abw"
-        case .VGB: return "vgb"
-        case .GAB: return "gab"
-        case .CAN: return "can"
-        case .IMN: return "imn"
-        case .GUM: return "gum"
-        case .SEN: return "sen"
-        case .GIB: return "gib"
-        case .COK: return "cok"
-        case .TUV: return "tuv"
-        case .BRB: return "brb"
-        case .BDI: return "bdi"
-        case .BLM: return "blm"
-        case .SSD: return "ssd"
-        case .SYC: return "syc"
-        case .GHA: return "gha"
-        case .LVA: return "lva"
-        case .NAM: return "nam"
-        case .BRN: return "brn"
-        case .NLD: return "nld"
-        case .JOR: return "jor"
-        case .GLP: return "glp"
-        case .CHE: return "che"
-        case .AIA: return "aia"
-        case .SVK: return "svk"
-        case .COM: return "com"
-        case .IRL: return "irl"
-        case .SHN: return "shn"
-        case .BVT: return "bvt"
-        case .MLT: return "mlt"
-        case .SGP: return "sgp"
-        case .TON: return "ton"
-        case .TGO: return "tgo"
-        case .NZL: return "nzl"
-        case .BEL: return "bel"
-        case .SLE: return "sle"
-        case .JPN: return "jpn"
-        case .VUT: return "vut"
-        case .BMU: return "bmu"
-        case .MAC: return "mac"
-        case .NPL: return "npl"
-        case .MDV: return "mdv"
-        case .KGZ: return "kgz"
-        case .TUN: return "tun"
-        case .PRT: return "prt"
-        case .TTO: return "tto"
-        case .IND: return "ind"
-        case .PRY: return "pry"
-        case .NER: return "ner"
-        case .LIE: return "lie"
-        case .BHS: return "bhs"
-        case .KAZ: return "kaz"
-        case .DNK: return "dnk"
-        case .CRI: return "cri"
-        case .PHL: return "phl"
-        case .NFK: return "nfk"
-        case .BES: return "bes"
-        case .LBN: return "lbn"
-        case .FRO: return "fro"
-        case .DOM: return "dom"
-        case .BLR: return "blr"
-        case .CHN: return "chn"
-        case .VAT: return "vat"
-        case .GRD: return "grd"
-        case .BRA: return "bra"
-        case .GMB: return "gmb"
-        case .MNG: return "mng"
-        case .TCD: return "tcd"
-        case .MWI: return "mwi"
-        case .LBR: return "lbr"
-        case .MOZ: return "moz"
-        case .AGO: return "ago"
-        case .KNA: return "kna"
-        case .ATG: return "atg"
-        case .URY: return "ury"
-        case .GRC: return "grc"
-        case .ARM: return "arm"
-        case .HMD: return "hmd"
-        case .ESP: return "esp"
-        case .CUW: return "cuw"
-        case .CPV: return "cpv"
-        case .COD: return "cod"
-        case .MLI: return "mli"
-        case .DMA: return "dma"
-        case .KHM: return "khm"
-        case .AUS: return "aus"
-        case .COG: return "cog"
-        case .BEN: return "ben"
-        case .FSM: return "fsm"
-        case .PSE: return "pse"
-        case .ARE: return "are"
-        case .GIN: return "gin"
-        case .BFA: return "bfa"
-        case .IRQ: return "irq"
-        case .BHR: return "bhr"
-        case .AUT: return "aut"
-        case .IOT: return "iot"
-        case .SOM: return "som"
-        case .AFG: return "afg"
-        case .ZAF: return "zaf"
-        case .DJI: return "dji"
-        case .HND: return "hnd"
-        case .MHL: return "mhl"
-        case .RUS: return "rus"
-        case .VCT: return "vct"
-        case .EST: return "est"
-        case .GBR: return "gbr"
-        case .QAT: return "qat"
-        case .MTQ: return "mtq"
-        case .PER: return "per"
-        case .ECU: return "ecu"
-        case .SRB: return "srb"
-        case .JAM: return "jam"
-        case .MKD: return "mkd"
-        case .COL: return "col"
-        case .KOR: return "kor"
-        case .TLS: return "tls"
-        case .LCA: return "lca"
-        case .TZA: return "tza"
-        case .SMR: return "smr"
-        case .HTI: return "hti"
-        case .GTM: return "gtm"
-        case .LSO: return "lso"
-        case .DEU: return "deu"
-        case .MMR: return "mmr"
-        case .IDN: return "idn"
-        case .NCL: return "ncl"
-        case .PAK: return "pak"
-        case .HRV: return "hrv"
-        case .ESH: return "esh"
-        case .FLK: return "flk"
-        case .PAN: return "pan"
-        case .IRN: return "irn"
-        case .AND: return "and"
-        case .UMI: return "umi"
-        case .SVN: return "svn"
-        case .BIH: return "bih"
-        case .FRA: return "fra"
-        case .TCA: return "tca"
-        case .KWT: return "kwt"
-        case .STP: return "stp"
-        case .ANT: return "ant"
-        case .TKM: return "tkm"
-        case .TKL: return "tkl"
-        case .CYP: return "cyp"
-        case .ETH: return "eth"
-        case .PRK: return "prk"
-        case .SGS: return "sgs"
-        case .GGY: return "ggy"
-        case .YEM: return "yem"
-        case .MUS: return "mus"
-        case .AZE: return "aze"
-        case .GUF: return "guf"
-        case .CXR: return "cxr"
-        case .KEN: return "ken"
-        case .LKA: return "lka"
-        case .ASM: return "asm"
-        case .PYF: return "pyf"
-        case .RWA: return "rwa"
-        case .ATF: return "atf"
-        case .MDG: return "mdg"
-        case .MRT: return "mrt"
-        case .SXM: return "sxm"
-        case .FJI: return "fji"
-        case .PNG: return "png"
-        case .LUX: return "lux"
-        case .MDA: return "mda"
-        case .ISR: return "isr"
-        case .BOL: return "bol"
-        case .SAU: return "sau"
-        case .SWE: return "swe"
-        case .SPM: return "spm"
-        case .USA: return "usa"
-        case .CAF: return "caf"
-        case .SDN: return "sdn"
-        case .SLB: return "slb"
-        case .ZMB: return "zmb"
-        case .CCK: return "cck"
-        case .ALA: return "ala"
-        case .KIR: return "kir"
-        case .MYS: return "mys"
-        case .MYT: return "myt"
-        case .MCO: return "mco"
-        case .PRI: return "pri"
-        case .ROU: return "rou"
-        case .VNM: return "vnm"
-        case .THA: return "tha"
-        case .VIR: return "vir"
-        case .ATA: return "ata"
-        case .ARG: return "arg"
-        case .BGR: return "bgr"
-        case .CHL: return "chl"
-        case .TJK: return "tjk"
-        case .WSM: return "wsm"
-        case .NIU: return "niu"
-        case .ITA: return "ita"
-        case .GEO: return "geo"
-        case .WLF: return "wlf"
-        case .JEY: return "jey"
-        case .GNQ: return "gnq"
-        case .CMR: return "cmr"
-        case .GNB: return "gnb"
-        case .REU: return "reu"
-        case .ZWE: return "zwe"
-        case .UKR: return "ukr"
-        case .PCN: return "pcn"
-        case .MAR: return "mar"
-        case .UZB: return "uzb"
-        case .BGD: return "bgd"
-        case .MAF: return "maf"
-        case .SUR: return "sur"
-        case .SYR: return "syr"
-        case .SLV: return "slv"
-        case .LBY: return "lby"
-        case .OMN: return "omn"
-        case .MNE: return "mne"
-        case .NGA: return "nga"
+        case .guy: return "guy"
+        case .pol: return "pol"
+        case .ltu: return "ltu"
+        case .nic: return "nic"
+        case .isl: return "isl"
+        case .lao: return "lao"
+        case .btn: return "btn"
+        case .plw: return "plw"
+        case .hkg: return "hkg"
+        case .cze: return "cze"
+        case .dza: return "dza"
+        case .civ: return "civ"
+        case .grl: return "grl"
+        case .msr: return "msr"
+        case .cub: return "cub"
+        case .bwa: return "bwa"
+        case .nor: return "nor"
+        case .swz: return "swz"
+        case .fin: return "fin"
+        case .uga: return "uga"
+        case .alb: return "alb"
+        case .cym: return "cym"
+        case .eri: return "eri"
+        case .blz: return "blz"
+        case .mnp: return "mnp"
+        case .tur: return "tur"
+        case .hun: return "hun"
+        case .sjm: return "sjm"
+        case .ven: return "ven"
+        case .egy: return "egy"
+        case .nru: return "nru"
+        case .twn: return "twn"
+        case .mex: return "mex"
+        case .abw: return "abw"
+        case .vgb: return "vgb"
+        case .gab: return "gab"
+        case .can: return "can"
+        case .imn: return "imn"
+        case .gum: return "gum"
+        case .sen: return "sen"
+        case .gib: return "gib"
+        case .cok: return "cok"
+        case .tuv: return "tuv"
+        case .brb: return "brb"
+        case .bdi: return "bdi"
+        case .blm: return "blm"
+        case .ssd: return "ssd"
+        case .syc: return "syc"
+        case .gha: return "gha"
+        case .lva: return "lva"
+        case .nam: return "nam"
+        case .brn: return "brn"
+        case .nld: return "nld"
+        case .jor: return "jor"
+        case .glp: return "glp"
+        case .che: return "che"
+        case .aia: return "aia"
+        case .svk: return "svk"
+        case .com: return "com"
+        case .irl: return "irl"
+        case .shn: return "shn"
+        case .bvt: return "bvt"
+        case .mlt: return "mlt"
+        case .sgp: return "sgp"
+        case .ton: return "ton"
+        case .tgo: return "tgo"
+        case .nzl: return "nzl"
+        case .bel: return "bel"
+        case .sle: return "sle"
+        case .jpn: return "jpn"
+        case .vut: return "vut"
+        case .bmu: return "bmu"
+        case .mac: return "mac"
+        case .npl: return "npl"
+        case .mdv: return "mdv"
+        case .kgz: return "kgz"
+        case .tun: return "tun"
+        case .prt: return "prt"
+        case .tto: return "tto"
+        case .ind: return "ind"
+        case .pry: return "pry"
+        case .ner: return "ner"
+        case .lie: return "lie"
+        case .bhs: return "bhs"
+        case .kaz: return "kaz"
+        case .dnk: return "dnk"
+        case .cri: return "cri"
+        case .phl: return "phl"
+        case .nfk: return "nfk"
+        case .bes: return "bes"
+        case .lbn: return "lbn"
+        case .fro: return "fro"
+        case .dom: return "dom"
+        case .blr: return "blr"
+        case .chn: return "chn"
+        case .vat: return "vat"
+        case .grd: return "grd"
+        case .bra: return "bra"
+        case .gmb: return "gmb"
+        case .mng: return "mng"
+        case .tcd: return "tcd"
+        case .mwi: return "mwi"
+        case .lbr: return "lbr"
+        case .moz: return "moz"
+        case .ago: return "ago"
+        case .kna: return "kna"
+        case .atg: return "atg"
+        case .ury: return "ury"
+        case .grc: return "grc"
+        case .arm: return "arm"
+        case .hmd: return "hmd"
+        case .esp: return "esp"
+        case .cuw: return "cuw"
+        case .cpv: return "cpv"
+        case .cod: return "cod"
+        case .mli: return "mli"
+        case .dma: return "dma"
+        case .khm: return "khm"
+        case .aus: return "aus"
+        case .cog: return "cog"
+        case .ben: return "ben"
+        case .fsm: return "fsm"
+        case .pse: return "pse"
+        case .are: return "are"
+        case .gin: return "gin"
+        case .bfa: return "bfa"
+        case .irq: return "irq"
+        case .bhr: return "bhr"
+        case .aut: return "aut"
+        case .iot: return "iot"
+        case .som: return "som"
+        case .afg: return "afg"
+        case .zaf: return "zaf"
+        case .dji: return "dji"
+        case .hnd: return "hnd"
+        case .mhl: return "mhl"
+        case .rus: return "rus"
+        case .vct: return "vct"
+        case .est: return "est"
+        case .gbr: return "gbr"
+        case .qat: return "qat"
+        case .mtq: return "mtq"
+        case .per: return "per"
+        case .ecu: return "ecu"
+        case .srb: return "srb"
+        case .jam: return "jam"
+        case .mkd: return "mkd"
+        case .col: return "col"
+        case .kor: return "kor"
+        case .tls: return "tls"
+        case .lca: return "lca"
+        case .tza: return "tza"
+        case .smr: return "smr"
+        case .hti: return "hti"
+        case .gtm: return "gtm"
+        case .lso: return "lso"
+        case .deu: return "deu"
+        case .mmr: return "mmr"
+        case .idn: return "idn"
+        case .ncl: return "ncl"
+        case .pak: return "pak"
+        case .hrv: return "hrv"
+        case .esh: return "esh"
+        case .flk: return "flk"
+        case .pan: return "pan"
+        case .irn: return "irn"
+        case .and: return "and"
+        case .umi: return "umi"
+        case .svn: return "svn"
+        case .bih: return "bih"
+        case .fra: return "fra"
+        case .tca: return "tca"
+        case .kwt: return "kwt"
+        case .stp: return "stp"
+        case .ant: return "ant"
+        case .tkm: return "tkm"
+        case .tkl: return "tkl"
+        case .cyp: return "cyp"
+        case .eth: return "eth"
+        case .prk: return "prk"
+        case .sgs: return "sgs"
+        case .ggy: return "ggy"
+        case .yem: return "yem"
+        case .mus: return "mus"
+        case .aze: return "aze"
+        case .guf: return "guf"
+        case .cxr: return "cxr"
+        case .ken: return "ken"
+        case .lka: return "lka"
+        case .asm: return "asm"
+        case .pyf: return "pyf"
+        case .rwa: return "rwa"
+        case .atf: return "atf"
+        case .mdg: return "mdg"
+        case .mrt: return "mrt"
+        case .sxm: return "sxm"
+        case .fji: return "fji"
+        case .png: return "png"
+        case .lux: return "lux"
+        case .mda: return "mda"
+        case .isr: return "isr"
+        case .bol: return "bol"
+        case .sau: return "sau"
+        case .swe: return "swe"
+        case .spm: return "spm"
+        case .usa: return "usa"
+        case .caf: return "caf"
+        case .sdn: return "sdn"
+        case .slb: return "slb"
+        case .zmb: return "zmb"
+        case .cck: return "cck"
+        case .ala: return "ala"
+        case .kir: return "kir"
+        case .mys: return "mys"
+        case .myt: return "myt"
+        case .mco: return "mco"
+        case .pri: return "pri"
+        case .rou: return "rou"
+        case .vnm: return "vnm"
+        case .tha: return "tha"
+        case .vir: return "vir"
+        case .ata: return "ata"
+        case .arg: return "arg"
+        case .bgr: return "bgr"
+        case .chl: return "chl"
+        case .tjk: return "tjk"
+        case .wsm: return "wsm"
+        case .niu: return "niu"
+        case .ita: return "ita"
+        case .geo: return "geo"
+        case .wlf: return "wlf"
+        case .jey: return "jey"
+        case .gnq: return "gnq"
+        case .cmr: return "cmr"
+        case .gnb: return "gnb"
+        case .reu: return "reu"
+        case .zwe: return "zwe"
+        case .ukr: return "ukr"
+        case .pcn: return "pcn"
+        case .mar: return "mar"
+        case .uzb: return "uzb"
+        case .bgd: return "bgd"
+        case .maf: return "maf"
+        case .sur: return "sur"
+        case .syr: return "syr"
+        case .slv: return "slv"
+        case .lby: return "lby"
+        case .omn: return "omn"
+        case .mne: return "mne"
+        case .nga: return "nga"
         default: return "Unknown"
         }
     }
@@ -1318,29 +1314,30 @@ extension ISO3166.Country: CustomStringConvertible {
 
 extension ISO3166.Continent: CustomStringConvertible {
     public var description: String {
-        return NSLocalizedString(localizationKey, tableName: nil, bundle: NSBundle(forClass: Continent.self), value: localizationKey, comment: "")
+        return NSLocalizedString(localizationKey, tableName: nil, bundle: Bundle(for: Continent.self), value: localizationKey, comment: "")
     }
-    private var localizationKey: String {
+    fileprivate var localizationKey: String {
         switch (self) {
-        case .NA: return "continent.NorthAmerica"
-        case .AN: return "continent.Antarctica"
-        case .EU: return "continent.Europe"
-        case .AF: return "continent.Africa"
-        case .AS: return "continent.Asia"
-        case .SA: return "continent.SouthAmerica"
-        case .OC: return "continent.Oceania"
+        case .na: return "continent.NorthAmerica"
+        case .an: return "continent.Antarctica"
+        case .eu: return "continent.Europe"
+        case .af: return "continent.Africa"
+        case .as: return "continent.Asia"
+        case .sa: return "continent.SouthAmerica"
+        case .oc: return "continent.Oceania"
         }
     }
 }
 
 extension ISO3166.Country: LocalizedStringConvertible {
     public var localizedDescription: String {
-        let loc = NSLocale.currentLocale()
-        return loc.displayNameForKey(NSLocaleCountryCode,
-            value: threeLetterName) ?? NSLocalizedString("country.Unknown", tableName: nil, bundle: NSBundle(forClass: Continent.self), value: "country.Unknown", comment: "")
+        let loc = NSLocale.current
+        return (loc as NSLocale).displayName(forKey: NSLocale.Key.countryCode,
+            value: threeLetterName) ?? NSLocalizedString("country.Unknown", tableName: nil, bundle: Bundle(for: Continent.self), value: "country.Unknown", comment: "")
     }
 }
 
 extension ISO3166.Continent: LocalizedStringConvertible {
-    public var localizedDescription: String { return String(self) }
+    public var localizedDescription: String { return String(describing: self) }
 }
+

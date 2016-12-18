@@ -12,11 +12,11 @@ import CoreData
 import MoodyModel
 
 
-class RootViewController: UIViewController, ManagedObjectContextSettable, SegueHandlerType {
+class RootViewController: UIViewController, SegueHandler {
 
     enum SegueIdentifier: String {
-        case EmbedNavigation = "embedNavigationController"
-        case EmbedCamera = "embedCamera"
+        case embedNavigation = "embedNavigationController"
+        case embedCamera = "embedCamera"
     }
 
     @IBOutlet weak var hideCameraConstraint: NSLayoutConstraint!
@@ -27,18 +27,16 @@ class RootViewController: UIViewController, ManagedObjectContextSettable, SegueH
         geoLocationController = GeoLocationController(delegate: self)
     }
 
-    override func prepareForSegue(segue: UIStoryboardSegue,
-        sender: AnyObject?)
-    {
-        switch segueIdentifierForSegue(segue) {
-        case .EmbedNavigation:
-            guard let nc = segue.destinationViewController as? UINavigationController,
-                let vc = nc.viewControllers.first as? ManagedObjectContextSettable
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        switch segueIdentifier(for: segue) {
+        case .embedNavigation:
+            guard let nc = segue.destination as? UINavigationController,
+                let vc = nc.viewControllers.first as? RegionsTableViewController
                 else { fatalError("wrong view controller type") }
             vc.managedObjectContext = managedObjectContext
             nc.delegate = self
-        case .EmbedCamera:
-            guard let cameraVC = segue.destinationViewController as? CameraViewController else { fatalError("must be camera view controller") }
+        case .embedCamera:
+            guard let cameraVC = segue.destination as? CameraViewController else { fatalError("must be camera view controller") }
             cameraViewController = cameraVC
             cameraViewController?.delegate = self
         }
@@ -47,20 +45,20 @@ class RootViewController: UIViewController, ManagedObjectContextSettable, SegueH
 
     // MARK: Private
 
-    private var geoLocationController: GeoLocationController!
-    private var cameraViewController: CameraViewController?
+    fileprivate var geoLocationController: GeoLocationController!
+    fileprivate var cameraViewController: CameraViewController?
 
-    private func setCameraVisibility(visible: Bool) {
-        hideCameraConstraint.active = !visible
-        UIView.animateWithDuration(0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .BeginFromCurrentState, animations: {
+    fileprivate func setCameraVisibility(_ visible: Bool) {
+        hideCameraConstraint.isActive = !visible
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .beginFromCurrentState, animations: {
             self.view.layoutIfNeeded()
         }, completion: nil)
     }
 
-    private func saveMoodWithImage(image: UIImage) {
+    fileprivate func saveMoodWithImage(_ image: UIImage) {
         geoLocationController.retrieveCurrentLocation { location, placemark in
             self.managedObjectContext.performChanges {
-                Mood.insertIntoContext(self.managedObjectContext, image: image, location: location, placemark: placemark)
+                let _ = Mood.insert(into: self.managedObjectContext, image: image, location: location, placemark: placemark)
             }
         }
     }
@@ -69,7 +67,7 @@ class RootViewController: UIViewController, ManagedObjectContextSettable, SegueH
 
 extension RootViewController: UINavigationControllerDelegate {
 
-    func navigationController(navigationController: UINavigationController, willShowViewController viewController: UIViewController, animated: Bool) {
+    func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
         let cameraVisible = (viewController as? MoodDetailViewController) == nil
         setCameraVisibility(cameraVisible)
     }
@@ -79,17 +77,18 @@ extension RootViewController: UINavigationControllerDelegate {
 extension RootViewController: GeoLocationControllerDelegate {
 
     func geoLocationDidChangeAuthorizationStatus(authorized: Bool) {
-        cameraViewController?.locationAuthorized = authorized
+        cameraViewController?.locationIsAuthorized = authorized
     }
 
 }
 
 extension RootViewController: CameraViewControllerDelegate {
 
-    func didTakeImage(image: UIImage) {
+    func didCapture(_ image: UIImage) {
         saveMoodWithImage(image)
     }
 
 
 }
+
 

@@ -1,19 +1,18 @@
 //
-//  GeographicRegion.swift
+//  Region.swift
 //  Moody
 //
 //  Created by Florian on 03/09/15.
 //  Copyright © 2015 objc.io. All rights reserved.
 //
 
+import CoreData
 import CoreDataHelpers
 
 
-public class GeographicRegion: ManagedObject {}
+public class Region: NSManagedObject {}
 
-extension GeographicRegion: ManagedObjectType {
-    public static var entityName: String { return "GeographicRegion" }
-
+extension Region: Managed {
     public static var defaultSortDescriptors: [NSSortDescriptor] {
         return [NSSortDescriptor(key: "updatedAt", ascending: false)]
     }
@@ -24,6 +23,7 @@ extension GeographicRegion: ManagedObjectType {
 }
 
 
-extension GeographicRegion: DelayedDeletable {
-    @NSManaged public var markedForDeletionDate: NSDate?
+extension Region: DelayedDeletable {
+    @NSManaged public var markedForDeletionDate: Date?
 }
+

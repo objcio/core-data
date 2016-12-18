@@ -6,6 +6,7 @@
 //  Copyright © 2015 objc.io. All rights reserved.
 //
 
+import CoreData
 import CoreDataHelpers
 
 
@@ -36,9 +37,9 @@ extension RemoteDeletable {
 }
 
 
-extension RemoteDeletable where Self: ManagedObject {
+extension RemoteDeletable where Self: NSManagedObject {
     public var changedForRemoteDeletion: Bool {
-        return changedValues()[MarkedForRemoteDeletionKey] as? Bool == true
+        return changedValue(forKey: MarkedForRemoteDeletionKey) as? Bool == true
     }
 }
 
@@ -48,4 +49,5 @@ extension RemoteDeletable where Self: DelayedDeletable {
         return NSCompoundPredicate(andPredicateWithSubpredicates: [notMarkedForLocalDeletionPredicate, notMarkedForRemoteDeletionPredicate])
     }
 }
+
 

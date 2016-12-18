@@ -14,24 +14,24 @@ import CloudKit
 public protocol UserOwnable: class {
     var creatorID: String? { get }
     var belongsToCurrentUser: Bool { get }
-    static func predicateForOwnedByUserWithIdentifier(id: String?) -> NSPredicate
+    static func predicateForOwnedByUser(withIdentifier identifier: String?) -> NSPredicate
 }
 
 private let CreatorIDKey = "creatorID"
 
 extension UserOwnable {
-    public static func predicateForOwnedByUserWithIdentifier(id: String?) -> NSPredicate {
+    public static func predicateForOwnedByUser(withIdentifier identifier: String?) -> NSPredicate {
         let noIDPredicate = NSPredicate(format: "%K = NULL", CreatorIDKey)
-        let defaultOwnerPredicate = NSPredicate(format: "%K = %@", CreatorIDKey, CKOwnerDefaultName)
-        guard let id = id else { return NSCompoundPredicate(orPredicateWithSubpredicates: [noIDPredicate, defaultOwnerPredicate]) }
+        let defaultOwnerPredicate = NSPredicate(format: "%K = %@", CreatorIDKey, CKCurrentUserDefaultName)
+        guard let id = identifier else { return NSCompoundPredicate(orPredicateWithSubpredicates: [noIDPredicate, defaultOwnerPredicate]) }
         let idPredicate = NSPredicate(format: "%K = %@", CreatorIDKey, id)
         return NSCompoundPredicate(orPredicateWithSubpredicates: [noIDPredicate, defaultOwnerPredicate, idPredicate])
     }
 }
 
-extension UserOwnable where Self: ManagedObject {
+extension UserOwnable where Self: NSManagedObject {
     public var belongsToCurrentUser: Bool {
-        return self.dynamicType.predicateForOwnedByUserWithIdentifier(managedObjectContext?.userID).evaluateWithObject(self)
+        return type(of: self).predicateForOwnedByUser(withIdentifier: managedObjectContext?.userID).evaluate(with: self)
     }
 }
 
@@ -40,10 +40,10 @@ extension Mood: UserOwnable {}
 
 
 extension Country {
-    public static func predicateForContainingMoodsWithCreatorIdentifier(id: String?) -> NSPredicate {
+    public static func predicateForContainingMoods(withCreatorIdentifier identifier: String?) -> NSPredicate {
         let noIDPredicate = NSPredicate(format: "ANY moods.%K = NULL", CreatorIDKey)
-        let defaultOwnerPredicate = NSPredicate(format: "ANY moods.%K = %@", CreatorIDKey, CKOwnerDefaultName)
-        guard let id = id else { return NSCompoundPredicate(orPredicateWithSubpredicates: [noIDPredicate, defaultOwnerPredicate]) }
+        let defaultOwnerPredicate = NSPredicate(format: "ANY moods.%K = %@", CreatorIDKey, CKCurrentUserDefaultName)
+        guard let id = identifier else { return NSCompoundPredicate(orPredicateWithSubpredicates: [noIDPredicate, defaultOwnerPredicate]) }
         let idPredicate = NSPredicate(format: "ANY moods.%K = %@", CreatorIDKey, id)
         return NSCompoundPredicate(orPredicateWithSubpredicates: [noIDPredicate, defaultOwnerPredicate, idPredicate])
     }
@@ -59,8 +59,9 @@ extension NSManagedObjectContext {
         }
         set {
             guard newValue != userID else { return }
-            setMetaData(newValue, forKey: UserIDKey)
+            setMetaData(object: newValue.map { $0 as NSString }, forKey: UserIDKey)
         }
     }
 }
+
 

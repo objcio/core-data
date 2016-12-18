@@ -10,19 +10,20 @@ import CoreData
 @testable import Migrations
 
 
-extension NSURL {
-    static func testStoreURLForVersion(version: ModelVersion) -> NSURL {
-        return NSBundle(forClass: MigrationsTests.self).URLForResource("\(version.name)", withExtension: "moody")!
+extension URL {
+    static func testStoreURL(for version: Version) -> URL {
+        return Bundle(for: MigrationsTests.self).url(forResource: version.name, withExtension: "moody")!
     }
 }
 
 
 extension NSManagedObjectContext {
-    convenience init(model: NSManagedObjectModel, storeURL: NSURL) {
+    convenience init(model: NSManagedObjectModel, storeURL: URL) {
         let psc = NSPersistentStoreCoordinator(managedObjectModel: model)
-        try! psc.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: storeURL, options: nil)
-        self.init(concurrencyType: .MainQueueConcurrencyType)
+        try! psc.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil, at: storeURL, options: nil)
+        self.init(concurrencyType: .mainQueueConcurrencyType)
         persistentStoreCoordinator = psc
     }
 }
+
 

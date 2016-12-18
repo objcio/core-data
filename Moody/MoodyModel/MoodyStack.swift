@@ -10,26 +10,35 @@ import CoreData
 import CoreDataHelpers
 
 private let ubiquityToken: String = {
-    guard let token = NSFileManager.defaultManager().ubiquityIdentityToken else { return "unknown" }
-    return NSKeyedArchiver.archivedDataWithRootObject(token).base64EncodedStringWithOptions(NSDataBase64EncodingOptions())
+    guard let token = FileManager.default.ubiquityIdentityToken else { return "unknown" }
+    let string = NSKeyedArchiver.archivedData(withRootObject: token).base64EncodedString(options: [])
+    return string.removingCharacters(in: CharacterSet.letters.inverted)
 }()
-private let StoreURL = NSURL.documentsURL.URLByAppendingPathComponent("\(ubiquityToken).moody")
+private let storeURL = URL.documents.appendingPathComponent("\(ubiquityToken).moody")
 
+private let moodyContainer: NSPersistentContainer = {
+    let container = NSPersistentContainer(name: "Moody", managedObjectModel: MoodyModelVersion.current.managedObjectModel())
+    let storeDescription = NSPersistentStoreDescription(url: storeURL)
+    storeDescription.shouldMigrateStoreAutomatically = false
+    container.persistentStoreDescriptions = [storeDescription]
+    return container
+}()
 
-public func createMoodyMainContext(progress: NSProgress? = nil, migrationCompletion: NSManagedObjectContext -> () = { _ in }) -> NSManagedObjectContext? {
+public func createMoodyContainer(migrating: Bool = false, progress: Progress? = nil, completion: @escaping (NSPersistentContainer) -> ()) {
     Mood.registerValueTransformers()
-    let version = MoodyModelVersion(storeURL: StoreURL)
-    guard version == nil || version == MoodyModelVersion.CurrentVersion else {
-        dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0)) {
-            let context = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType, modelVersion: MoodyModelVersion.CurrentVersion, storeURL: StoreURL, progress: progress)
-            dispatch_async(dispatch_get_main_queue()) {
-                migrationCompletion(context)
+    moodyContainer.loadPersistentStores { _, error in
+        if error == nil {
+            moodyContainer.viewContext.mergePolicy = MoodyMergePolicy(mode: .local)
+            DispatchQueue.main.async { completion(moodyContainer) }
+        } else {
+            guard !migrating else { fatalError("was unable to migrate store") }
+            DispatchQueue.global(qos: .userInitiated).async {
+                migrateStore(from: storeURL, to: storeURL, targetVersion: MoodyModelVersion.current, deleteSource: true, progress: progress)
+                createMoodyContainer(migrating: true, progress: progress,
+                     completion: completion)
             }
         }
-        return nil
     }
-    let context = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType, modelVersion: MoodyModelVersion.CurrentVersion, storeURL: StoreURL)
-    context.mergePolicy = MoodyMergePolicy(mode: .Local)
-    return context
 }
+
 

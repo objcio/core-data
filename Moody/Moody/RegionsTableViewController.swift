@@ -12,13 +12,13 @@ import CoreData
 import CoreDataHelpers
 
 
-class RegionsTableViewController: UITableViewController, ManagedObjectContextSettable, SegueHandlerType {
+class RegionsTableViewController: UITableViewController, SegueHandler {
 
     enum SegueIdentifier: String {
-        case ShowAllMoods = "showAllMoods"
-        case ShowYourMoods = "showYourMoods"
-        case ShowCountryMoods = "showCountryMoods"
-        case ShowContinentMoods = "showContinentMoods"
+        case showAllMoods = "showAllMoods"
+        case showYourMoods = "showYourMoods"
+        case showCountryMoods = "showCountryMoods"
+        case showContinentMoods = "showContinentMoods"
     }
 
     @IBOutlet weak var filterSegmentedControl: UISegmentedControl!
@@ -26,191 +26,178 @@ class RegionsTableViewController: UITableViewController, ManagedObjectContextSet
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.title = localized(.Regions_title)
+        navigationItem.title = localized(.regions_title)
         setupTableView()
         prepareDefaultNavigationStack()
     }
 
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        guard let vc = segue.destinationViewController as? MoodsContainerViewController else { fatalError("Wrong view controller type") }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let vc = segue.destination as? MoodsContainerViewController else { fatalError("Wrong view controller type") }
         vc.managedObjectContext = managedObjectContext
-        switch segueIdentifierForSegue(segue) {
-        case .ShowAllMoods:
-            vc.moodSource = .All
-        case .ShowYourMoods:
-            vc.moodSource = .Yours(managedObjectContext.userID)
-        case .ShowCountryMoods:
-            guard let c = dataSource?.selectedObject as? Country else { fatalError("Must be a country") }
-            vc.moodSource = .Country(c)
-        case .ShowContinentMoods:
-            guard let c = dataSource?.selectedObject as? Continent else { fatalError("Must be a continent") }
-            vc.moodSource = .Continent(c)
+        switch segueIdentifier(for: segue) {
+        case .showAllMoods:
+            vc.moodSource = .all
+        case .showYourMoods:
+            vc.moodSource = .yours(managedObjectContext.userID)
+        case .showCountryMoods:
+            guard let country = dataSource?.selectedObject as? Country else { fatalError("Must be a country") }
+            vc.moodSource = .country(country)
+        case .showContinentMoods:
+            guard let continent = dataSource?.selectedObject as? Continent else { fatalError("Must be a continent") }
+            vc.moodSource = .continent(continent)
         }
     }
 
-    @IBAction func filterChanged(sender: UISegmentedControl) {
+    @IBAction func filterChanged(_ sender: UISegmentedControl) {
         updateDataSource()
     }
 
 
     // MARK: Private
 
-    private typealias RegionsDataProvider = AugmentedFetchedResultsDataProvider<RegionsTableViewController>
-    private var dataProvider: RegionsDataProvider!
-    private var dataSource: TableViewDataSource<RegionsTableViewController, RegionsDataProvider, RegionTableViewCell>!
+    fileprivate var dataSource: TableViewDataSource<NSFetchRequestResult, RegionsTableViewController>!
 
-
-    private func setupTableView() {
+    fileprivate func setupTableView() {
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 44
         tableView.delegate = self
         setupDataSource()
     }
 
-    private func prepareDefaultNavigationStack() {
-        let vc = MoodsContainerViewController.instantiateFromStoryboardForMoodSource(.All, managedObjectContext: managedObjectContext)
+    fileprivate func prepareDefaultNavigationStack() {
+        let vc = MoodsContainerViewController.instantiateFromStoryboard(for: .all, managedObjectContext: managedObjectContext)
         navigationController?.pushViewController(vc, animated: false)
     }
 
-
-    private func setupDataSource() {
-        let request = filterSegmentedControl.regionFilter.fetchRequest
+    fileprivate func setupDataSource() {
+        let regionType = filterSegmentedControl.regionType
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: regionType.entityName)
+        request.sortDescriptors = regionType.defaultSortDescriptors
+        request.fetchBatchSize = 20
         let frc = NSFetchedResultsController(fetchRequest: request, managedObjectContext: managedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
-        dataProvider = AugmentedFetchedResultsDataProvider(fetchedResultsController: frc, delegate: self)
-        dataSource = TableViewDataSource(tableView: tableView, dataProvider: dataProvider, delegate: self)
+        dataSource = TableViewDataSource(tableView: tableView, cellIdentifier: "Region", fetchedResultsController: frc, delegate: self)
     }
 
-    private func updateDataSource() {
-        let newRequest = filterSegmentedControl.regionFilter.fetchRequest
-        dataProvider.reconfigureFetchRequest { request in
-            guard let entityName = newRequest.entityName else { fatalError("Must have entity name") }
-            request.entity = managedObjectContext.entityForName(entityName)
-            request.sortDescriptors = newRequest.sortDescriptors
+    fileprivate func updateDataSource() {
+        dataSource.reconfigureFetchRequest { request in
+            let regionType = filterSegmentedControl.regionType
+            request.entity = regionType.entity
+            request.sortDescriptors = regionType.defaultSortDescriptors
         }
     }
-
 }
 
 
 extension RegionsTableViewController {
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let region = dataProvider.objectAtIndexPath(indexPath)
-        performSegue(region.segue)
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let region = dataSource.objectAtIndexPath(indexPath)
+        performSegue(withIdentifier: region.segue)
     }
 }
 
 
-enum NonRegionCategory {
-    case All
-    case Yours
-}
-
-
-extension RegionsTableViewController: AugmentedDataProviderDelegate {
-    func numberOfAdditionalRows() -> Int {
-        return 2
-    }
-
-    func supplementaryObjectAtPresentedIndexPath(indexPath: NSIndexPath) -> DisplayableRegion? {
+extension RegionsTableViewController: TableViewDataSourceDelegate {
+    func supplementaryObject(at indexPath: IndexPath) -> DisplayableRegion? {
         switch indexPath.row {
-        case 0: return NonRegionCategory.All
-        case 1: return NonRegionCategory.Yours
+        case 0: return UserRegion.all
+        case 1: return UserRegion.yours
         default: return nil
         }
     }
 
-    func dataProviderDidUpdate(updates: [DataProviderUpdate<DisplayableRegion>]?) {
-        dataSource.processUpdates(updates)
+    func configure(_ cell: RegionTableViewCell, for object: DisplayableRegion) {
+        cell.configure(for: object)
     }
-}
 
-
-extension RegionsTableViewController: DataSourceDelegate {
-    func cellIdentifierForObject(object: DisplayableRegion) -> String {
-        return object.reuseIdentifier
+    var numberOfAdditionalRows: Int {
+        return 2
     }
-}
 
-
-private enum RegionFilter: Int {
-    case Both = 0
-    case Countries = 1
-    case Continents = 2
-}
-
-
-extension RegionFilter {
-    var fetchRequest: NSFetchRequest {
-        var request: NSFetchRequest
-        switch self {
-        case .Both: request = GeographicRegion.sortedFetchRequest
-        case .Countries: request = Country.sortedFetchRequest
-        case .Continents: request = Continent.sortedFetchRequest
-        }
-        request.returnsObjectsAsFaults = false
-        request.fetchBatchSize = 20
-        return request
+    func fetchedIndexPath(for presentedIndexPath: IndexPath) -> IndexPath? {
+        let fetchedRow = presentedIndexPath.row - 2
+        guard fetchedRow >= 0 else { return nil }
+        return IndexPath(row: fetchedRow, section: presentedIndexPath.section)
     }
-}
 
-
-extension UISegmentedControl {
-    private var regionFilter: RegionFilter {
-        guard let rf = RegionFilter(rawValue: selectedSegmentIndex) else { fatalError("Invalid filter index") }
-        return rf
+    func presentedIndexPath(for fetchedIndexPath: IndexPath) -> IndexPath {
+        return IndexPath(row: fetchedIndexPath.row + 2, section: fetchedIndexPath.section)
     }
 }
 
 
 protocol DisplayableRegion: LocalizedStringConvertible {
-    var reuseIdentifier: String { get }
-    var localizedDetailDescription: String { get }
     var segue: RegionsTableViewController.SegueIdentifier { get }
-}
-
-
-extension DisplayableRegion {
-    var reuseIdentifier: String { return "Region" }
+    var localizedDetailDescription: String { get }
 }
 
 extension Country: DisplayableRegion {
-    var localizedDetailDescription: String {
-        return localized(.Regions_numberOfMoods, args: [numberOfMoods])
-    }
     var segue: RegionsTableViewController.SegueIdentifier {
-        return .ShowCountryMoods
+        return .showCountryMoods
+    }
+
+    var localizedDetailDescription: String {
+        return localized(.regions_numberOfMoods, args: [numberOfMoods])
+    }
+
+    public var localizedDescription: String {
+        return iso3166Code.localizedDescription
     }
 }
+
 
 extension Continent: DisplayableRegion {
-    var localizedDetailDescription: String {
-        return localized(.Regions_numberOfMoodsInCountries, args: [numberOfMoods, numberOfCountries])
-    }
     var segue: RegionsTableViewController.SegueIdentifier {
-        return .ShowContinentMoods
+        return .showContinentMoods
+    }
+
+    var localizedDetailDescription: String {
+        return localized(.regions_numberOfMoodsInCountries, args: [numberOfMoods, numberOfCountries])
+    }
+
+    public var localizedDescription: String {
+        return iso3166Code.localizedDescription
     }
 }
 
 
-extension NonRegionCategory: DisplayableRegion {
+extension UISegmentedControl {
+    fileprivate var regionType: Managed.Type {
+        switch selectedSegmentIndex {
+        case 0: return Region.self
+        case 1: return Country.self
+        case 2: return Continent.self
+        default: fatalError("Invalid filter index")
+        }
+    }
+}
+
+
+enum UserRegion {
+    case all
+    case yours
+}
+
+extension UserRegion: DisplayableRegion {
     var segue: RegionsTableViewController.SegueIdentifier {
         switch self {
-        case .All: return .ShowAllMoods
-        case .Yours: return .ShowYourMoods
+        case .all: return .showAllMoods
+        case .yours: return .showYourMoods
         }
     }
 
     var localizedDescription: String {
         switch self {
-        case .All: return localized(.MoodSource_all)
-        case .Yours: return localized(.MoodSource_your)
+        case .all: return localized(.moodSource_all)
+        case .yours: return localized(.moodSource_your)
         }
     }
 
     var localizedDetailDescription: String {
         switch self {
-        case .All: return localized(.MoodSource_all_detail)
-        case .Yours: return localized(.MoodSource_you_detail)
+        case .all: return localized(.moodSource_all_detail)
+        case .yours: return localized(.moodSource_you_detail)
         }
     }
 }
+
+

@@ -14,11 +14,12 @@ enum MoodyModelVersion: String {
 }
 
 
-extension MoodyModelVersion: ModelVersionType {
-    static var AllVersions: [MoodyModelVersion] { return [.Version1] }
-    static var CurrentVersion: MoodyModelVersion { return .Version1 }
+extension MoodyModelVersion: ModelVersion {
+    static var all: [MoodyModelVersion] { return [.Version1] }
+    static var current: MoodyModelVersion { return .Version1 }
 
     var name: String { return rawValue }
-    var modelBundle: NSBundle { return NSBundle(forClass: Mood.self) }
+    var modelBundle: Bundle { return Bundle(for: Mood.self) }
     var modelDirectoryName: String { return "Moody.momd" }
 }
+

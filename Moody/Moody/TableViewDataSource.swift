@@ -7,66 +7,127 @@
 //
 
 import UIKit
+import CoreData
 
 
-class TableViewDataSource<Delegate: DataSourceDelegate, Data: DataProvider, Cell: UITableViewCell where Delegate.Object == Data.Object, Cell: ConfigurableCell, Cell.DataSource == Data.Object>: NSObject, UITableViewDataSource {
+protocol TableViewDataSourceDelegate: class {
+    associatedtype Object
+    associatedtype Cell: UITableViewCell
+    func configure(_ cell: Cell, for object: Object)
+    var numberOfAdditionalRows: Int { get }
+    func supplementaryObject(at indexPath: IndexPath) -> Object?
+    func presentedIndexPath(for fetchedIndexPath: IndexPath) -> IndexPath
+    func fetchedIndexPath(for presentedIndexPath: IndexPath) -> IndexPath?
+}
 
-    required init(tableView: UITableView, dataProvider: Data, delegate: Delegate) {
+extension TableViewDataSourceDelegate {
+    var numberOfAdditionalRows: Int {
+        return 0
+    }
+
+    func supplementaryObject(at indexPath: IndexPath) -> Object? {
+        return nil
+    }
+
+    func presentedIndexPath(for fetchedIndexPath: IndexPath) -> IndexPath {
+        return fetchedIndexPath
+    }
+
+    func fetchedIndexPath(for presentedIndexPath: IndexPath) -> IndexPath? {
+        return presentedIndexPath
+    }
+}
+
+
+/// Note: this class doesn't support working with multiple sections
+class TableViewDataSource<Result: NSFetchRequestResult, Delegate: TableViewDataSourceDelegate>: NSObject, UITableViewDataSource, NSFetchedResultsControllerDelegate {
+
+    typealias Object = Delegate.Object
+    typealias Cell = Delegate.Cell
+
+    required init(tableView: UITableView, cellIdentifier: String, fetchedResultsController: NSFetchedResultsController<Result>, delegate: Delegate) {
         self.tableView = tableView
-        self.dataProvider = dataProvider
+        self.cellIdentifier = cellIdentifier
+        self.fetchedResultsController = fetchedResultsController
         self.delegate = delegate
         super.init()
+        fetchedResultsController.delegate = self
+        try! fetchedResultsController.performFetch()
         tableView.dataSource = self
         tableView.reloadData()
     }
 
-    var selectedObject: Data.Object? {
+    var selectedObject: Object? {
         guard let indexPath = tableView.indexPathForSelectedRow else { return nil }
-        return dataProvider.objectAtIndexPath(indexPath)
+        return objectAtIndexPath(indexPath)
     }
 
-    func processUpdates(updates: [DataProviderUpdate<Data.Object>]?) {
-        guard let updates = updates else { return tableView.reloadData() }
-        tableView.beginUpdates()
-        for update in updates {
-            switch update {
-            case .Insert(let indexPath):
-                tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-            case .Update(let indexPath, let object):
-                guard let cell = tableView.cellForRowAtIndexPath(indexPath) as? Cell else { break }
-                cell.configureForObject(object)
-            case .Move(let indexPath, let newIndexPath):
-                tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-                tableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: .Fade)
-            case .Delete(let indexPath):
-                tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-            }
+    func objectAtIndexPath(_ indexPath: IndexPath) -> Object {
+        guard let fetchedIndexPath = delegate.fetchedIndexPath(for: indexPath) else {
+            return delegate.supplementaryObject(at: indexPath)!
         }
-        tableView.endUpdates()
+        return (fetchedResultsController.object(at: fetchedIndexPath) as! Object)
+    }
+
+    func reconfigureFetchRequest(_ configure: (NSFetchRequest<Result>) -> ()) {
+        NSFetchedResultsController<NSFetchRequestResult>.deleteCache(withName: fetchedResultsController.cacheName)
+        configure(fetchedResultsController.fetchRequest)
+        do { try fetchedResultsController.performFetch() } catch { fatalError("fetch request failed") }
+        tableView.reloadData()
     }
 
 
     // MARK: Private
 
-    private let tableView: UITableView
-    private let dataProvider: Data
-    private weak var delegate: Delegate!
-
+    fileprivate let tableView: UITableView
+    fileprivate let fetchedResultsController: NSFetchedResultsController<Result>
+    fileprivate weak var delegate: Delegate!
+    fileprivate let cellIdentifier: String
 
     // MARK: UITableViewDataSource
 
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return dataProvider.numberOfItemsInSection(section)
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        guard let section = fetchedResultsController.sections?[section] else { return 0 }
+        return section.numberOfObjects + delegate.numberOfAdditionalRows
     }
 
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let object = dataProvider.objectAtIndexPath(indexPath)
-        let identifier = delegate.cellIdentifierForObject(object)
-        guard let cell = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as? Cell
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let object = objectAtIndexPath(indexPath)
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? Cell
             else { fatalError("Unexpected cell type at \(indexPath)") }
-        cell.configureForObject(object)
+        delegate.configure(cell, for: object)
         return cell
     }
 
+    // MARK: NSFetchedResultsControllerDelegate
+
+    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        tableView.beginUpdates()
+    }
+
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+        switch type {
+        case .insert:
+            guard let indexPath = newIndexPath else { fatalError("Index path should be not nil") }
+            tableView.insertRows(at: [indexPath], with: .fade)
+        case .update:
+            guard let indexPath = indexPath else { fatalError("Index path should be not nil") }
+            let object = objectAtIndexPath(indexPath)
+            guard let cell = tableView.cellForRow(at: indexPath) as? Cell else { break }
+            delegate.configure(cell, for: object)
+        case .move:
+            guard let indexPath = indexPath else { fatalError("Index path should be not nil") }
+            guard let newIndexPath = newIndexPath else { fatalError("New index path should be not nil") }
+            tableView.deleteRows(at: [indexPath], with: .fade)
+            tableView.insertRows(at: [newIndexPath], with: .fade)
+        case .delete:
+            guard let indexPath = indexPath else { fatalError("Index path should be not nil") }
+            tableView.deleteRows(at: [indexPath], with: .fade)
+        }
+    }
+
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        tableView.endUpdates()
+    }
 }
 

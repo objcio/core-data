@@ -15,9 +15,10 @@ class MoodCollectionViewCell: UICollectionViewCell {
 }
 
 
-extension MoodCollectionViewCell: ConfigurableCell {
-    func configureForObject(mood: Mood) {
+extension MoodCollectionViewCell {
+    func configure(for mood: Mood) {
         moodView.colors = mood.colors
     }
 }
+
 

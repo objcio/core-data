@@ -12,48 +12,48 @@ import CoreData
 import CoreDataHelpers
 
 
-public final class Mood: ManagedObject {
+public class Mood: NSManagedObject {
 
-    @NSManaged public private(set) var date: NSDate
-    @NSManaged public private(set) var colors: [UIColor]
+    @NSManaged public fileprivate(set) var date: Date
+    @NSManaged public fileprivate(set) var colors: [UIColor]
     public var location: CLLocation? {
-        guard let lat = latitude, lon = longitude else { return nil }
+        guard let lat = latitude, let lon = longitude else { return nil }
         return CLLocation(latitude: lat.doubleValue, longitude: lon.doubleValue)
     }
 
     @NSManaged public var creatorID: String?
     @NSManaged public var remoteIdentifier: RemoteRecordID?
 
-    @NSManaged public private(set) var country___: Country
-    @NSManaged public private(set) var country: Country?
+    @NSManaged public fileprivate(set) var country___: Country
+    @NSManaged public fileprivate(set) var country: Country?
 
 
     public override func awakeFromInsert() {
         super.awakeFromInsert()
-        primitiveDate = NSDate()
+        primitiveDate = Date()
     }
 
-    public static func insertIntoContext(moc: NSManagedObjectContext, image: UIImage) -> Mood {
+    public static func insert(into moc: NSManagedObjectContext, image: UIImage) -> Mood {
         let mood: Mood = moc.insertObject()
         mood.colors = image.moodColors
-        mood.date = NSDate()
+        mood.date = Date()
         return mood
     }
 
 
-    public static func insertIntoContext(moc: NSManagedObjectContext, image: UIImage, location: CLLocation?, placemark: CLPlacemark?) -> Mood {
-        let iso3166 = ISO3166.Country.fromISO3166(placemark?.ISOcountryCode ?? "")
-        return insertIntoContext(moc, colors: image.moodColors, location: location, isoCountry: iso3166)
+    public static func insert(into moc: NSManagedObjectContext, image: UIImage, location: CLLocation?, placemark: CLPlacemark?) -> Mood {
+        let iso3166 = ISO3166.Country.fromISO3166(placemark?.isoCountryCode ?? "")
+        return insert(into: moc, colors: image.moodColors, location: location, isoCountry: iso3166)
     }
 
-    public static func insertIntoContext(moc: NSManagedObjectContext, colors: [UIColor], location: CLLocation?, isoCountry: ISO3166.Country, remoteIdentifier: RemoteRecordID? = nil, date: NSDate? = nil, creatorID: String? = nil) -> Mood {
+    public static func insert(into moc: NSManagedObjectContext, colors: [UIColor], location: CLLocation?, isoCountry: ISO3166.Country, remoteIdentifier: RemoteRecordID? = nil, date: Date? = nil, creatorID: String? = nil) -> Mood {
         let mood: Mood = moc.insertObject()
         mood.colors = colors
         if let coord = location?.coordinate {
-            mood.latitude = coord.latitude
-            mood.longitude = coord.longitude
+            mood.latitude = NSNumber(value: coord.latitude)
+            mood.longitude = NSNumber(value: coord.longitude)
         }
-        mood.country = Country.findOrCreateCountry(isoCountry, inContext: moc)
+        mood.country = Country.findOrCreate(for: isoCountry, in: moc)
         mood.remoteIdentifier = remoteIdentifier
         if let d = date {
             mood.date = d
@@ -72,12 +72,12 @@ public final class Mood: ManagedObject {
 
     // MARK: Private
 
-    @NSManaged private var primitiveDate: NSDate
-    @NSManaged private var latitude: NSNumber?
-    @NSManaged private var longitude: NSNumber?
+    @NSManaged fileprivate var primitiveDate: Date
+    @NSManaged fileprivate var latitude: NSNumber?
+    @NSManaged fileprivate var longitude: NSNumber?
 
 
-    private func removeFromCountry() {
+    fileprivate func removeFromCountry() {
         guard country != nil else { return }
         country = nil
     }
@@ -85,21 +85,10 @@ public final class Mood: ManagedObject {
 }
 
 
-extension Mood: KeyCodable {
-    public enum Keys: String {
-        case Colors = "colors"
-    }
-}
-
-
-extension Mood: ManagedObjectType {
-
-    public static var entityName: String {
-        return "Mood"
-    }
+extension Mood: Managed {
 
     public static var defaultSortDescriptors: [NSSortDescriptor] {
-        return [NSSortDescriptor(key: "date", ascending: false)]
+        return [NSSortDescriptor(key: #keyPath(date), ascending: false)]
     }
 
     public static var defaultPredicate: NSPredicate {
@@ -110,7 +99,7 @@ extension Mood: ManagedObjectType {
 
 
 extension Mood: DelayedDeletable {
-    @NSManaged public var markedForDeletionDate: NSDate?
+    @NSManaged public var markedForDeletionDate: Date?
 }
 
 
@@ -122,7 +111,7 @@ extension Mood: RemoteDeletable {
 private let MaxColors = 8
 
 extension UIImage {
-    private var moodColors: [UIColor] {
+    fileprivate var moodColors: [UIColor] {
         var colors: [UIColor] = []
         for c in dominantColors(.Moody) where colors.count < MaxColors {
             colors.append(c)
@@ -131,15 +120,17 @@ extension UIImage {
     }
 }
 
-extension NSData {
+extension Data {
     public var moodColors: [UIColor]? {
-        guard length > 0 && length % 3 == 0 else { return nil }
-        var rgbValues = Array(count: length, repeatedValue: UInt8())
-        rgbValues.withUnsafeMutableBufferPointer { buffer -> () in
-            let voidPointer = UnsafeMutablePointer<Void>(buffer.baseAddress)
-            memcpy(voidPointer, bytes, length)
+        guard count > 0 && count % 3 == 0 else { return nil }
+        var rgbValues = Array(repeating: UInt8(), count: count)
+        rgbValues.withUnsafeMutableBufferPointer { buffer in
+            let voidPointer = UnsafeMutableRawPointer(buffer.baseAddress)
+            let _ = withUnsafeBytes { bytes in
+                memcpy(voidPointer, bytes, count)
+            }
         }
-        let rgbSlices = rgbValues.slices(3)
+        let rgbSlices = rgbValues.sliced(size: 3)
         return rgbSlices.map { slice in
             guard let color = UIColor(rawData: slice) else { fatalError("cannot fail since we know tuple is of length 3") }
             return color
@@ -148,36 +139,37 @@ extension NSData {
 }
 
 
-extension SequenceType where Generator.Element == UIColor {
-    public var moodData: NSData {
+extension Sequence where Iterator.Element == UIColor {
+    public var moodData: Data {
         let rgbValues = flatMap { $0.rgb }
         return rgbValues.withUnsafeBufferPointer {
-            return NSData(bytes: $0.baseAddress, length: $0.count)
+            return Data(bytes: UnsafePointer<UInt8>($0.baseAddress!),
+                count: $0.count)
         }
     }
 }
 
 
-private var registrationToken: dispatch_once_t = 0
 private let ColorsTransformerName = "ColorsTransformer"
 
 extension Mood {
     static func registerValueTransformers() {
-        dispatch_once(&registrationToken) {
-            ValueTransformer.registerTransformerWithName(ColorsTransformerName, transform: { colors in
-                guard let colors = colors as? [UIColor] else { return nil }
-                return colors.moodData
-            }, reverseTransform: { (data: NSData?) -> NSArray? in
-                return data?.moodColors
-            })
-        }
+        _ = self.__registerOnce
     }
+    fileprivate static let __registerOnce: () = {
+        ClosureValueTransformer.registerTransformer(withName: ColorsTransformerName, transform: { (colors: NSArray?) -> NSData? in
+                guard let colors = colors as? [UIColor] else { return nil }
+                return colors.moodData as NSData
+            }, reverseTransform: { (data: NSData?) -> NSArray? in
+                return (data as? Data)?.moodColors.map { $0 as NSArray }
+        })
+    }()
 }
 
 
 extension UIColor {
 
-    private var rgb: [UInt8] {
+    fileprivate var rgb: [UInt8] {
         var red: CGFloat = 0
         var green: CGFloat = 0
         var blue: CGFloat = 0
@@ -185,7 +177,7 @@ extension UIColor {
         return [UInt8(red * 255), UInt8(green * 255), UInt8(blue * 255)]
     }
 
-    private convenience init?(rawData: [UInt8]) {
+    fileprivate convenience init?(rawData: [UInt8]) {
         if rawData.count != 3 { return nil }
         let red = CGFloat(rawData[0]) / 255
         let green = CGFloat(rawData[1]) / 255
@@ -194,4 +186,5 @@ extension UIColor {
     }
 
 }
+
 

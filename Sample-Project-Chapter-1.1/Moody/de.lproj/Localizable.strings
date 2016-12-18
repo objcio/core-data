@@ -1,0 +1,14 @@
+/* 
+  Localizable.strings
+  Moody
+
+  Created by Daniel Eggert on 08/09/2015.
+  Copyright © 2015 objc.io. All rights reserved.
+*/
+
+
+
+"CameraView.tapToCapture" = "Tippe um eine Stimmung einzufangen";
+"CameraView.needAccess" = "Moody braucht zugang zu Deiner Kamera und Ortungsdienstem";
+
+"Mood.dateComponentFormat" = "%@ her";

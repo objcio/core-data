@@ -12,19 +12,19 @@ import CoreDataHelpers
 import MoodyModel
 
 
-class MoodsCollectionViewController: UICollectionViewController, MoodsPresenterType, SegueHandlerType {
+class MoodsCollectionViewController: UICollectionViewController, MoodsPresenter, SegueHandler {
 
     enum SegueIdentifier: String {
-        case ShowMoodDetail = "showMoodDetail"
+        case showMoodDetail = "showMoodDetail"
     }
 
     var managedObjectContext: NSManagedObjectContext!
     var moodSource: MoodSource! {
         didSet {
-            guard let o = moodSource.managedObject else { return }
+            guard let o = moodSource.managedObject as? Managed else { return }
             observer = ManagedObjectObserver(object: o) { [unowned self] type in
-                guard type == .Delete else { return }
-                self.navigationController?.popViewControllerAnimated(true)
+                guard type == .delete else { return }
+                let _ = self.navigationController?.popViewController(animated: true)
             }
         }
     }
@@ -41,10 +41,10 @@ class MoodsCollectionViewController: UICollectionViewController, MoodsPresenterT
         layout.itemSize = CGSize(width: length, height: length)
     }
 
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        switch segueIdentifierForSegue(segue) {
-        case .ShowMoodDetail:
-            guard let vc = segue.destinationViewController as? MoodDetailViewController
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        switch segueIdentifier(for: segue) {
+        case .showMoodDetail:
+            guard let vc = segue.destination as? MoodDetailViewController
                 else { fatalError("Wrong view controller type") }
             guard let mood = dataSource.selectedObject
                 else { fatalError("Showing detail, but no selected row?") }
@@ -55,31 +55,24 @@ class MoodsCollectionViewController: UICollectionViewController, MoodsPresenterT
 
     // MARK: Private
 
-    private typealias MoodsDataProvider = FetchedResultsDataProvider<MoodsCollectionViewController>
-    private var dataSource: CollectionViewDataSource<MoodsCollectionViewController, MoodsDataProvider, MoodCollectionViewCell>!
-    private var observer: ManagedObjectObserver?
+    fileprivate var dataSource: CollectionViewDataSource<MoodsCollectionViewController>!
+    fileprivate var observer: ManagedObjectObserver?
 
-    private func setupCollectionView() {
-        let request = Mood.sortedFetchRequestWithPredicate(moodSource.predicate)
+    fileprivate func setupCollectionView() {
+        let request = Mood.sortedFetchRequest(with: moodSource.predicate)
         request.returnsObjectsAsFaults = false
         request.fetchBatchSize = 40
         let frc = NSFetchedResultsController(fetchRequest: request, managedObjectContext: managedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
-        let dataProvider = FetchedResultsDataProvider(fetchedResultsController: frc, delegate: self)
         guard let cv = collectionView else { fatalError("must have collection view") }
-        dataSource = CollectionViewDataSource(collectionView: cv, dataProvider: dataProvider, delegate: self)
+        dataSource = CollectionViewDataSource(collectionView: cv, cellIdentifier: "MoodCell", fetchedResultsController: frc, delegate: self)
     }
 
 }
 
-extension MoodsCollectionViewController: DataSourceDelegate {
-    func cellIdentifierForObject(object: Mood) -> String {
-        return "MoodCell"
+extension MoodsCollectionViewController: CollectionViewDataSourceDelegate {
+    func configure(_ cell: MoodCollectionViewCell, for object: Mood) {
+        cell.configure(for: object)
     }
 }
 
-extension MoodsCollectionViewController: DataProviderDelegate {
-    func dataProviderDidUpdate(updates: [DataProviderUpdate<Mood>]?) {
-        dataSource.processUpdates(updates)
-    }
-}
 

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Regions.numberOfMoods</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@moods@</string>
+		<key>moods</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>llu</string>
+			<key>one</key>
+			<string>%llu mood</string>
+			<key>other</key>
+			<string>%llu moods</string>
+		</dict>
+	</dict>
+	<key>Regions.numberOfMoodsInCountries</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@moods@ in %#@countries@</string>
+		<key>countries</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>llu</string>
+			<key>one</key>
+			<string>%llu country</string>
+			<key>other</key>
+			<string>%llu countries</string>
+		</dict>
+		<key>moods</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>lu</string>
+			<key>one</key>
+			<string>%lu mood</string>
+			<key>other</key>
+			<string>%lu moods</string>
+		</dict>
+	</dict>
+</dict>
+</plist>

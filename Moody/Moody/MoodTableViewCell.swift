@@ -17,21 +17,22 @@ class MoodTableViewCell: UITableViewCell {
 }
 
 
-private let sharedDateFormatter: NSDateFormatter = {
-    let formatter = NSDateFormatter()
-    formatter.dateStyle = .MediumStyle
-    formatter.timeStyle = .ShortStyle
+private let dateFormatter: DateFormatter = {
+    let formatter = DateFormatter()
+    formatter.dateStyle = .medium
+    formatter.timeStyle = .short
     formatter.doesRelativeDateFormatting = true
-    formatter.formattingContext = .Standalone
+    formatter.formattingContext = .standalone
     return formatter
 }()
 
 
-extension MoodTableViewCell: ConfigurableCell {
-    func configureForObject(mood: Mood) {
+extension MoodTableViewCell {
+    func configure(for mood: Mood) {
         moodView.colors = mood.colors
-        label.text = sharedDateFormatter.stringFromDate(mood.date)
+        label.text = dateFormatter.string(from: mood.date)
         country.text = mood.country?.localizedDescription ?? ""
     }
 }
+
 

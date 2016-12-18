@@ -9,4 +9,5 @@
 import CoreData
 
 
-public final class Mood: ManagedObject {}
+public final class Mood: NSManagedObject {}
+

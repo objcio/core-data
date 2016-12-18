@@ -9,48 +9,48 @@
 import CloudKit
 import MoodyModel
 
-struct CloudKitRemote: MoodyRemoteType {
+final class CloudKitRemote: MoodyRemote {
 
-    let cloudKitContainer = CKContainer.defaultContainer()
+    let cloudKitContainer = CKContainer.default()
     let maximumNumberOfMoods = 500
 
     func setupMoodSubscription() {
         let subscriptionID = "MoodDownload"
         let predicate = NSPredicate(format: "TRUEPREDICATE")
-        let options: CKSubscriptionOptions = [.FiresOnRecordCreation, .FiresOnRecordUpdate, .FiresOnRecordDeletion]
-        let subscription = CKSubscription(recordType: "Mood", predicate: predicate, subscriptionID: subscriptionID, options: options)
+        let options: CKQuerySubscriptionOptions = [.firesOnRecordCreation, .firesOnRecordUpdate, .firesOnRecordDeletion]
+        let subscription = CKQuerySubscription(recordType: "Mood", predicate: predicate, subscriptionID: subscriptionID, options: options)
         let info = CKNotificationInfo()
         info.shouldSendContentAvailable = true
         subscription.notificationInfo = info
         let op = CKModifySubscriptionsOperation(subscriptionsToSave: [subscription], subscriptionIDsToDelete: [])
-        op.modifySubscriptionsCompletionBlock = { (foo, bar, error: NSError?) -> () in
+        op.modifySubscriptionsCompletionBlock = { (foo, bar, error: Error?) -> () in
             if let e = error { print("Failed to modify subscription: \(e)") }
         }
-        cloudKitContainer.publicCloudDatabase.addOperation(op)
+        cloudKitContainer.publicCloudDatabase.add(op)
     }
 
-    func fetchLatestMoods(completion: ([RemoteMood]) -> ()) {
+    func fetchLatestMoods(completion: @escaping ([RemoteMood]) -> ()) {
         let predicate = NSPredicate(value: true)
         let query = CKQuery(recordType: "Mood", predicate: predicate)
         query.sortDescriptors = [ NSSortDescriptor(key: "date", ascending: false) ]
         let op = CKQueryOperation(query: query)
         op.resultsLimit = maximumNumberOfMoods
-        op.fetchAggregateResultsInDatabase(cloudKitContainer.publicCloudDatabase, previousResults: []) { records, _ in
+        op.fetchAggregateResults(in: cloudKitContainer.publicCloudDatabase, previousResults: []) { records, _ in
             completion(records.map { RemoteMood(record: $0) }.flatMap { $0 })
         }
     }
 
-    func fetchNewMoods(completion: ([RemoteRecordChange<RemoteMood>], (success: Bool) -> ()) -> ()) {
-        cloudKitContainer.fetchAllPendingNotifications { changeReasons, error, callback in
+    func fetchNewMoods(completion: @escaping ([RemoteRecordChange<RemoteMood>], @escaping (_ success: Bool) -> ()) -> ()) {
+        cloudKitContainer.fetchAllPendingNotifications(changeToken: nil) { changeReasons, error, callback in
             guard error == nil else { return completion([], { _ in }) } // TODO We should handle this case with e.g. a clean refetch
             guard changeReasons.count > 0 else { return completion([], callback) }
-            self.cloudKitContainer.publicCloudDatabase.fetchRecordsForChangeReasons(changeReasons) { changes, error in
+            self.cloudKitContainer.publicCloudDatabase.fetchRecords(for: changeReasons) { changes, error in
                 completion(changes.map { RemoteRecordChange(moodChange: $0) }.flatMap { $0 }, callback)
             }
         }
     }
 
-    func uploadMoods(moods: [Mood], completion: ([RemoteMood], RemoteError?) -> ()) {
+    func upload(_ moods: [Mood], completion: @escaping ([RemoteMood], RemoteError?) -> ()) {
         let recordsToSave = moods.map { $0.cloudKitRecord }
         let op = CKModifyRecordsOperation(recordsToSave: recordsToSave,
             recordIDsToDelete: nil)
@@ -59,10 +59,10 @@ struct CloudKitRemote: MoodyRemoteType {
             let remoteError = RemoteError(cloudKitError: error)
             completion(remoteMoods, remoteError)
         }
-        cloudKitContainer.publicCloudDatabase.addOperation(op)
+        cloudKitContainer.publicCloudDatabase.add(op)
     }
 
-    func removeMoods(moods: [Mood], completion: ([RemoteRecordID], RemoteError?) -> ()) {
+    func remove(_ moods: [Mood], completion: @escaping ([RemoteRecordID], RemoteError?) -> ()) {
         let recordIDsToDelete = moods.map { (mood: Mood) -> CKRecordID in
             guard let name = mood.remoteIdentifier else { fatalError("Must have a remote ID") }
             return CKRecordID(recordName: name)
@@ -71,11 +71,11 @@ struct CloudKitRemote: MoodyRemoteType {
         op.modifyRecordsCompletionBlock = { _, deletedRecordIDs, error in
             completion((deletedRecordIDs ?? []).map { $0.recordName }, RemoteError(cloudKitError: error))
         }
-        cloudKitContainer.publicCloudDatabase.addOperation(op)
+        cloudKitContainer.publicCloudDatabase.add(op)
     }
 
-    func fetchUserID(completion: RemoteRecordID? -> ()) {
-        cloudKitContainer.fetchUserRecordIDWithCompletionHandler { userRecordID, error in
+    func fetchUserID(completion: @escaping (RemoteRecordID?) -> ()) {
+        cloudKitContainer.fetchUserRecordID { userRecordID, error in
             completion(userRecordID?.recordName)
         }
     }
@@ -84,46 +84,46 @@ struct CloudKitRemote: MoodyRemoteType {
 
 
 extension RemoteError {
-    private init?(cloudKitError: NSError?) {
-        guard let error = cloudKitError else { return nil }
+    fileprivate init?(cloudKitError: Error?) {
+        guard let error = cloudKitError as? NSError else { return nil }
         if error.permanentCloudKitError {
-            self = .Permanent(error.partiallyFailedRecordIDsWithPermanentError.map { $0.recordName })
+            self = .permanent(error.partiallyFailedRecordIDsWithPermanentError.map { $0.recordName })
         } else {
-            self = .Temporary
+            self = .temporary
         }
     }
 }
 
 
 extension RemoteRecordChange {
-    private init?(moodChange: CloudKitRecordChange) {
+    fileprivate init?(moodChange: CloudKitRecordChange) {
         switch moodChange {
-        case .Created(let r):
+        case .created(let r):
             guard let remoteMood = RemoteMood(record: r) as? T else { return nil }
-            self = RemoteRecordChange.Insert(remoteMood)
-        case .Updated(let r):
+            self = RemoteRecordChange.insert(remoteMood)
+        case .updated(let r):
             guard let remoteMood = RemoteMood(record: r) as? T else { return nil }
-            self = RemoteRecordChange.Update(remoteMood)
-        case .Deleted(let id):
-            self = RemoteRecordChange.Delete(id.recordName)
+            self = RemoteRecordChange.update(remoteMood)
+        case .deleted(let id):
+            self = RemoteRecordChange.delete(id.recordName)
         }
     }
 }
 
 
 extension RemoteMood {
-    private static var remoteRecordName: String { return "Mood" }
+    fileprivate static var remoteRecordName: String { return "Mood" }
 
-    private init?(record: CKRecord) {
+    fileprivate init?(record: CKRecord) {
         guard record.recordType == RemoteMood.remoteRecordName else { fatalError("wrong record type") }
-        guard let date = record.objectForKey("date") as? NSDate,
-            let colorData = record.objectForKey("colors") as? NSData,
+        guard let date = record.object(forKey: "date") as? Date,
+            let colorData = record.object(forKey: "colors") as? Data,
             let colors = colorData.moodColors,
-            let countryCode = record.objectForKey("country") as? Int,
+            let countryCode = record.object(forKey: "country") as? Int,
             let creatorID = record.creatorUserRecordID?.recordName
             else { return nil }
-        let isoCountry = ISO3166.Country(rawValue: Int16(countryCode)) ?? ISO3166.Country.Unknown
-        let location = record.objectForKey("location") as? CLLocation
+        let isoCountry = ISO3166.Country(rawValue: Int16(countryCode)) ?? ISO3166.Country.unknown
+        let location = record.object(forKey: "location") as? CLLocation
         self.id = record.recordID.recordName
         self.creatorID = creatorID
         self.date = date
@@ -135,13 +135,14 @@ extension RemoteMood {
 
 
 extension Mood {
-    private var cloudKitRecord: CKRecord {
+    fileprivate var cloudKitRecord: CKRecord {
         let record = CKRecord(recordType: RemoteMood.remoteRecordName)
-        record.setObject(date, forKey: "date")
-        record.setObject(location, forKey: "location")
-        record.setObject(colors.moodData, forKey: "colors")
-        record.setObject(Int(country?.iso3166Code.rawValue ?? 0), forKey: "country")
-        record.setObject(1, forKey: "version")
+        //TODO(swift3) Do we have to cast / wrap NSDate, NSData, NSNumber...?
+        record["date"] = date as NSDate
+        record["location"] = location
+        record["colors"] = colors.moodData as NSData
+        record["country"] = NSNumber(value: country?.iso3166Code.rawValue ?? 0)
+        record["version"] = NSNumber(value: 1)
         return record
     }
 }

@@ -12,12 +12,12 @@ import MoodyModel
 
 
 private enum MoodPresentationStyle: Int {
-    case List = 0
-    case Grid = 1
+    case list = 0
+    case grid = 1
 }
 
 
-class MoodsContainerViewController: UIViewController, ManagedObjectContextSettable {
+class MoodsContainerViewController: UIViewController {
 
     @IBOutlet weak var moodPresentationButton: UIBarButtonItem!
     @IBOutlet weak var presentationStyleButton: UIBarButtonItem!
@@ -27,34 +27,34 @@ class MoodsContainerViewController: UIViewController, ManagedObjectContextSettab
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = moodSource.localizedDescription
-        presentationStyle = NSUserDefaults.standardUserDefaults().moodPresentationStyle
+        presentationStyle = UserDefaults.standard.moodPresentationStyle
     }
 
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        for vc in segue.destinationViewController.childViewControllers {
-            guard let moodsPresenter = vc as? MoodsPresenterType else { fatalError("expected moods presenter") }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        for vc in segue.destination.childViewControllers {
+            guard let moodsPresenter = vc as? MoodsPresenter else { fatalError("expected moods presenter") }
             moodsPresenter.managedObjectContext = managedObjectContext
             moodsPresenter.moodSource = moodSource
         }
     }
 
-    @IBAction func toggleMoodPresentation(sender: AnyObject) {
+    @IBAction func toggleMoodPresentation(_ sender: AnyObject) {
         presentationStyle = presentationStyle.opposite
     }
 
 
     // MARK: Private
 
-    private var tabController: UITabBarController {
+    fileprivate var tabController: UITabBarController {
         guard let tc = childViewControllers.first as? UITabBarController else { fatalError("expected tab bar controller") }
         return tc
     }
 
-    private var presentationStyle = MoodPresentationStyle.defaultStyle {
+    fileprivate var presentationStyle = MoodPresentationStyle.standard {
         didSet {
             presentationStyleButton.title = presentationStyle.opposite.localizedDescription
             tabController.selectedIndex = presentationStyle.rawValue
-            NSUserDefaults.standardUserDefaults().moodPresentationStyle = presentationStyle
+            UserDefaults.standard.moodPresentationStyle = presentationStyle
         }
     }
 
@@ -62,9 +62,9 @@ class MoodsContainerViewController: UIViewController, ManagedObjectContextSettab
 
 
 extension MoodsContainerViewController {
-    static func instantiateFromStoryboardForMoodSource(moodSource: MoodSource, managedObjectContext: NSManagedObjectContext) -> MoodsContainerViewController {
+    static func instantiateFromStoryboard(for moodSource: MoodSource, managedObjectContext: NSManagedObjectContext) -> MoodsContainerViewController {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        guard let vc = storyboard.instantiateViewControllerWithIdentifier("MoodsContainerViewController") as? MoodsContainerViewController else { fatalError() }
+        guard let vc = storyboard.instantiateViewController(withIdentifier: "MoodsContainerViewController") as? MoodsContainerViewController else { fatalError() }
         vc.moodSource = moodSource
         vc.managedObjectContext = managedObjectContext
         return vc
@@ -72,22 +72,24 @@ extension MoodsContainerViewController {
 }
 
 
-extension MoodPresentationStyle: LocalizedStringConvertible {
-    private static var defaultStyle: MoodPresentationStyle {
-        return .List
+extension MoodPresentationStyle {
+    fileprivate static var standard: MoodPresentationStyle {
+        return .list
     }
 
-    private var opposite: MoodPresentationStyle {
+    fileprivate var opposite: MoodPresentationStyle {
         switch self {
-        case .List: return .Grid
-        case .Grid: return .List
+        case .list: return .grid
+        case .grid: return .list
         }
     }
+}
 
-    private var localizedDescription: String {
+extension MoodPresentationStyle: LocalizedStringConvertible {
+    fileprivate var localizedDescription: String {
         switch self {
-        case .List: return localized(.MoodPresentation_list)
-        case .Grid: return localized(.MoodPresentation_grid)
+        case .list: return localized(.moodPresentation_list)
+        case .grid: return localized(.moodPresentation_grid)
         }
     }
 }
@@ -95,14 +97,15 @@ extension MoodPresentationStyle: LocalizedStringConvertible {
 
 private let MoodPresentationStyleKey = "moodsPresentationStyle"
 
-extension NSUserDefaults {
-    private var moodPresentationStyle: MoodPresentationStyle {
+extension UserDefaults {
+    fileprivate var moodPresentationStyle: MoodPresentationStyle {
         get {
-            let val = integerForKey(MoodPresentationStyleKey)
-            return MoodPresentationStyle(rawValue: val) ?? MoodPresentationStyle.defaultStyle
+            let val = integer(forKey: MoodPresentationStyleKey)
+            return MoodPresentationStyle(rawValue: val) ?? MoodPresentationStyle.standard
         }
         set {
-            setInteger(newValue.rawValue, forKey: MoodPresentationStyleKey)
+            set(newValue.rawValue, forKey: MoodPresentationStyleKey)
         }
     }
 }
+

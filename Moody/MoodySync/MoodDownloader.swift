@@ -10,42 +10,42 @@ import CoreData
 import MoodyModel
 
 
-final class MoodDownloader: ChangeProcessorType {
-    func setupForContext(context: ChangeProcessorContextType) {
+final class MoodDownloader: ChangeProcessor {
+    func setup(for context: ChangeProcessorContext) {
         context.remote.setupMoodSubscription()
     }
 
-    func processChangedLocalObjects(objects: [NSManagedObject], context: ChangeProcessorContextType) {
+    func processChangedLocalObjects(_ objects: [NSManagedObject], in context: ChangeProcessorContext) {
         // no-op
     }
 
-    func processChangedRemoteObjects<T: RemoteRecordType>(changes: [RemoteRecordChange<T>], context: ChangeProcessorContextType, completion: () -> ()) {
+    func processRemoteChanges<T: RemoteRecord>(_ changes: [RemoteRecordChange<T>], in context: ChangeProcessorContext, completion: () -> ()) {
         var creates: [RemoteMood] = []
-        var deletes: [RemoteRecordID] = []
+        var deletionIDs: [RemoteRecordID] = []
         for change in changes {
             switch change {
-            case .Insert(let r) where r is RemoteMood: creates.append(r as! RemoteMood)
-            case .Delete(let id): deletes.append(id)
+            case .insert(let r) where r is RemoteMood: creates.append(r as! RemoteMood)
+            case .delete(let id): deletionIDs.append(id)
             default: fatalError("change reason not implemented")
             }
         }
 
-        insertRemoteMoods(creates, inContext: context.managedObjectContext)
-        deleteMoodsWithRecordIDs(deletes, inContext: context.managedObjectContext)
+        insert(creates, into: context.context)
+        deleteMoods(with: deletionIDs, in: context.context)
         context.delayedSaveOrRollback()
         completion()
     }
 
-    func fetchLatestRemoteRecordsForContext(context: ChangeProcessorContextType) {
+    func fetchLatestRemoteRecords(in context: ChangeProcessorContext) {
         context.remote.fetchLatestMoods { remoteMoods in
-            context.performGroupedBlock {
-                self.insertRemoteMoods(remoteMoods, inContext: context.managedObjectContext)
+            context.perform {
+                self.insert(remoteMoods, into: context.context)
                 context.delayedSaveOrRollback()
             }
         }
     }
 
-    func entityAndPredicateForLocallyTrackedObjectsInContext(context: ChangeProcessorContextType) -> EntityAndPredicate? {
+    func entityAndPredicateForLocallyTrackedObjects(in context: ChangeProcessorContext) -> EntityAndPredicate<NSManagedObject>? {
         return nil
     }
 
@@ -54,19 +54,19 @@ final class MoodDownloader: ChangeProcessorType {
 
 extension MoodDownloader {
 
-    private func deleteMoodsWithRecordIDs(recordIDs: [RemoteRecordID], inContext moc: NSManagedObjectContext) {
-        guard !recordIDs.isEmpty else { return }
-        let moods = Mood.fetchInContext(moc) { (request) -> () in
-            request.predicate = Mood.predicateForRemoteIdentifiers(recordIDs)
+    fileprivate func deleteMoods(with ids: [RemoteRecordID], in context: NSManagedObjectContext) {
+        guard !ids.isEmpty else { return }
+        let moods = Mood.fetch(in: context) { (request) -> () in
+            request.predicate = Mood.predicateForRemoteIdentifiers(ids)
             request.returnsObjectsAsFaults = false
         }
         moods.forEach { $0.markForLocalDeletion() }
     }
 
-    private func insertRemoteMoods(remoteMoods: [RemoteMood], inContext moc: NSManagedObjectContext) {
+    fileprivate func insert(_ remoteMoods: [RemoteMood], into context: NSManagedObjectContext) {
         let existingMoods = { () -> [RemoteRecordID: Mood] in
             let ids = remoteMoods.map { $0.id }.flatMap { $0 }
-            let moods = Mood.fetchInContext(moc) { request in
+            let moods = Mood.fetch(in: context) { request in
                 request.predicate = Mood.predicateForRemoteIdentifiers(ids)
                 request.returnsObjectsAsFaults = false
             }
@@ -80,7 +80,7 @@ extension MoodDownloader {
         for remoteMood in remoteMoods {
             guard let id = remoteMood.id else { continue }
             guard existingMoods[id] == nil else { continue }
-            remoteMood.insertIntoContext(moc)
+            let _ = remoteMood.insert(into: context)
         }
     }
 

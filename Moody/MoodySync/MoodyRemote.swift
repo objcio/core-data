@@ -10,30 +10,31 @@ import CoreLocation
 import MoodyModel
 
 
-enum RemoteRecordChange<T: RemoteRecordType> {
-    case Insert(T)
-    case Update(T)
-    case Delete(RemoteRecordID)
+enum RemoteRecordChange<T: RemoteRecord> {
+    case insert(T)
+    case update(T)
+    case delete(RemoteRecordID)
 }
 
 enum RemoteError {
-    case Permanent([RemoteRecordID])
-    case Temporary
+    case permanent([RemoteRecordID])
+    case temporary
 
     var isPermanent: Bool {
         switch self {
-        case .Permanent: return true
+        case .permanent: return true
         default: return false
         }
     }
 }
 
-protocol MoodyRemoteType {
+protocol MoodyRemote {
     func setupMoodSubscription()
-    func fetchLatestMoods(completion: ([RemoteMood]) -> ())
-    func fetchNewMoods(completion: ([RemoteRecordChange<RemoteMood>], (success: Bool) -> ()) -> ())
-    func uploadMoods(moods: [Mood], completion: ([RemoteMood], RemoteError?) -> ())
-    func removeMoods(moods: [Mood], completion: ([RemoteRecordID], RemoteError?) -> ())
-    func fetchUserID(completion: RemoteRecordID? -> ())
+    func fetchLatestMoods(completion: @escaping ([RemoteMood]) -> ())
+    func fetchNewMoods(completion: @escaping ([RemoteRecordChange<RemoteMood>], @escaping (_ success: Bool) -> ()) -> ())
+    func upload(_ moods: [Mood], completion: @escaping ([RemoteMood], RemoteError?) -> ())
+    func remove(_ moods: [Mood], completion: @escaping ([RemoteRecordID], RemoteError?) -> ())
+    func fetchUserID(completion: @escaping (RemoteRecordID?) -> ())
 }
+
 

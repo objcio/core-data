@@ -1,0 +1,21 @@
+
+/* Class = "UINavigationItem"; title = "Moods"; ObjectID = "FK9-2R-637"; */
+"FK9-2R-637.title" = "Stemninger";
+
+/* Class = "UILabel"; text = "Snap"; ObjectID = "HsN-Fr-50m"; */
+"HsN-Fr-50m.text" = "Optag";
+
+/* Class = "UIBarButtonItem"; title = "Grid"; ObjectID = "Udv-Vd-fNA"; */
+"Udv-Vd-fNA.title" = "Net";
+
+/* Class = "UIViewController"; title = "Mood Detail"; ObjectID = "fKz-xX-5Pg"; */
+"fKz-xX-5Pg.title" = "Stemningsdetailjer";
+
+/* Class = "UISegmentedControl"; mIs-pU-waG.segmentTitles[0] = "Both"; ObjectID = "mIs-pU-waG"; */
+"mIs-pU-waG.segmentTitles[0]" = "Kombineret";
+
+/* Class = "UISegmentedControl"; mIs-pU-waG.segmentTitles[1] = "Countries"; ObjectID = "mIs-pU-waG"; */
+"mIs-pU-waG.segmentTitles[1]" = "Lande";
+
+/* Class = "UISegmentedControl"; mIs-pU-waG.segmentTitles[2] = "Continents"; ObjectID = "mIs-pU-waG"; */
+"mIs-pU-waG.segmentTitles[2]" = "Kontinenter";

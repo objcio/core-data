@@ -10,21 +10,21 @@ import CoreData
 
 
 extension NSManagedObjectContext {
-    func performBlockWithGroup(group: dispatch_group_t, block: () -> ()) {
-        dispatch_group_enter(group)
-        performBlock {
+    func perform(group: DispatchGroup, block: @escaping () -> ()) {
+        group.enter()
+        perform {
             block()
-            dispatch_group_leave(group)
+            group.leave()
         }
     }
 }
 
 
-extension SequenceType where Generator.Element: NSManagedObject {
-    func remapToContext(context: NSManagedObjectContext) -> [Generator.Element] {
+extension Sequence where Iterator.Element: NSManagedObject {
+    func remap(to context: NSManagedObjectContext) -> [Iterator.Element] {
         return map { unmappedMO in
             guard unmappedMO.managedObjectContext !== context else { return unmappedMO }
-            guard let object = context.objectWithID(unmappedMO.objectID) as? Generator.Element else { fatalError("Invalid object type") }
+            guard let object = context.object(with: unmappedMO.objectID) as? Iterator.Element else { fatalError("Invalid object type") }
             return object
         }
     }
@@ -32,19 +32,20 @@ extension SequenceType where Generator.Element: NSManagedObject {
 
 
 extension NSManagedObjectContext {
-    private var changedObjectsCount: Int {
+    fileprivate var changedObjectsCount: Int {
         return insertedObjects.count + updatedObjects.count + deletedObjects.count
     }
 
-    func delayedSaveOrRollbackWithGroup(group: dispatch_group_t, completion: (Bool) -> () = { _ in }) {
+    func delayedSaveOrRollback(group: DispatchGroup, completion: @escaping (Bool) -> () = { _ in }) {
         let changeCountLimit = 100
         guard changeCountLimit >= changedObjectsCount else { return completion(saveOrRollback()) }
-        let queue = dispatch_get_global_queue(QOS_CLASS_DEFAULT, 0)
-        dispatch_group_notify(group, queue) {
-            self.performBlockWithGroup(group) {
+        let queue = DispatchQueue.global(qos: DispatchQoS.QoSClass.default)
+        group.notify(queue: queue) {
+            self.perform(group: group) {
                 guard self.hasChanges else { return completion(true) }
                 completion(self.saveOrRollback())
             }
         }
     }
 }
+

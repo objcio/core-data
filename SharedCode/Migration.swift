@@ -9,32 +9,33 @@
 import CoreData
 
 
-public func migrateStoreFromURL<Version: ModelVersionType>(sourceURL: NSURL, toURL: NSURL, targetVersion: Version, deleteSource: Bool = false, progress: NSProgress? = nil) {
-    guard let sourceVersion = Version(storeURL: sourceURL) else { fatalError("unknown store version at URL \(sourceURL)") }
+public func migrateStore<Version: ModelVersion>(from sourceURL: URL, to targetURL: URL, targetVersion: Version, deleteSource: Bool = false, progress: Progress? = nil) {
+    guard let sourceVersion = Version(storeURL: sourceURL as URL) else { fatalError("unknown store version at URL \(sourceURL)") }
     var currentURL = sourceURL
-    let migrationSteps = sourceVersion.migrationStepsToVersion(targetVersion)
-    var migrationProgress: NSProgress?
+    let migrationSteps = sourceVersion.migrationSteps(to: targetVersion)
+    var migrationProgress: Progress?
     if let p = progress {
-        migrationProgress = NSProgress(totalUnitCount: Int64(migrationSteps.count), parent: p, pendingUnitCount: p.totalUnitCount)
+        migrationProgress = Progress(totalUnitCount: Int64(migrationSteps.count), parent: p, pendingUnitCount: p.totalUnitCount)
     }
     for step in migrationSteps {
-        migrationProgress?.becomeCurrentWithPendingUnitCount(1)
-        let manager = NSMigrationManager(sourceModel: step.sourceModel, destinationModel: step.destinationModel)
+        migrationProgress?.becomeCurrent(withPendingUnitCount: 1)
+        let manager = NSMigrationManager(sourceModel: step.source, destinationModel: step.destination)
         migrationProgress?.resignCurrent()
-        let destinationURL = NSURL.temporaryURL()
-        for mapping in step.mappingModels {
-            try! manager.migrateStoreFromURL(currentURL, type: NSSQLiteStoreType, options: nil, withMappingModel: mapping, toDestinationURL: destinationURL, destinationType: NSSQLiteStoreType, destinationOptions: nil)
+        let destinationURL = URL.temporary
+        for mapping in step.mappings {
+            try! manager.migrateStore(from: currentURL, sourceType: NSSQLiteStoreType, options: nil, with: mapping, toDestinationURL: destinationURL, destinationType: NSSQLiteStoreType, destinationOptions: nil)
         }
         if currentURL != sourceURL {
-            NSPersistentStoreCoordinator.destroyStoreAtURL(currentURL)
+            NSPersistentStoreCoordinator.destroyStore(at: currentURL)
         }
         currentURL = destinationURL
     }
-    try! NSPersistentStoreCoordinator.replaceStoreAtURL(toURL, withStoreAtURL: currentURL)
+    try! NSPersistentStoreCoordinator.replaceStore(at: targetURL, withStoreAt: currentURL)
     if (currentURL != sourceURL) {
-        NSPersistentStoreCoordinator.destroyStoreAtURL(currentURL)
+        NSPersistentStoreCoordinator.destroyStore(at: currentURL)
     }
-    if (toURL != sourceURL && deleteSource) {
-        NSPersistentStoreCoordinator.destroyStoreAtURL(sourceURL)
+    if (targetURL != sourceURL && deleteSource) {
+        NSPersistentStoreCoordinator.destroyStore(at: sourceURL)
     }
 }
+

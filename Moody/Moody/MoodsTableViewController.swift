@@ -12,34 +12,34 @@ import MoodyModel
 import CoreDataHelpers
 
 
-class MoodsTableViewController: UITableViewController, MoodsPresenterType, SegueHandlerType {
+class MoodsTableViewController: UITableViewController, MoodsPresenter, SegueHandler {
 
     enum SegueIdentifier: String {
-        case ShowMoodDetail = "showMoodDetail"
+        case showMoodDetail = "showMoodDetail"
     }
 
     var managedObjectContext: NSManagedObjectContext!
     var countries: [Country]?
     var moodSource: MoodSource! {
         didSet {
-            guard let o = moodSource.managedObject else { return }
+            guard let o = moodSource.managedObject as? Managed else { return }
             observer = ManagedObjectObserver(object: o) { [unowned self] type in
-                guard type == .Delete else { return }
-                self.navigationController?.popViewControllerAnimated(true)
+                guard type == .delete else { return }
+                let _ = self.navigationController?.popViewController(animated: true)
             }
         }
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        countries = moodSource.prefetchInContext(managedObjectContext)
+        countries = moodSource.prefetch(in: managedObjectContext)
         setupTableView()
     }
 
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        switch segueIdentifierForSegue(segue) {
-        case .ShowMoodDetail:
-            guard let vc = segue.destinationViewController as? MoodDetailViewController else { fatalError("Wrong view controller type") }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        switch segueIdentifier(for: segue) {
+        case .showMoodDetail:
+            guard let vc = segue.destination as? MoodDetailViewController else { fatalError("Wrong view controller type") }
             guard let mood = dataSource.selectedObject else { fatalError("Showing detail, but no selected row?") }
             vc.mood = mood
         }
@@ -48,33 +48,26 @@ class MoodsTableViewController: UITableViewController, MoodsPresenterType, Segue
 
     // MARK: Private
 
-    private typealias Data = FetchedResultsDataProvider<MoodsTableViewController>
-    private var dataSource: TableViewDataSource<MoodsTableViewController, Data, MoodTableViewCell>!
-    private var observer: ManagedObjectObserver?
+    fileprivate var dataSource: TableViewDataSource<Mood, MoodsTableViewController>!
+    fileprivate var observer: ManagedObjectObserver?
 
-    private func setupTableView() {
+    fileprivate func setupTableView() {
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 100
-        let request = Mood.sortedFetchRequestWithPredicate(moodSource.predicate)
+        let request = Mood.sortedFetchRequest(with: moodSource.predicate)
         request.returnsObjectsAsFaults = false
         request.fetchBatchSize = 20
         let frc = NSFetchedResultsController(fetchRequest: request, managedObjectContext: managedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
-        let dataProvider = FetchedResultsDataProvider(fetchedResultsController: frc, delegate: self)
-        dataSource = TableViewDataSource(tableView: tableView, dataProvider: dataProvider, delegate: self)
+        dataSource = TableViewDataSource(tableView: tableView, cellIdentifier: "MoodCell", fetchedResultsController: frc, delegate: self)
     }
 
 }
 
 
-extension MoodsTableViewController: DataProviderDelegate {
-    func dataProviderDidUpdate(updates: [DataProviderUpdate<Mood>]?) {
-        dataSource.processUpdates(updates)
+extension MoodsTableViewController: TableViewDataSourceDelegate {
+    func configure(_ cell: MoodTableViewCell, for object: Mood) {
+        cell.configure(for: object)
     }
 }
 
-extension MoodsTableViewController: DataSourceDelegate {
-    func cellIdentifierForObject(object: Mood) -> String {
-        return "MoodCell"
-    }
-}
 

@@ -12,14 +12,14 @@ import CoreData
 import CoreDataHelpers
 
 
-public final class Country: ManagedObject {
+public class Country: NSManagedObject {
 
-    @NSManaged private(set) var moods: Set<Mood>
-    @NSManaged private(set) var continent: Continent?
+    @NSManaged fileprivate(set) var moods: Set<Mood>
+    @NSManaged fileprivate(set) var continent: Continent?
     @NSManaged public internal(set) var numberOfMoods: Int64
-    @NSManaged internal var updatedAt: NSDate
+    @NSManaged internal var updatedAt: Date
 
-    public private(set) var iso3166Code: ISO3166.Country {
+    public fileprivate(set) var iso3166Code: ISO3166.Country {
         get {
             guard let c = ISO3166.Country(rawValue: numericISO3166Code) else { fatalError("Unknown country code") }
             return c
@@ -31,27 +31,22 @@ public final class Country: ManagedObject {
 
     public override func awakeFromInsert() {
         super.awakeFromInsert()
-        primitiveUpdatedAt = NSDate()
+        primitiveUpdatedAt = Date()
     }
 
-    static func findOrCreateCountry(isoCountry: ISO3166.Country, inContext moc: NSManagedObjectContext) -> Country {
-        // <<!strip>>
-        let predicate___ = NSPredicate(format: "%K == %d",
-            Keys.NumericISO3166Code.rawValue, Int(isoCountry.rawValue))
-        predicate___
-        // <<!/strip>>
-        let predicate = Country.predicateWithPredicate(NSPredicate(format: "%K == %d", Keys.NumericISO3166Code.rawValue, Int(isoCountry.rawValue)))
-        let country = findOrCreateInContext(moc, matchingPredicate: predicate) {
+    static func findOrCreate(for isoCountry: ISO3166.Country, in context: NSManagedObjectContext) -> Country {
+        let predicate = Country.predicate(format: "%K == %d", #keyPath(numericISO3166Code), Int(isoCountry.rawValue))
+        let country = findOrCreate(in: context, matching: predicate) {
             $0.iso3166Code = isoCountry
-            $0.continent = Continent.findOrCreateContinentForCountry(isoCountry, inContext: moc)
+            $0.continent = Continent.findOrCreateContinent(for: isoCountry, in: context)
         }
         return country
     }
 
     public override func prepareForDeletion() {
         guard let c = continent else { return }
-        if c.countries.filter({ !$0.deleted }).isEmpty {
-            managedObjectContext?.deleteObject(c)
+        if c.countries.filter({ !$0.isDeleted }).isEmpty {
+            managedObjectContext?.delete(c)
         }
     }
 
@@ -78,37 +73,37 @@ public final class Country: ManagedObject {
 
 
     // MARK: Private
-    @NSManaged private var numericISO3166Code: Int16
-    @NSManaged private var primitiveUpdatedAt: NSDate
+    @NSManaged fileprivate var numericISO3166Code: Int16
+    @NSManaged fileprivate var primitiveUpdatedAt: Date
 
 
-    private var hasChangedMoods: Bool {
-        return changedValueForKey(Keys.Moods) != nil
+    fileprivate var hasChangedMoods: Bool {
+        return changedValue(forKey: #keyPath(moods)) != nil
     }
 
-    private var hasInsertedMoods: Bool {
+    fileprivate var hasInsertedMoods: Bool {
         guard hasChangedMoods else { return false }
-        return moods.filter { $0.inserted }.count > 0
+        return moods.filter { $0.isInserted }.count > 0
     }
 
-    private var committedNumberOfMoods: Int64 {
-        let n = committedValueForKey(Keys.NumberOfMoods) as? Int ?? 0
+    fileprivate var committedNumberOfMoods: Int64 {
+        let n = committedValue(forKey: #keyPath(numberOfMoods)) as? Int ?? 0
         return Int64(n)
     }
 
-    private func refreshUpdateDate() {
-        guard changedValues()[UpdateTimestampKey] == nil else { return }
-        updatedAt = NSDate()
+    fileprivate func refreshUpdateDate() {
+        guard changedValue(forKey: UpdateTimestampKey) == nil else { return }
+        updatedAt = Date()
         continent?.refreshUpdateDate()
     }
 
-    private func updateMoodCount() {
+    fileprivate func updateMoodCount() {
         guard Int64(moods.count) != numberOfMoods else { return }
         numberOfMoods = Int64(moods.count)
         continent?.updateMoodCount()
     }
 
-    private func removeFromContinent() {
+    fileprivate func removeFromContinent() {
         guard continent != nil else { return }
         continent = nil
     }
@@ -117,27 +112,7 @@ public final class Country: ManagedObject {
 }
 
 
-extension Country: KeyCodable {
-    public enum Keys: String {
-        case Moods = "moods"
-        case NumberOfMoods = "numberOfMoods"
-        case NumericISO3166Code = "numericISO3166Code"
-    }
-}
-
-
-extension Country: LocalizedStringConvertible {
-    public var localizedDescription: String {
-        return iso3166Code.localizedDescription
-    }
-}
-
-
-extension Country: ManagedObjectType {
-    public static var entityName: String {
-        return "Country"
-    }
-
+extension Country: Managed {
     public static var defaultSortDescriptors: [NSSortDescriptor] {
         return [NSSortDescriptor(key: UpdateTimestampKey, ascending: false)]
     }
@@ -147,10 +122,9 @@ extension Country: ManagedObjectType {
     }
 }
 
-
 extension Country: DelayedDeletable {
-    @NSManaged public var markedForDeletionDate: NSDate?
+    @NSManaged public var markedForDeletionDate: Date?
 }
 
-
 extension Country: UpdateTimestampable {}
+

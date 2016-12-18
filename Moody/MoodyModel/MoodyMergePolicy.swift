@@ -12,30 +12,30 @@ import CoreDataHelpers
 
 public class MoodyMergePolicy: NSMergePolicy {
     public enum MergeMode {
-        case Remote
-        case Local
+        case remote
+        case local
 
-        private var mergeType: NSMergePolicyType {
+        fileprivate var mergeType: NSMergePolicyType {
             switch self {
-            case .Remote: return .MergeByPropertyObjectTrumpMergePolicyType
-            case .Local: return .MergeByPropertyStoreTrumpMergePolicyType
+            case .remote: return .mergeByPropertyObjectTrumpMergePolicyType
+            case .local: return .mergeByPropertyStoreTrumpMergePolicyType
             }
         }
     }
 
     required public init(mode: MergeMode) {
-        super.init(mergeType: mode.mergeType)
+        super.init(merge: mode.mergeType)
     }
 
-    override public func resolveOptimisticLockingVersionConflicts(list: [NSMergeConflict]) throws {
-        var regionsAndLatestDates: [(UpdateTimestampable, NSDate)] = []
-        for (c, r) in list.conflictsAndObjectsWithType(UpdateTimestampable) {
+    override open func resolve(optimisticLockingConflicts list: [NSMergeConflict]) throws {
+        var regionsAndLatestDates: [(UpdateTimestampable, Date)] = []
+        for (c, r) in list.conflictsAndObjects(of: UpdateTimestampable.self) {
             regionsAndLatestDates.append((r, c.newestUpdatedAt))
         }
 
-        try super.resolveOptimisticLockingVersionConflicts(list)
+        try super.resolve(optimisticLockingConflicts: list)
 
-        for (var region, date) in regionsAndLatestDates {
+        for (region, date) in regionsAndLatestDates {
             region.updatedAt = date
         }
 
@@ -43,20 +43,20 @@ public class MoodyMergePolicy: NSMergePolicy {
         resolveContinentConflicts(list)
     }
 
-    func resolveCountryConflicts(conflicts: [NSMergeConflict]) {
-        for country in conflicts.conflictedObjectsWithType(Country) {
+    func resolveCountryConflicts(_ conflicts: [NSMergeConflict]) {
+        for country in conflicts.conflictedObjects(of: Country.self) {
             country.refresh()
             country.numberOfMoods = Int64(country.moods.count)
         }
     }
 
-    func resolveContinentConflicts(conflicts: [NSMergeConflict]) {
-        for continent in conflicts.conflictedObjectsWithType(Continent) {
+    func resolveContinentConflicts(_ conflicts: [NSMergeConflict]) {
+        for continent in conflicts.conflictedObjects(of: Continent.self) {
             continent.refresh()
             continent.numberOfCountries = Int64(continent.countries.count)
             guard let ctx = continent.managedObjectContext else { continue }
-            let count = Mood.countInContext(ctx) { request in
-                request.predicate = Mood.predicateWithFormat("country IN %@", args: continent.countries)
+            let count = Mood.count(in: ctx) { request in
+                request.predicate = Mood.predicate(format: "country IN %@", continent.countries)
             }
             continent.numberOfMoods = Int64(count)
         }
@@ -66,36 +66,26 @@ public class MoodyMergePolicy: NSMergePolicy {
 
 
 extension NSMergeConflict {
-    var newestUpdatedAt: NSDate {
+    var newestUpdatedAt: Date {
         guard let o = sourceObject as? UpdateTimestampable else { fatalError("must be UpdateTimestampable") }
         let key = UpdateTimestampKey
-        let zeroDate = NSDate(timeIntervalSince1970: 0)
-        let objectDate = objectSnapshot?[key] as? NSDate ?? zeroDate
-        let cachedDate = cachedSnapshot?[key] as? NSDate ?? zeroDate
-        let persistedDate = persistedSnapshot?[key] as? NSDate ?? zeroDate
-        return max(o.updatedAt, max(objectDate, max(cachedDate, persistedDate)))
+        let zeroDate = Date(timeIntervalSince1970: 0)
+        let objectDate = objectSnapshot?[key] as? Date ?? zeroDate
+        let cachedDate = cachedSnapshot?[key] as? Date ?? zeroDate
+        let persistedDate = persistedSnapshot?[key] as? Date ?? zeroDate
+        return max(o.updatedAt as Date, max(objectDate, max(cachedDate, persistedDate)))
     }
 }
 
 
-extension SequenceType where Generator.Element == NSMergeConflict {
-    func conflictedObjectsWithType<T>(cls: T.Type) -> [T] {
-        return map { $0.sourceObject }.filterByType()
+extension Sequence where Iterator.Element == NSMergeConflict {
+    func conflictedObjects<T>(of cls: T.Type) -> [T] {
+        let objects = map { $0.sourceObject }
+        return objects.flatMap { $0 as? T }
     }
 
-    func conflictsAndObjectsWithType<T>(cls: T.Type) -> [(NSMergeConflict, T)] {
+    func conflictsAndObjects<T>(of cls: T.Type) -> [(NSMergeConflict, T)] {
         return filter { $0.sourceObject is T }.map { ($0, $0.sourceObject as! T) }
     }
-}
-
-
-extension NSDate: Comparable {}
-
-public func ==(l: NSDate, r: NSDate) -> Bool {
-    return l.timeIntervalSince1970 == r.timeIntervalSince1970
-}
-
-public func <(l: NSDate, r: NSDate) -> Bool {
-    return l.timeIntervalSince1970 < r.timeIntervalSince1970
 }
 

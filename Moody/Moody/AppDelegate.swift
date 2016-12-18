@@ -15,33 +15,38 @@ import CoreData
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-    var managedObjectContext: NSManagedObjectContext!
+    var persistentContainer: NSPersistentContainer!
     var syncCoordinator: SyncCoordinator!
     var window: UIWindow?
 
-    func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         application.registerForRemoteNotifications()
-        guard let context = createMoodyMainContext() else { fatalError() }
-        managedObjectContext = context
-        syncCoordinator = SyncCoordinator(mainManagedObjectContext: context)
-        guard let vc = window?.rootViewController as? ManagedObjectContextSettable else { fatalError("Wrong view controller type") }
-        vc.managedObjectContext = managedObjectContext
+        createMoodyContainer { container in
+            self.persistentContainer = container
+            self.syncCoordinator = SyncCoordinator(container: container)
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            guard let vc = storyboard.instantiateViewController(withIdentifier: "RootViewController") as? RootViewController
+                else { fatalError("Wrong view controller type") }
+            vc.managedObjectContext = container.viewContext
+            self.window?.rootViewController = vc
+        }
         return true
     }
 
-    func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject: AnyObject]) {
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any]) {
         guard let info = userInfo as? [String: NSObject] else { return }
         syncCoordinator.application(application, didReceiveRemoteNotification: info)
     }
 
-    func applicationDidEnterBackground(application: UIApplication) {
-        managedObjectContext.batchDeleteObjectsMarkedForLocalDeletion()
-        managedObjectContext.refreshAllObjects()
+    func applicationDidEnterBackground(_ application: UIApplication) {
+        persistentContainer.viewContext.batchDeleteObjectsMarkedForLocalDeletion()
+        persistentContainer.viewContext.refreshAllObjects()
     }
 
-    func applicationDidReceiveMemoryWarning(application: UIApplication) {
-        managedObjectContext.refreshAllObjects()
+    func applicationDidReceiveMemoryWarning(_ application: UIApplication) {
+        persistentContainer.viewContext.refreshAllObjects()
     }
 
 }
+
 

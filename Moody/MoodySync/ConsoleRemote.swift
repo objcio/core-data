@@ -9,9 +9,9 @@
 import MoodyModel
 
 
-struct ConsoleRemote: MoodyRemoteType {
+final class ConsoleRemote: MoodyRemote {
 
-    private func log(str: String) {
+    fileprivate func log(_ str: String) {
         print("--- Dummy network adapter logging to console; See README for instructions to enable CloudKit ---\n* ", str)
     }
 
@@ -19,29 +19,29 @@ struct ConsoleRemote: MoodyRemoteType {
         log("Setting up subscription")
     }
 
-    func fetchLatestMoods(completion: ([RemoteMood]) -> ()) {
+    func fetchLatestMoods(completion: @escaping ([RemoteMood]) -> ()) {
         log("Fetching latest moods")
         completion([])
     }
 
-    func fetchNewMoods(completion: ([RemoteRecordChange<RemoteMood>], (success: Bool) -> ()) -> ()) {
+    func fetchNewMoods(completion: @escaping ([RemoteRecordChange<RemoteMood>], @escaping (_ success: Bool) -> ()) -> ()) {
         log("Fetching new moods")
         completion([], { _ in })
     }
 
-    func uploadMoods(moods: [Mood], completion: ([RemoteMood], RemoteError?) -> ()) {
+    func upload(_ moods: [Mood], completion: @escaping ([RemoteMood], RemoteError?) -> ()) {
         log("Uploading \(moods.count) moods")
         let remoteMoods = moods.map { RemoteMood(mood: $0) }.flatMap { $0 }
         completion(remoteMoods, nil)
     }
 
-    func removeMoods(moods: [Mood], completion: ([RemoteRecordID], RemoteError?) -> ()) {
+    func remove(_ moods: [Mood], completion: @escaping ([RemoteRecordID], RemoteError?) -> ()) {
         log("Deleting \(moods.count) moods")
         let ids = moods.map { $0.remoteIdentifier }.flatMap { $0 }
         completion(ids, nil)
     }
 
-    func fetchUserID(completion: RemoteRecordID? -> ()) {
+    func fetchUserID(completion: @escaping (RemoteRecordID?) -> ()) {
         log("Fetching ID of logged in user")
         completion(nil)
     }
@@ -50,13 +50,14 @@ struct ConsoleRemote: MoodyRemoteType {
 
 
 extension RemoteMood {
-    private init?(mood: Mood) {
+    fileprivate init?(mood: Mood) {
         self.id = "__dummyId__"
         self.creatorID = nil
         self.date = mood.date
         self.location = mood.location
         self.colors = mood.colors
-        self.isoCountry = mood.country?.iso3166Code ?? .Unknown
+        self.isoCountry = mood.country?.iso3166Code ?? .unknown
     }
 }
+
 

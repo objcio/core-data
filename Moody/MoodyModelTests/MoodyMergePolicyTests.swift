@@ -19,10 +19,10 @@ class MoodyMergePolicyTests: XCTestCase {
     override func setUp() {
         super.setUp()
         managedObjectContext1 = NSManagedObjectContext.moodyInMemoryTestContext()
-        managedObjectContext2 = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
+        managedObjectContext2 = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
         managedObjectContext2.persistentStoreCoordinator = managedObjectContext1.persistentStoreCoordinator
-        managedObjectContext1.mergePolicy = MoodyMergePolicy(mode: .Local)
-        managedObjectContext2.mergePolicy = MoodyMergePolicy(mode: .Local)
+        managedObjectContext1.mergePolicy = MoodyMergePolicy(mode: .local)
+        managedObjectContext2.mergePolicy = MoodyMergePolicy(mode: .local)
     }
 
     override func tearDown() {
@@ -34,15 +34,15 @@ class MoodyMergePolicyTests: XCTestCase {
     func testThatConflictedUpdatedAtResolvesToLatestDate() {
         // Given
         let country1 = managedObjectContext1.testInsertMoodsAndSave()[0].country!.materialize()
-        let country2 = country1.materializedObjectInContext(managedObjectContext2)
-        let winningDate = NSDate(timeIntervalSinceNow: 20)
+        let country2 = country1.materializedObject(in: managedObjectContext2)
+        let winningDate = Date(timeIntervalSinceNow: 20)
 
         // When
         managedObjectContext1.performChangesAndWait {
             country1.updatedAt = winningDate
         }
         managedObjectContext2.performChangesAndWait {
-            country2.updatedAt = NSDate(timeIntervalSinceNow: 10)
+            country2.updatedAt = Date(timeIntervalSinceNow: 10)
         }
         managedObjectContext2.refreshAllObjects()
 
@@ -52,12 +52,12 @@ class MoodyMergePolicyTests: XCTestCase {
 
     func testThatConflictedNumberOfMoodsOnCountryResolvesToPersistedState() {
         // Given
-        let country1 = managedObjectContext1.testInsertMoodsAndSave([.DEU])[0].country!
-        managedObjectContext2.testInsertMoodsAndSave([.DEU])
+        let country1 = managedObjectContext1.testInsertMoodsAndSave([.deu])[0].country!
+        _ = managedObjectContext2.testInsertMoodsAndSave([.deu])
 
         // When
         managedObjectContext1.performChangesAndWait {
-            self.managedObjectContext1.testInsertMoodsAndSave([.DEU])
+            _ = self.managedObjectContext1.testInsertMoodsAndSave([.deu])
         }
 
         // Then
@@ -66,12 +66,12 @@ class MoodyMergePolicyTests: XCTestCase {
 
     func testThatConflictedNumberOfMoodsOnContinentResolvesToPersistedState() {
         // Given
-        let continent1 = managedObjectContext1.testInsertMoodsAndSave([.DEU])[0].country!.continent!
-        managedObjectContext2.testInsertMoodsAndSave([.DEU])
+        let continent1 = managedObjectContext1.testInsertMoodsAndSave([.deu])[0].country!.continent!
+        _ = managedObjectContext2.testInsertMoodsAndSave([.deu])
 
         // When
         managedObjectContext1.performChangesAndWait {
-            self.managedObjectContext1.testInsertMoodsAndSave([.DEU])
+            _ = self.managedObjectContext1.testInsertMoodsAndSave([.deu])
         }
 
         // Then
@@ -80,12 +80,12 @@ class MoodyMergePolicyTests: XCTestCase {
 
     func testThatConflictedNumberOfCountriesOnContinentResolvesToPersistedState() {
         // Given
-        let continent1 = managedObjectContext1.testInsertMoodsAndSave([.DEU])[0].country!.continent!
-        managedObjectContext2.testInsertMoodsAndSave([.FRA])
+        let continent1 = managedObjectContext1.testInsertMoodsAndSave([.deu])[0].country!.continent!
+        _ = managedObjectContext2.testInsertMoodsAndSave([.fra])
 
         // When
         managedObjectContext1.performChangesAndWait {
-            self.managedObjectContext1.testInsertMoodsAndSave([.POL])
+            _ = self.managedObjectContext1.testInsertMoodsAndSave([.pol])
         }
 
         // Then
@@ -103,10 +103,10 @@ class MoodyMergePolicyConstraintTests: XCTestCase {
     override func setUp() {
         super.setUp()
         managedObjectContext1 = NSManagedObjectContext.moodySQLiteTestContext()
-        managedObjectContext2 = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
+        managedObjectContext2 = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
         managedObjectContext2.persistentStoreCoordinator = managedObjectContext1.persistentStoreCoordinator
-        managedObjectContext1.mergePolicy = MoodyMergePolicy(mode: .Local)
-        managedObjectContext2.mergePolicy = MoodyMergePolicy(mode: .Local)
+        managedObjectContext1.mergePolicy = MoodyMergePolicy(mode: .local)
+        managedObjectContext2.mergePolicy = MoodyMergePolicy(mode: .local)
     }
 
     override func tearDown() {
@@ -117,8 +117,8 @@ class MoodyMergePolicyConstraintTests: XCTestCase {
 
     func testThatRegionIsoCodeIsEnforcedToBeUnique() {
         // Given
-        let m1 = managedObjectContext1.testInsertMoods([.DEU])[0]
-        let m2 = managedObjectContext2.testInsertMoodsAndSave([.DEU])[0]
+        let m1 = managedObjectContext1.testInsertMoods([.deu])[0]
+        let m2 = managedObjectContext2.testInsertMoodsAndSave([.deu])[0]
 
         // When
         try! managedObjectContext1.save()
@@ -132,4 +132,5 @@ class MoodyMergePolicyConstraintTests: XCTestCase {
     }
 
 }
+
 

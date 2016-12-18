@@ -30,7 +30,7 @@ class DenormalizationTests: XCTestCase {
         let updatedAt = country.updatedAt
 
         // When
-        managedObjectContext.testInsertMoodsAndSave([country.iso3166Code])
+        _ = managedObjectContext.testInsertMoodsAndSave([country.iso3166Code])
 
         // Then
         XCTAssertGreaterThan(country.updatedAt, updatedAt)
@@ -42,7 +42,7 @@ class DenormalizationTests: XCTestCase {
         let updatedAt = continent.updatedAt
 
         // When
-        managedObjectContext.testInsertMoodsAndSave([continent.countries.first!.iso3166Code])
+        _ = managedObjectContext.testInsertMoodsAndSave([continent.countries.first!.iso3166Code])
 
         // Then
         XCTAssertGreaterThan(continent.updatedAt, updatedAt)
@@ -50,7 +50,7 @@ class DenormalizationTests: XCTestCase {
 
     func testThatDeletingMoodDoesNotChangeUpdatedAtOnCountry() {
         // Given
-        let moods = managedObjectContext.testInsertMoodsAndSave([.DEU, .DEU])
+        let moods = managedObjectContext.testInsertMoodsAndSave([.deu, .deu])
         let country = moods[0].country!
         let updatedAt = country.updatedAt
 
@@ -66,7 +66,7 @@ class DenormalizationTests: XCTestCase {
         let country = managedObjectContext.testInsertMoodsAndSave()[0].country!
 
         // When
-        managedObjectContext.testInsertMoodsAndSave([country.iso3166Code])
+        _ = managedObjectContext.testInsertMoodsAndSave([country.iso3166Code])
 
         // Then
         XCTAssertEqual(country.numberOfMoods, 2)
@@ -74,10 +74,10 @@ class DenormalizationTests: XCTestCase {
 
     func testThatInsertingMoodUpdatesNumberOfMoodsOnContinent() {
         // Given
-        let continent = managedObjectContext.testInsertMoodsAndSave([.DEU])[0].country!.continent!
+        let continent = managedObjectContext.testInsertMoodsAndSave([.deu])[0].country!.continent!
 
         // When
-        managedObjectContext.testInsertMoodsAndSave([.DEU, .FRA])
+        _ = managedObjectContext.testInsertMoodsAndSave([.deu, .fra])
 
         // Then
         XCTAssertEqual(continent.numberOfMoods, 3)
@@ -85,10 +85,10 @@ class DenormalizationTests: XCTestCase {
 
     func testThatInsertingMoodInNewCountryUpdatesNumberOfCountriesOnContinent() {
         // Given
-        let continent = managedObjectContext.testInsertMoodsAndSave([.DEU])[0].country!.continent!
+        let continent = managedObjectContext.testInsertMoodsAndSave([.deu])[0].country!.continent!
 
         // When
-        managedObjectContext.testInsertMoodsAndSave([.FRA])
+        _ = managedObjectContext.testInsertMoodsAndSave([.fra])
 
         // Then
         XCTAssertEqual(continent.numberOfCountries, 2)
@@ -96,7 +96,7 @@ class DenormalizationTests: XCTestCase {
 
     func testThatDeletingMoodUpdatesNumberOfMoodsOnCountry() {
         // Given
-        let moods = managedObjectContext.testInsertMoodsAndSave([.DEU, .DEU])
+        let moods = managedObjectContext.testInsertMoodsAndSave([.deu, .deu])
         let country = moods[0].country!
 
         // When
@@ -108,7 +108,7 @@ class DenormalizationTests: XCTestCase {
 
     func testThatDeletingMoodUpdatesNumberOfMoodsOnContinent() {
         // Given
-        let moods = managedObjectContext.testInsertMoodsAndSave([.DEU, .FRA, .FRA])
+        let moods = managedObjectContext.testInsertMoodsAndSave([.deu, .fra, .fra])
         let continent = moods[0].country!.continent!
 
         // When
@@ -120,7 +120,7 @@ class DenormalizationTests: XCTestCase {
 
     func testThatDeletingLastMoodInCountryUpdatesNumberOfCountriesOnContinent() {
         // Given
-        let moods = managedObjectContext.testInsertMoodsAndSave([.DEU, .FRA])
+        let moods = managedObjectContext.testInsertMoodsAndSave([.deu, .fra])
         let continent = moods[0].country!.continent!
 
         // When
@@ -132,7 +132,7 @@ class DenormalizationTests: XCTestCase {
 
     func testThatDeletingLastMoodInCountryUpdatesNumberOfMoodsOnContinent() {
         // Given
-        let moods = managedObjectContext.testInsertMoodsAndSave([.DEU, .FRA])
+        let moods = managedObjectContext.testInsertMoodsAndSave([.deu, .fra])
         let continent = moods[0].country!.continent!
 
         // When
@@ -143,3 +143,4 @@ class DenormalizationTests: XCTestCase {
     }
 
 }
+

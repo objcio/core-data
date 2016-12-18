@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import MoodyModel
 
 class RegionTableViewCell: UITableViewCell {
     @IBOutlet weak var titleLabel: UILabel!
@@ -15,9 +15,10 @@ class RegionTableViewCell: UITableViewCell {
 }
 
 
-extension RegionTableViewCell: ConfigurableCell {
-    func configureForObject(object: DisplayableRegion) {
+extension RegionTableViewCell {
+    func configure(for object: DisplayableRegion) {
         titleLabel.text = object.localizedDescription
         detailLabel.text = object.localizedDetailDescription
     }
 }
+

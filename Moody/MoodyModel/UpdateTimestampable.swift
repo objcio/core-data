@@ -9,6 +9,7 @@
 
 let UpdateTimestampKey = "updatedAt"
 
-protocol UpdateTimestampable {
-    var updatedAt: NSDate { get set }
+protocol UpdateTimestampable: class {
+    var updatedAt: Date { get set }
 }
+

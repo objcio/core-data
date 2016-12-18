@@ -11,30 +11,30 @@ import CoreData
 import CoreDataHelpers
 
 
-class TestObject: ManagedObject, ManagedObjectType {
-    static let entityName = "TestObject"
+class TestObject: NSManagedObject, Managed {
+    static var entityName: String { return "TestObject" }
     static var defaultSortDescriptors: [NSSortDescriptor] {
         get { return [NSSortDescriptor(key: "name", ascending: true)] }
     }
-    static let defaultPredicate = NSPredicate(value: true)
+    static var defaultPredicate: NSPredicate { return NSPredicate(value: true) }
     @NSManaged var name: String?
 }
 
-class TestObjectB: ManagedObject, ManagedObjectType {
-    static let entityName = "TestObjectB"
+class TestObjectB: NSManagedObject, Managed {
+    static var entityName: String { return  "TestObjectB" }
     static var defaultSortDescriptors: [NSSortDescriptor] {
         get { return [NSSortDescriptor(key: "name", ascending: true)] }
     }
-    static let defaultPredicate = NSPredicate(value: true)
+    static var defaultPredicate: NSPredicate { return NSPredicate(value: true) }
     @NSManaged var name: String?
 }
 
 var model: NSManagedObjectModel = {
     return NSManagedObjectModel() {
         let testObject = NSEntityDescription(cls: TestObject.self, name: TestObject.entityName)
-        testObject.addProperty(NSAttributeDescription.stringType("name", defaultValue: "", optional: false))
+        testObject.add(NSAttributeDescription.stringType(name: "name", defaultValue: "", propertyOptions: []))
         let testObjectB = NSEntityDescription(cls: TestObjectB.self, name: TestObjectB.entityName)
-        testObjectB.addProperty(NSAttributeDescription.stringType("name", defaultValue: "", optional: false))
+        testObjectB.add(NSAttributeDescription.stringType(name: "name", defaultValue: "", propertyOptions: []))
         return [testObject, testObjectB]
     }
 }()
@@ -42,6 +42,7 @@ var model: NSManagedObjectModel = {
 
 func createPersistentStoreCoordinatorWithInMemotyStore() -> NSPersistentStoreCoordinator {
     let psc = NSPersistentStoreCoordinator(managedObjectModel: model)
-    try! psc.addPersistentStoreWithType(NSInMemoryStoreType, configuration: nil, URL: nil, options: nil)
+    try! psc.addPersistentStore(ofType: NSInMemoryStoreType, configurationName: nil, at: nil, options: nil)
     return psc
 }
+

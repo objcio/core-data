@@ -10,21 +10,22 @@ import CoreData
 @testable import Migrations
 
 
-protocol TestEntityDataType {
+protocol TestEntityData {
     var entityName: String { get }
-    func matchesManagedObject(mo: NSManagedObject) -> Bool
+    func matches(_ object: NSManagedObject) -> Bool
 }
 
 struct TestVersionData {
-    let data: [[TestEntityDataType]]
+    let data: [[TestEntityData]]
 
-    func matchWithContext(context: NSManagedObjectContext) -> Bool {
+    func match(with context: NSManagedObjectContext) -> Bool {
         for entityData in data {
-            let request = NSFetchRequest(entityName: entityData.first!.entityName)
-            let objects = try! context.executeFetchRequest(request) as! [NSManagedObject]
+            let request = NSFetchRequest<NSManagedObject>(entityName: entityData.first!.entityName)
+            let objects = try! context.fetch(request)
             guard objects.count == entityData.count else { return false }
-            guard objects.all({ o in entityData.some { $0.matchesManagedObject(o) } }) else { return false }
+            guard objects.all({ o in entityData.some { $0.matches(o) } }) else { return false }
         }
         return true
     }
 }
+

@@ -18,7 +18,7 @@ class EntityAndPredicatesTests: XCTestCase {
     override func setUp() {
         super.setUp()
 
-        managedObjectContext = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
+        managedObjectContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
         managedObjectContext.name = "EntityAndPredicatesTests"
         managedObjectContext.persistentStoreCoordinator = createPersistentStoreCoordinatorWithInMemotyStore()
     }
@@ -28,30 +28,19 @@ class EntityAndPredicatesTests: XCTestCase {
         super.tearDown()
     }
 
-    func testThatItMapsTheEntityName() {
-        // Given
-        let entity = managedObjectContext.persistentStoreCoordinator!.managedObjectModel.entitiesByName[TestObject.entityName]!
-
-        // When
-        let sut = EntityAndPredicate(entityName: TestObject.entityName, predicate: NSPredicate(value: true), context: managedObjectContext)
-
-        // Then
-        XCTAssert(sut.entity === entity)
-    }
-
     func testThatItBuildsAFetchRequest() {
         // Given
-        managedObjectContext.performBlockAndWait {
+        managedObjectContext.performAndWait {
             let moA: TestObject = self.managedObjectContext.insertObject()
             moA.name = "A"
             let moB: TestObject = self.managedObjectContext.insertObject()
             moB.name = "B"
             try! self.managedObjectContext.save()
         }
-        let sut = EntityAndPredicate(entityName: TestObject.entityName, predicate: NSPredicate(format: "%K == %@", "name", "B"), context: managedObjectContext)
+        let sut = EntityAndPredicate(entity: TestObject.entity(), predicate: NSPredicate(format: "%K == %@", "name", "B"))
 
         // When
-        let match = try! managedObjectContext.executeFetchRequest(sut.fetchRequest)
+        let match = try! managedObjectContext.fetch(sut.fetchRequest)
 
         // Then
         XCTAssertEqual(match.count, 1)
@@ -59,3 +48,4 @@ class EntityAndPredicatesTests: XCTestCase {
         XCTAssertEqual(mo?.name, "B")
     }
 }
+

@@ -13,7 +13,7 @@ import CoreDataHelpers
 @testable import MoodySync
 
 
-public func AssertEqual<T: Equatable>(@autoclosure expression1: () -> T?, @autoclosure _ expression2: () -> T?, _ message: String = "", file: String = __FILE__, line: UInt = __LINE__, @noescape continuation: () -> () = {}) {
+public func AssertEqual<T: Equatable>(_ expression1: @autoclosure () -> T?, _ expression2: @autoclosure () -> T?, _ message: String = "", file: StaticString = #file, line: UInt = #line, continuation: () -> () = {}) {
     let a = expression1()
     let b = expression2()
     if a != b {
@@ -24,39 +24,40 @@ public func AssertEqual<T: Equatable>(@autoclosure expression1: () -> T?, @autoc
 }
 
 
-private class TestSyncContext: ContextOwnerType {
+private class TestSyncContext: ContextOwner {
 
-    let mainManagedObjectContext: NSManagedObjectContext
-    let syncManagedObjectContext: NSManagedObjectContext
-    let syncGroup = dispatch_group_create()!
+    let viewContext: NSManagedObjectContext
+    let syncContext: NSManagedObjectContext
+    let syncGroup = DispatchGroup()
     let didSetup = true
     var observerTokens: [NSObjectProtocol] = []
-    func addObserverToken(token: NSObjectProtocol) {
+
+    func addObserverToken(_ token: NSObjectProtocol) {
         observerTokens.append(token)
     }
 
-    init(mainManagedObjectContext: NSManagedObjectContext, syncManagedObjectContext: NSManagedObjectContext) {
-        self.mainManagedObjectContext = mainManagedObjectContext
-        self.syncManagedObjectContext = syncManagedObjectContext
+    init(viewContext: NSManagedObjectContext, syncContext: NSManagedObjectContext) {
+        self.viewContext = viewContext
+        self.syncContext = syncContext
         setupContexts()
     }
 
     var changedObjects: [NSManagedObject] = []
 
-    func processChangedLocalObjects(managedObjects: [NSManagedObject]) {
-        changedObjects += managedObjects
+    func processChangedLocalObjects(_ objects: [NSManagedObject]) {
+        changedObjects += objects
     }
 }
 
 
-extension dispatch_group_t {
+extension DispatchGroup {
     func spinUntilEmpty() {
         var done = false
-        dispatch_group_notify(self, dispatch_get_main_queue()) {
+        self.notify(queue: DispatchQueue.main) {
             done = true
         }
         repeat {
-            NSRunLoop.currentRunLoop().runUntilDate(NSDate(timeIntervalSinceNow: 0.0001))
+            RunLoop.current.run(until: Date(timeIntervalSinceNow: 0.0001))
         } while !done
     }
 }
@@ -64,7 +65,7 @@ extension dispatch_group_t {
 
 class SyncContextTests: XCTestCase {
 
-    private var sut: TestSyncContext? = nil
+    fileprivate var sut: TestSyncContext? = nil
 
     override func tearDown() {
         tearDownContext()
@@ -75,14 +76,14 @@ class SyncContextTests: XCTestCase {
         let psc = createPersistentStoreCoordinatorWithInMemotyStore()
 
         // We create both with "private" queue's to keep them off the main thread that the tests are running on.
-        let main = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
+        let main = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
         main.name = "main"
         main.persistentStoreCoordinator = psc
-        let sync = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
+        let sync = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
         sync.name = "sync"
         sync.persistentStoreCoordinator = main.persistentStoreCoordinator
 
-        sut = TestSyncContext(mainManagedObjectContext: main, syncManagedObjectContext: sync)
+        sut = TestSyncContext(viewContext: main, syncContext: sync)
     }
 
     func tearDownContext() {
@@ -92,44 +93,44 @@ class SyncContextTests: XCTestCase {
             // Wait for work to be done in order not to leak into the next test:
             context.syncGroup.spinUntilEmpty()
 
-            let group = dispatch_group_create()!
-            dispatch_group_enter(group)
-            context.mainManagedObjectContext.performBlock {
-                dispatch_group_leave(group)
+            let group = DispatchGroup()
+            group.enter()
+            context.viewContext.perform {
+                group.leave()
             }
-            dispatch_group_enter(group)
-            context.syncManagedObjectContext.performBlock {
-                dispatch_group_leave(group)
+            group.enter()
+            context.syncContext.perform {
+                group.leave()
             }
             group.spinUntilEmpty()
         }
     }
 
     func waitForManagedObjectContextsToBeDone() {
-        let group = dispatch_group_create()!
-        dispatch_group_enter(group)
-        sut!.mainManagedObjectContext.performBlock {
-            dispatch_group_leave(group)
+        let group = DispatchGroup()
+        group.enter()
+        sut!.viewContext.perform {
+            group.leave()
         }
-        dispatch_group_enter(group)
-        sut!.syncManagedObjectContext.performBlock {
-            dispatch_group_leave(group)
+        group.enter()
+        sut!.syncContext.perform {
+            group.leave()
         }
         group.spinUntilEmpty()
         sut!.syncGroup.spinUntilEmpty()
     }
 
-    private func insertObject() -> (onMain: TestObject, onSync: TestObject) {
+    fileprivate func insertObject() -> (onMain: TestObject, onSync: TestObject) {
         let group = sut!.syncGroup
-        let main = sut!.mainManagedObjectContext
-        let sync = sut!.syncManagedObjectContext
+        let main = sut!.viewContext
+        let sync = sut!.syncContext
         var objectOnMain: TestObject?
         var objectOnSync: TestObject?
-        main.performBlockWithGroup(group) {
+        main.perform(group: group) {
             objectOnMain = main.insertObject() as TestObject
             try! main.save()
-            sync.performBlockWithGroup(group) {
-                objectOnSync = .Some(sync.objectWithID(objectOnMain!.objectID) as! TestObject)
+            sync.perform(group: group) {
+                objectOnSync = .some(sync.object(with: objectOnMain!.objectID) as! TestObject)
             }
         }
         waitForManagedObjectContextsToBeDone()
@@ -157,8 +158,8 @@ class SyncContextTests: XCTestCase {
         sut!.changedObjects = []
 
         // When
-        let main = sut!.mainManagedObjectContext
-        main.performBlockWithGroup(sut!.syncGroup) {
+        let main = sut!.viewContext
+        main.perform(group: sut!.syncGroup) {
             objectOnMain.name = "New Name"
             try! main.save()
         }
@@ -171,3 +172,4 @@ class SyncContextTests: XCTestCase {
     }
 
 }
+

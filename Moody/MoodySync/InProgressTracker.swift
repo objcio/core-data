@@ -7,27 +7,28 @@
 //
 
 import Foundation
+import CoreData
 import CoreDataHelpers
 
 
 /// Tracks managed objects that are being *in progress*.
-class InProgressTracker<O: ManagedObject where O: ManagedObjectType> {
+final class InProgressTracker<O: NSManagedObject> where O: Managed {
 
-    private var objectsInProgress = Set<O>()
+    fileprivate var objectsInProgress = Set<O>()
 
     init() {}
 
     /// Returns those objects from the given `objects` that are not yet in progress.
     /// These new objects are then marked as being in progress.
-    func objectsToProcessFromObjects(objects: [O]) -> [O] {
+    func objectsToProcess(from objects: [O]) -> [O] {
         let added = objects.filter { !objectsInProgress.contains($0) }
-        objectsInProgress.unionInPlace(added)
+        objectsInProgress.formUnion(added)
         return added
     }
 
     /// Marks the given objects as being complete, i.e. no longer in progress.
-    func markObjectsAsComplete(objects: [O]) {
-        objectsInProgress.subtractInPlace(objects)
+    func markObjectsAsComplete(_ objects: [O]) {
+        objectsInProgress.subtract(objects)
     }
 
 }
@@ -37,8 +38,9 @@ extension InProgressTracker: CustomDebugStringConvertible {
     var debugDescription: String {
         var components = ["InProgressTracker"]
         components.append("count=\(objectsInProgress.count)")
-        let all = objectsInProgress.map { $0.objectID.description }.joinWithSeparator(", ")
+        let all = objectsInProgress.map { $0.objectID.description }.joined(separator: ", ")
         components.append("{\(all)}")
-        return components.joinWithSeparator(" ")
+        return components.joined(separator: " ")
     }
 }
+
