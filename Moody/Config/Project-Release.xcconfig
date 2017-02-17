@@ -20,3 +20,8 @@ VALIDATE_PRODUCT = YES
 // Metal
 //
 MTL_ENABLE_DEBUG_INFO = NO
+
+
+// Swift compile
+//
+SWIFT_OPTIMIZATION_LEVEL = -Owholemodule

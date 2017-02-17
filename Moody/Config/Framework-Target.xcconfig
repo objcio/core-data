@@ -27,3 +27,8 @@ LD_RUNPATH_SEARCH_PATHS = $(inherited) @executable_path/Frameworks @loader_path/
 //
 DEFINES_MODULE = YES
 INFOPLIST_FILE = Config/Framework-Info.plist
+
+
+// Code Signing
+//
+CODE_SIGN_IDENTITY[sdk=iphoneos*] = 
