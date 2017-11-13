@@ -34,9 +34,9 @@ extension ModelVersion {
     }
 
     public func managedObjectModel() -> NSManagedObjectModel {
-        let omoURL = modelBundle.url(forResource: name, withExtension: "omo", subdirectory: modelDirectoryName)
-        let momURL = modelBundle.url(forResource: name, withExtension: "mom", subdirectory: modelDirectoryName)
-        guard let url = omoURL ?? momURL else { fatalError("model version \(self) not found") }
+        guard let url = modelBundle.url(forResource: name, withExtension: "mom", subdirectory: modelDirectoryName) else {
+            fatalError("model version \(self) not found")
+        }
         guard let model = NSManagedObjectModel(contentsOf: url) else { fatalError("cannot open model at \(url)") }
         return model
     }
