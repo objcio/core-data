@@ -43,7 +43,7 @@ public struct ContextDidSaveNotification {
         guard let set = (notification as Notification).userInfo?[key] as? NSSet else {
             return AnyIterator { nil }
         }
-        let innerIterator = set.makeIterator()
+        var innerIterator = set.makeIterator()
         return AnyIterator { return innerIterator.next() as? NSManagedObject }
     }
 

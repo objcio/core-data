@@ -21,7 +21,7 @@ final class MoodUploader: ElementChangeProcessor {
         processInsertedMoods(objects, in: context)
     }
 
-    func processRemoteChanges<T: RemoteRecord>(_ changes: [RemoteRecordChange<T>], in context: ChangeProcessorContext, completion: () -> ()) {
+    func processRemoteChanges<T>(_ changes: [RemoteRecordChange<T>], in context: ChangeProcessorContext, completion: () -> ()) {
         // no-op
         completion()
     }

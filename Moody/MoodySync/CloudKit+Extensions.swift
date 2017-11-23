@@ -150,6 +150,7 @@ extension NSError {
         case .referenceViolation: return true
         case .managedAccountRestricted: return true
         case .participantMayNeedVerification: return true
+        case .serverResponseLost: return false
         }
     }
 }

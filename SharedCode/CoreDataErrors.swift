@@ -48,26 +48,26 @@ extension ManagedObjectValidationError: CustomDebugStringConvertible {
 
 extension NSManagedObject {
     func propertyValidationError(forKey key: String, localizedDescription: String) -> NSError {
-        let userInfo: [NSObject:AnyObject] = [
-            NSValidationObjectErrorKey as NSObject: self,
-            NSValidationKeyErrorKey as NSObject: key as AnyObject,
-            NSLocalizedDescriptionKey as NSObject: localizedDescription as AnyObject
+        let userInfo: [String:Any] = [
+            NSValidationObjectErrorKey: self,
+            NSValidationKeyErrorKey: key as AnyObject,
+            NSLocalizedDescriptionKey: localizedDescription as AnyObject
         ]
         let domain = Bundle(for: type(of: self)).bundleIdentifier ?? "undefined"
         return NSError(domain: domain, code: NSManagedObjectValidationError, userInfo: userInfo)
     }
 
     func validationError(withLocalizedDescription description: String) -> NSError {
-        let userInfo: [NSObject:AnyObject] = [
-            NSValidationObjectErrorKey as NSObject: self,
-            NSLocalizedDescriptionKey as NSObject: description as AnyObject
+        let userInfo: [String:Any] = [
+            NSValidationObjectErrorKey: self,
+            NSLocalizedDescriptionKey: description as AnyObject
         ]
         let domain = Bundle(for: type(of: self)).bundleIdentifier ?? "undefined"
         return NSError(domain: domain, code: NSManagedObjectValidationError, userInfo: userInfo)
     }
 
     func multipleValidationError(withLocalizedDescriptions descriptions: [String]) -> NSError {
-        let userInfo: [AnyHashable : Any] = [
+        let userInfo: [String:Any] = [
             NSDetailedErrorsKey: descriptions.map(validationError)
         ]
         let domain = Bundle(for: type(of: self)).bundleIdentifier ?? "undefined"

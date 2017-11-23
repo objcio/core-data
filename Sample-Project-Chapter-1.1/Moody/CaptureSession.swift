@@ -18,7 +18,7 @@ protocol CaptureSessionDelegate: class {
 
 class CaptureSession: NSObject {
     var isAuthorized: Bool {
-        return AVCaptureDevice.authorizationStatus(forMediaType: AVMediaTypeVideo) == .authorized
+        return AVCaptureDevice.authorizationStatus(for: AVMediaType.video) == .authorized
     }
 
     var isReady: Bool {
@@ -69,7 +69,7 @@ class CaptureSession: NSObject {
     fileprivate func setup() {
         #if !IOS_SIMULATOR
         session.sessionPreset = AVCaptureSessionPresetPhoto
-        let discovery = AVCaptureDeviceDiscoverySession(deviceTypes: [.builtInWideAngleCamera], mediaType: AVMediaTypeVideo, position: .back)
+            let discovery = AVCaptureDeviceDiscoverySession(__deviceTypes: [.builtInWideAngleCamera], mediaType: AVMediaTypeVideo, position: .back)
         if let camera = discovery?.devices.first {
             let input = try! AVCaptureDeviceInput(device: camera)
             if session.canAddInput(input) {
@@ -84,7 +84,7 @@ class CaptureSession: NSObject {
     }
 
     fileprivate func requestAuthorization() {
-        AVCaptureDevice.requestAccess(forMediaType: AVMediaTypeVideo) { authorized in
+        AVCaptureDevice.requestAccess(for: AVMediaType.video) { authorized in
             DispatchQueue.main.async {
                 self.delegate.captureSessionDidChangeAuthorizationStatus(authorized: authorized)
                 guard authorized else { return }
@@ -96,15 +96,12 @@ class CaptureSession: NSObject {
 
 
 extension CaptureSession: AVCapturePhotoCaptureDelegate {
-    func capture(_ captureOutput: AVCapturePhotoOutput, didFinishProcessingPhotoSampleBuffer photoSampleBuffer: CMSampleBuffer?, previewPhotoSampleBuffer: CMSampleBuffer?, resolvedSettings: AVCaptureResolvedPhotoSettings, bracketSettings: AVCaptureBracketedStillImageSettings?, error: Error?) {
-        var image: UIImage?
-
-        if let buf = photoSampleBuffer, let data = AVCapturePhotoOutput.jpegPhotoDataRepresentation(forJPEGSampleBuffer: buf, previewPhotoSampleBuffer: nil) {
-            image = UIImage(data: data)
-        }
+    func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
+        let image = photo.fileDataRepresentation().flatMap(UIImage.init)
         DispatchQueue.main.async {
             self.delegate.captureSessionDidCapture(image)
         }
     }
 }
+
 

@@ -70,7 +70,7 @@ public func randomFamilyName() -> String {
 }
 
 extension Collection where IndexDistance == Int {
-    public var randomElement: Generator.Element {
+    public var randomElement: Iterator.Element {
         let offset = arc4random_uniform(UInt32(count))
         let idx = index(startIndex, offsetBy: Int(offset))
         return self[idx]

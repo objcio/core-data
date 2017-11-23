@@ -19,7 +19,7 @@ final class MoodDownloader: ChangeProcessor {
         // no-op
     }
 
-    func processRemoteChanges<T: RemoteRecord>(_ changes: [RemoteRecordChange<T>], in context: ChangeProcessorContext, completion: () -> ()) {
+    func processRemoteChanges<T>(_ changes: [RemoteRecordChange<T>], in context: ChangeProcessorContext, completion: () -> ()) {
         var creates: [RemoteMood] = []
         var deletionIDs: [RemoteRecordID] = []
         for change in changes {

@@ -161,7 +161,9 @@ extension Mood {
                 guard let colors = colors as? [UIColor] else { return nil }
                 return colors.moodData as NSData
             }, reverseTransform: { (data: NSData?) -> NSArray? in
-                return (data as? Data)?.moodColors.map { $0 as NSArray }
+                return data
+                    .flatMap { ($0 as Data).moodColors }
+                    .map { $0 as NSArray }
         })
     }()
 }

@@ -27,7 +27,7 @@ protocol ChangeProcessor {
     func entityAndPredicateForLocallyTrackedObjects(in context: ChangeProcessorContext) -> EntityAndPredicate<NSManagedObject>?
 
     /// Respond to changes in remote records.
-    func processRemoteChanges<T: RemoteRecord>(_ changes: [RemoteRecordChange<T>], in context: ChangeProcessorContext, completion: () -> ())
+    func processRemoteChanges<T>(_ changes: [RemoteRecordChange<T>], in context: ChangeProcessorContext, completion: () -> ())
 
     /// Does the initial fetch from the remote.
     func fetchLatestRemoteRecords(in context: ChangeProcessorContext)

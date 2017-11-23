@@ -12,7 +12,7 @@ import CoreData
 func createMoodyContainer(completion: @escaping (NSPersistentContainer) -> ()) {
     let container = NSPersistentContainer(name: "Moody")
     container.loadPersistentStores { _, error in
-        guard error == nil else { fatalError("Failed to load store: \(error)") }
+        guard error == nil else { fatalError("Failed to load store: \(error!)") }
         DispatchQueue.main.async { completion(container) }
     }
 }

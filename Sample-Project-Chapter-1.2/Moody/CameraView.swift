@@ -31,7 +31,7 @@ class CameraView: UIView {
     }
 
     func setup(for previewLayer: AVCaptureVideoPreviewLayer) {
-        previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill
+        previewLayer.videoGravity = AVLayerVideoGravity.resizeAspectFill
         layer.insertSublayer(previewLayer, at: 0)
         self.previewLayer = previewLayer
     }

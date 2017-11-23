@@ -85,7 +85,7 @@ final class CloudKitRemote: MoodyRemote {
 
 extension RemoteError {
     fileprivate init?(cloudKitError: Error?) {
-        guard let error = cloudKitError as? NSError else { return nil }
+        guard let error = cloudKitError.flatMap({ $0 as NSError }) else { return nil }
         if error.permanentCloudKitError {
             self = .permanent(error.partiallyFailedRecordIDsWithPermanentError.map { $0.recordName })
         } else {

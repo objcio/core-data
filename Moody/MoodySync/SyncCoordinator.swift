@@ -196,7 +196,7 @@ extension SyncCoordinator {
     }
 
     fileprivate func fetchLatestRemoteData() {
-        perform { _ in
+        perform {
             for changeProcessor in self.changeProcessors {
                 changeProcessor.fetchLatestRemoteRecords(in: self)
                 self.delayedSaveOrRollback()
@@ -216,7 +216,7 @@ extension SyncCoordinator {
         }
     }
 
-    fileprivate func processRemoteChanges<T: RemoteRecord>(_ changes: [RemoteRecordChange<T>], completion: @escaping () -> ()) {
+    fileprivate func processRemoteChanges<T>(_ changes: [RemoteRecordChange<T>], completion: @escaping () -> ()) {
         self.changeProcessors.asyncForEach(completion: completion) { changeProcessor, innerCompletion in
             perform {
                 changeProcessor.processRemoteChanges(changes, in: self, completion: innerCompletion)

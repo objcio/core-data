@@ -17,7 +17,7 @@ public func AssertEqual<T: Equatable>(_ expression1: @autoclosure () -> T?, _ ex
     let a = expression1()
     let b = expression2()
     if a != b {
-        XCTFail("\(a) != \(b) \(message)")
+        XCTFail("\(String(describing: a)) != \(String(describing: b)) \(message)")
     } else {
         continuation()
     }

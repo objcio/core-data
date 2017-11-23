@@ -41,8 +41,10 @@ extension ApplicationActiveStateObserving {
                 observer.applicationDidBecomeActive()
             }
         })
-        if UIApplication.shared.applicationState == .active {
-            applicationDidBecomeActive()
+        DispatchQueue.main.async {
+            if UIApplication.shared.applicationState == .active {
+                self.applicationDidBecomeActive()
+            }
         }
     }
 }

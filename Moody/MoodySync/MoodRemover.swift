@@ -22,7 +22,7 @@ final class MoodRemover: ElementChangeProcessor {
         processDeletedMoods(objects, in: context)
     }
 
-    func processRemoteChanges<T: RemoteRecord>(_ changes: [RemoteRecordChange<T>], in context: ChangeProcessorContext, completion: () -> ()) {
+    func processRemoteChanges<T>(_ changes: [RemoteRecordChange<T>], in context: ChangeProcessorContext, completion: () -> ()) {
         // no-op
         completion()
     }
@@ -44,17 +44,17 @@ extension MoodRemover {
     fileprivate func processDeletedMoods(_ deletions: [Mood], in context: ChangeProcessorContext) {
         let allObjects = Set(deletions)
         let localOnly = allObjects.filter { $0.remoteIdentifier == nil }
-        let objectsToDeleteRemotely = Array(allObjects.subtracting(localOnly))
+        let objectsToDeleteRemotely = allObjects.subtracting(localOnly)
         deleteLocally(localOnly, context: context)
         deleteRemotely(objectsToDeleteRemotely, context: context)
     }
 
-    fileprivate func deleteLocally(_ deletions: [Mood], context: ChangeProcessorContext) {
+    fileprivate func deleteLocally(_ deletions: Set<Mood>, context: ChangeProcessorContext) {
         deletions.forEach { $0.markForLocalDeletion() }
     }
 
-    fileprivate func deleteRemotely(_ deletions: [Mood], context: ChangeProcessorContext) {
-        context.remote.remove(deletions, completion: context.perform { deletedRecordIDs, error in
+    fileprivate func deleteRemotely(_ deletions: Set<Mood>, context: ChangeProcessorContext) {
+        context.remote.remove(Array(deletions), completion: context.perform { deletedRecordIDs, error in
             var deletedIDs = Set(deletedRecordIDs)
             if case .permanent(let ids)? = error {
                 deletedIDs.formUnion(ids)
