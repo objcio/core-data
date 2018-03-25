@@ -42,7 +42,7 @@ extension Sequence {
 }
 
 
-extension Sequence where Iterator.Element: AnyObject {
+extension Sequence where Element: AnyObject {
     public func containsObjectIdentical(to object: AnyObject) -> Bool {
         return contains { $0 === object }
     }
