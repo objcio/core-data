@@ -134,6 +134,7 @@ extension NSError {
         case .serverRejectedRequest: return true
         case .assetFileNotFound: return true
         case .assetFileModified: return true
+        case .assetNotAvailable: return true
         case .incompatibleVersion: return true
         case .constraintViolation: return true
         case .operationCancelled: return false
