@@ -82,10 +82,11 @@ extension ARGBPixel_t {
             -0.091169,   0.25243,   0.015708,
             0.0009209, -0.0025498, 0.1786,
         ]
-        self.a = UInt8.max
-        self.r = UInt8(max(min(xyz.x * matrix[0] + xyz.y * matrix[1] + xyz.z * matrix[2], Float(UInt8.max)), 0))
-        self.g = UInt8(max(min(xyz.x * matrix[3] + xyz.y * matrix[4] + xyz.z * matrix[5], Float(UInt8.max)), 0))
-        self.b = UInt8(max(min(xyz.x * matrix[6] + xyz.y * matrix[7] + xyz.z * matrix[8], Float(UInt8.max)), 0))
+        let a = UInt8.max
+        let r = UInt8(max(min(xyz.x * matrix[0] + xyz.y * matrix[1] + xyz.z * matrix[2], Float(UInt8.max)), 0))
+        let g = UInt8(max(min(xyz.x * matrix[3] + xyz.y * matrix[4] + xyz.z * matrix[5], Float(UInt8.max)), 0))
+        let b = UInt8(max(min(xyz.x * matrix[6] + xyz.y * matrix[7] + xyz.z * matrix[8], Float(UInt8.max)), 0))
+        self = ARGBPixel_t(a: a, r: r, g: g, b: b)
     }
     init(lab: LABPixel) {
         let xyz = XYZ(lab: lab)

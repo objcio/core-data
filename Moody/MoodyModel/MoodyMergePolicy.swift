@@ -81,7 +81,7 @@ extension NSMergeConflict {
 extension Sequence where Iterator.Element == NSMergeConflict {
     func conflictedObjects<T>(of cls: T.Type) -> [T] {
         let objects = map { $0.sourceObject }
-        return objects.flatMap { $0 as? T }
+        return objects.compactMap { $0 as? T }
     }
 
     func conflictsAndObjects<T>(of cls: T.Type) -> [(NSMergeConflict, T)] {

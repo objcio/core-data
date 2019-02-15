@@ -1293,7 +1293,7 @@
 			buildSettings = {
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 58PSC9526Y;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Debug;
 		};
@@ -1303,7 +1303,7 @@
 			buildSettings = {
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 58PSC9526Y;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Release;
 		};
@@ -1398,7 +1398,7 @@
 			buildSettings = {
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 58PSC9526Y;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Debug;
 		};
@@ -1408,7 +1408,7 @@
 			buildSettings = {
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 58PSC9526Y;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Release;
 		};
@@ -1442,7 +1442,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Debug;
 		};
@@ -1457,7 +1457,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Release;
 		};
