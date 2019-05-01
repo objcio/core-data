@@ -15,7 +15,7 @@ import CoreDataHelpers
 ///
 /// This protocol merges changes from the view context into the sync context and vice versa.
 /// It calls its `process(changedLocalObjects:)` methods when objects have changed.
-protocol ContextOwner: class, ObserverTokenStore {
+protocol ContextOwner: ObserverTokenStore {
     /// The view managed object context.
     var viewContext: NSManagedObjectContext { get }
     /// The managed object context that is used to perform synchronization with the backend.

@@ -17,7 +17,7 @@ protocol ObserverTokenStore : class {
 /// This is a helper protocol for the SyncCoordinator.
 ///
 /// It receives application active / background state changes and forwards them after switching onto the right queue.
-protocol ApplicationActiveStateObserving : class, ObserverTokenStore {
+protocol ApplicationActiveStateObserving : ObserverTokenStore {
     /// Runs the given block on the right queue and dispatch group.
     func perform(_ block: @escaping () -> ())
 
@@ -29,13 +29,13 @@ protocol ApplicationActiveStateObserving : class, ObserverTokenStore {
 
 extension ApplicationActiveStateObserving {
     func setupApplicationActiveNotifications() {
-        addObserverToken(NotificationCenter.default.addObserver(forName: .UIApplicationDidEnterBackground, object: nil, queue: nil) { [weak self] note in
+        addObserverToken(NotificationCenter.default.addObserver(forName: UIApplication.didEnterBackgroundNotification, object: nil, queue: nil) { [weak self] note in
             guard let observer = self else { return }
             observer.perform {
                 observer.applicationDidEnterBackground()
             }
         })
-        addObserverToken(NotificationCenter.default.addObserver(forName: .UIApplicationDidBecomeActive, object: nil, queue: nil) { [weak self] note in
+        addObserverToken(NotificationCenter.default.addObserver(forName: UIApplication.didBecomeActiveNotification, object: nil, queue: nil) { [weak self] note in
             guard let observer = self else { return }
             observer.perform {
                 observer.applicationDidBecomeActive()

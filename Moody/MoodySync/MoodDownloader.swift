@@ -65,7 +65,7 @@ extension MoodDownloader {
 
     fileprivate func insert(_ remoteMoods: [RemoteMood], into context: NSManagedObjectContext) {
         let existingMoods = { () -> [RemoteRecordID: Mood] in
-            let ids = remoteMoods.map { $0.id }.flatMap { $0 }
+            let ids = remoteMoods.map { $0.id }.compactMap { $0 }
             let moods = Mood.fetch(in: context) { request in
                 request.predicate = Mood.predicateForRemoteIdentifiers(ids)
                 request.returnsObjectsAsFaults = false

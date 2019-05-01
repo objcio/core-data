@@ -17,9 +17,9 @@ final class CloudKitRemote: MoodyRemote {
     func setupMoodSubscription() {
         let subscriptionID = "MoodDownload"
         let predicate = NSPredicate(format: "TRUEPREDICATE")
-        let options: CKQuerySubscriptionOptions = [.firesOnRecordCreation, .firesOnRecordUpdate, .firesOnRecordDeletion]
+        let options: CKQuerySubscription.Options = [.firesOnRecordCreation, .firesOnRecordUpdate, .firesOnRecordDeletion]
         let subscription = CKQuerySubscription(recordType: "Mood", predicate: predicate, subscriptionID: subscriptionID, options: options)
-        let info = CKNotificationInfo()
+        let info = CKSubscription.NotificationInfo()
         info.shouldSendContentAvailable = true
         subscription.notificationInfo = info
         let op = CKModifySubscriptionsOperation(subscriptionsToSave: [subscription], subscriptionIDsToDelete: [])
@@ -36,7 +36,7 @@ final class CloudKitRemote: MoodyRemote {
         let op = CKQueryOperation(query: query)
         op.resultsLimit = maximumNumberOfMoods
         op.fetchAggregateResults(in: cloudKitContainer.publicCloudDatabase, previousResults: []) { records, _ in
-            completion(records.map { RemoteMood(record: $0) }.flatMap { $0 })
+            completion(records.map { RemoteMood(record: $0) }.compactMap { $0 })
         }
     }
 
@@ -45,7 +45,7 @@ final class CloudKitRemote: MoodyRemote {
             guard error == nil else { return completion([], { _ in }) } // TODO We should handle this case with e.g. a clean refetch
             guard changeReasons.count > 0 else { return completion([], callback) }
             self.cloudKitContainer.publicCloudDatabase.fetchRecords(for: changeReasons) { changes, error in
-                completion(changes.map { RemoteRecordChange(moodChange: $0) }.flatMap { $0 }, callback)
+                completion(changes.map { RemoteRecordChange(moodChange: $0) }.compactMap { $0 }, callback)
             }
         }
     }
@@ -55,7 +55,7 @@ final class CloudKitRemote: MoodyRemote {
         let op = CKModifyRecordsOperation(recordsToSave: recordsToSave,
             recordIDsToDelete: nil)
         op.modifyRecordsCompletionBlock = { modifiedRecords, _, error in
-            let remoteMoods = modifiedRecords?.map { RemoteMood(record: $0) }.flatMap { $0 } ?? []
+            let remoteMoods = modifiedRecords?.map { RemoteMood(record: $0) }.compactMap { $0 } ?? []
             let remoteError = RemoteError(cloudKitError: error)
             completion(remoteMoods, remoteError)
         }
@@ -63,9 +63,9 @@ final class CloudKitRemote: MoodyRemote {
     }
 
     func remove(_ moods: [Mood], completion: @escaping ([RemoteRecordID], RemoteError?) -> ()) {
-        let recordIDsToDelete = moods.map { (mood: Mood) -> CKRecordID in
+        let recordIDsToDelete = moods.map { (mood: Mood) -> CKRecord.ID in
             guard let name = mood.remoteIdentifier else { fatalError("Must have a remote ID") }
-            return CKRecordID(recordName: name)
+            return CKRecord.ID(recordName: name)
         }
         let op = CKModifyRecordsOperation(recordsToSave: nil, recordIDsToDelete: recordIDsToDelete)
         op.modifyRecordsCompletionBlock = { _, deletedRecordIDs, error in
@@ -124,12 +124,8 @@ extension RemoteMood {
             else { return nil }
         let isoCountry = ISO3166.Country(rawValue: Int16(countryCode)) ?? ISO3166.Country.unknown
         let location = record.object(forKey: "location") as? CLLocation
-        self.id = record.recordID.recordName
-        self.creatorID = creatorID
-        self.date = date
-        self.location = location
-        self.colors = colors
-        self.isoCountry = isoCountry
+        
+        self = RemoteMood(id: record.recordID.recordName, creatorID: creatorID, date: date, location: location, colors: colors, isoCountry: isoCountry)
     }
 }
 
